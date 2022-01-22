@@ -42,7 +42,9 @@ namespace UQMEdit
 	{
 		public static object[] LoadStars(bool spoilers) {
 			List<object> list = new List<object>();
-			var StarsTXT = Assembly.GetExecutingAssembly().GetManifestResourceStream("UQMEdit.Resources.stars.txt");
+			var StarsTXT =
+				// Assembly.GetExecutingAssembly().GetManifestResourceStream("UQMEdit.Resources.stars.txt");
+				new FileStream("Resources/stars.txt", FileMode.Open);
 			StreamReader streamReader = new StreamReader(StarsTXT, Encoding.Default);
 			string text = streamReader.ReadLine();
 			text = streamReader.ReadLine();

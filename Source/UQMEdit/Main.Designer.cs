@@ -1,4 +1,6 @@
-﻿namespace UQMEdit
+﻿using System.Drawing;
+
+namespace UQMEdit
 {
 	partial class Main
 	{
@@ -244,7 +246,7 @@
             // 
             // Open
             // 
-            this.Open.Image = global::UQMEdit.Properties.Resources.Open_Image;
+            this.Open.Image = new Bitmap("Resources/Open.Image.png"); // global::UQMEdit.Properties.Resources.Open_Image;
             this.Open.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.Open.Name = "Open";
             this.Open.Size = new System.Drawing.Size(56, 22);
@@ -254,7 +256,7 @@
             // Reload
             // 
             this.Reload.Enabled = false;
-            this.Reload.Image = global::UQMEdit.Properties.Resources.Reload_Image;
+            this.Reload.Image = new Bitmap("Resources/Reload.Image.png");// global::UQMEdit.Properties.Resources.Reload_Image;
             this.Reload.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.Reload.Name = "Reload";
             this.Reload.Size = new System.Drawing.Size(63, 22);
@@ -265,7 +267,7 @@
             // 
             this.Save.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.Save.Enabled = false;
-            this.Save.Image = global::UQMEdit.Properties.Resources.Save_Image;
+            this.Save.Image = new Bitmap("Resources/Save.Image.png"); // global::UQMEdit.Properties.Resources.Save_Image;
             this.Save.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.Save.Name = "Save";
             this.Save.Size = new System.Drawing.Size(23, 22);
@@ -2129,7 +2131,7 @@
             this.ClientSize = new System.Drawing.Size(873, 529);
             this.Controls.Add(this.Tabs);
             this.Controls.Add(this.toolStrip1);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = new Icon("Resources/mkii.ico"); //((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(889, 568);
             this.MinimumSize = new System.Drawing.Size(889, 568);
