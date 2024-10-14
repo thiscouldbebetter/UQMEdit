@@ -1,0 +1,402 @@
+<html>
+<body>
+
+<div id="divUi">
+	<h3>Ur-Quan Masters Save File Editor</h3>
+	<p>
+		Upload a save file from the game the Ur-Quan Masters
+		to view and edit its contents.  THIS IS A WORK IN PROGRESS.
+	</p>
+
+	<div>
+		<label>Save File to Upload:</label>
+		<input type="file" onchange="inputFile_Changed(this)"></input>
+	</div>
+
+	<div>
+		<label>Save State as JSON:</label>
+		<br />
+		<textarea
+			id="textareaSaveStateAsJson"
+			cols="80" rows="25"
+		></textarea>
+	</div>
+
+	<button onclick="buttonSave_Clicked()">Save to File</button>
+
+
+<script type="text/javascript">
+
+// UI events.
+
+function buttonSave_Clicked()
+{
+	var d = document;
+	var textareaSaveStateAsJson =
+		d.getElementById("textareaSaveStateAsJson");
+	var saveStateAsJson = textareaSaveStateAsJson.value;
+
+	var saveState = SaveState.fromJson(saveStateAsJson);
+
+	var saveStateAsBytes = saveState.toBytes();
+
+	var downloadLink = d.createElement("a");
+	throw new Error("todo");
+	downloadLink.click();
+}
+
+function inputFile_Changed(inputFile)
+{
+	var file = inputFile.files[0];
+	if (file != null)
+	{
+		var fileReader = new FileReader();
+		fileReader.onload = (event) =>
+		{
+			var contentsAsBinaryString = event.target.result;
+			var contentsAsBytes =
+				contentsAsBinaryString
+					.split("")
+					.map(x => x.charCodeAt(0) );
+
+			var saveState = SaveState.fromBytes(contentsAsBytes);
+
+			var saveStateAsJson = saveState.toJson();
+
+			var d = document;
+			var textareaSaveStateAsJson =
+				d.getElementById("textareaSaveStateAsJson");
+			textareaSaveStateAsJson.value = saveStateAsJson;
+		}
+		fileReader.readAsBinaryString(file);
+	}
+}
+
+// Classes.
+
+class ByteStream
+{
+	constructor(bytes)
+	{
+		this.bytes = bytes;
+		this.byteCurrentIndex = 0;
+	}
+
+	readByte()
+	{
+		var byteRead = this.bytes[this.byteCurrentIndex];
+		this.byteCurrentIndex++;
+		return byteRead;
+	}
+
+	readBytes(bytesToRead)
+	{
+		var bytesRead = [];
+		for (var i = 0; i < bytesToRead; i++)
+		{
+			var byteRead = this.readByte();
+			bytesRead.push(byteRead);
+		}
+		return bytesRead;
+	}
+
+	readInteger16Bit()
+	{
+		var bytesRead = this.readBytes(2);
+
+		var integerRead =
+			(bytesRead[0] << 0)
+			| (bytesRead[1] << 8);
+
+		return integerRead;
+	}
+
+	readInteger32Bit()
+	{
+		var bytesRead = this.readBytes(4);
+
+		var integerRead =
+			(bytesRead[0] << 0)
+			| (bytesRead[1] << 8)
+			| (bytesRead[2] << 16)
+			| (bytesRead[3] << 24);
+
+		return integerRead;
+	}
+
+	readString(charactersToRead)
+	{
+		var bytesRead = this.readBytes(charactersToRead);
+		var stringRead =
+			bytesRead.map(x => String.fromCharCode(x) ).join("");
+		return stringRead;
+	}
+}
+
+class Coords
+{
+	constructor(x, y)
+	{
+		this.x = x;
+		this.y = y;
+	}
+}
+
+class SaveState
+{
+	constructor
+	(
+		header,
+		pos,
+		resourceUnits,
+		fuel,
+		flagshipCrew,
+		menerals,
+		biodataCount,
+		modules,
+		landerCount,
+		flagshipName,
+		captainName,
+		nearestPlanet,
+		difficulty,
+		extended,
+		nomad,
+		customSeed,
+		status, 
+		landerMods,
+		date,
+		credits,
+		escortShips,
+		devices,
+		resFactor,
+		saveName
+	)
+	{
+		this.header         = header;
+		this.pos            = pos;
+		this.resourceUnits  = resourceUnits;
+		this.fuel           = fuel;
+		this.flagshipCrew   = flagshipCrew;
+		this.menerals       = menerals;
+		this.biodataCount   = biodataCount;
+		this.modules        = modules;
+		this.landerCount    = landerCount;
+		this.flagshipName   = flagshipName;
+		this.captainName    = captainName;
+		this.nearestPlanet  = nearestPlanet;
+		this.difficulty     = difficulty;
+		this.extended       = extended;
+		this.nomad          = nomad;
+		this.customSeed     = customSeed;
+		this.status         = status;
+		this.landerMods     = landerMods;
+		this.date           = date;
+		this.credits        = credits;
+		this.escortShips    = escortShips;
+		this.devices        = devices;
+		this.resFactor      = resFactor;
+		this.saveName       = saveName;
+	}
+
+	static fromBytes(saveStateAsBytes)
+	{
+		var reader = new ByteStream(saveStateAsBytes);
+		var magicString = reader.readString(8);
+		var magicNumber = reader.readInteger32Bit();
+		var posX = reader.readInteger32Bit();
+		var posY = reader.readInteger32Bit();
+		var resourceUnits = reader.readInteger32Bit();
+		var fuel = reader.readInteger32Bit();
+		var flagshipCrew = reader.readInteger16Bit();
+		var mineralCountAll = reader.readInteger16Bit();
+		var biodataCount = reader.readInteger16Bit();
+		var moduleSlots = reader.readBytes(16);
+		var driveSlots = reader.readBytes(11);
+		var turningJetSlots = reader.readBytes(8);
+		var landerCount = reader.readByte();
+		var mineralCountCommonElements = reader.readInteger16Bit();
+		var mineralCountCorrosives = reader.readInteger16Bit();
+		var mineralCountBaseMetals = reader.readInteger16Bit();
+		var mineralCountNobleGases = reader.readInteger16Bit();
+		var mineralCountRareEarths = reader.readInteger16Bit();
+		var mineralCountPreciousMetals = reader.readInteger16Bit();
+		var mineralCountRadioactives = reader.readInteger16Bit();
+		var mineralCountExotics = reader.readInteger16Bit();
+		var flagshipName = reader.readString(16);
+		var captainName = reader.readString(16);
+		var nearestPlanet = reader.readString(16);
+
+		// How do these work?
+		var difficulty = reader.readByte();
+		var extended = reader.readByte();
+		var nomad = reader.readByte();
+		var customSeed = reader.readByte();
+
+		var status = reader.readByte();
+		var landerMods = reader.readByte();
+		var date = reader.readBytes(3);
+		var credits = reader.readInteger16Bit();
+		var escortShips0 = reader.readByte();
+		var devices0 = reader.readByte();
+		var escortShips1 = reader.readByte();
+		var devices1 = reader.readByte();
+
+		var resFactor = reader.readByte(); // ?
+		var saveName = reader.readString(32);
+
+		// Consolidate some fields.
+
+		var header = new SaveStateHeader(magicString, magicNumber);
+
+		var pos = new Coords(posX, posY);
+
+		var minerals = new SaveStateMinerals
+		(
+			mineralCountCommonElements,
+			mineralCountCorrosives,
+			mineralCountBaseMetals,
+			mineralCountNobleGases,
+			mineralCountRareEarths,
+			mineralCountPreciousMetals,
+			mineralCountRadioactives,
+			mineralCountExotics
+		);
+
+		var modules = new SaveStateModules
+		(
+			moduleSlots,
+			driveSlots,
+			turningJetSlots
+		);
+
+		var escortShips = new SaveStateEscortShips
+		(
+			escortShips0, escortShips1
+		);
+
+		var devices = new SaveStateDevices
+		(
+			devices0, devices1
+		);
+
+		var saveState = new SaveState
+		(
+			header,
+			pos,
+			resourceUnits,
+			fuel,
+			flagshipCrew,
+			minerals,
+			biodataCount,
+			modules,
+			landerCount,
+			flagshipName,
+			captainName,
+			nearestPlanet,
+			difficulty,
+			extended,
+			nomad,
+			customSeed,
+			status, 
+			landerMods,
+			date,
+			credits,
+			escortShips,
+			devices,
+			resFactor,
+			saveName
+		);
+
+		return saveState;
+	}
+
+	// JSON.
+
+	static fromJson(saveStateAsJson)
+	{
+		var saveStateAsObject = JSON.parse(saveStateAsJson);
+		var saveState = SaveState.prototypesSetOnObject(saveStateAsObject);
+		return saveState;
+	}
+	
+	static prototypesSetOnObject(object)
+	{
+		Object.setPrototypeOf(object, SaveState.prototype);
+		throw new Error("todo");
+	}
+
+	toJson()
+	{
+		return JSON.stringify(this, null, 4);
+	}
+}
+
+class SaveStateDevices
+{
+	constructor(a, b)
+	{
+		this.a = a;
+		this.b = b;
+	}
+}
+
+class SaveStateEscortShips
+{
+	constructor(a, b)
+	{
+		this.a = a;
+		this.b = b;
+	}
+}
+
+class SaveStateHeader
+{
+	constructor(magicString, magicNumber)
+	{
+		this.magicString = magicString;
+		this.magicNumber = magicNumber;
+	}
+}
+
+class SaveStateMinerals
+{
+	constructor
+	(
+		commonElements,
+		corrosives,
+		baseMetals,
+		nobleGases,
+		rareEarths,
+		preciousMetals,
+		radioactives,
+		exotics
+	)
+	{
+		this.commonElements = commonElements;
+		this.corrosives     = corrosives;
+		this.baseMetals     = baseMetals;
+		this.nobleGases     = nobleGases;
+		this.rareEarths     = rareEarths;
+		this.preciousMetals = preciousMetals;
+		this.radioactives   = radioactives;
+		this.exotics        = exotics;
+	}
+}
+
+class SaveStateModules
+{
+	constructor(moduleSlots, driveSlots, turningJetSlots)
+	{
+		this.moduleSlots = moduleSlots;
+		this.driveSlots = driveSlots;
+		this.turningJetSlots = turningJetSlots;
+	}
+}
+
+
+
+</script>
+
+
+</body>
+</html>
