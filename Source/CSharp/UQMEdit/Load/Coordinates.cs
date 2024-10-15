@@ -4,11 +4,14 @@ namespace UQMEdit
 {
 	partial class Read
 	{
-		public static void Coordinates() {
+		public static void Coordinates()
+		{
+			var f = Functions.Instance;
+
 			// X Coordinates
-			decimal LogX = Functions.LogXToUniverse(
-				Functions.ReadOffsetToInt(
-					Functions.ByteOffsetsPick(
+			decimal LogX = f.LogXToUniverse(
+				f.ReadOffsetToInt(
+					f.ByteOffsetsPick(
 						Offsets.HighDefinitionRemaster.LogX,
 						Offsets.MegaModFieldOffsets.LogX
 					),
@@ -18,9 +21,9 @@ namespace UQMEdit
 			Window.UniverseX.Value = LogX / 10;
 
 			// Y Coordinates
-			decimal LogY = Functions.LogYToUniverse(
-				Functions.ReadOffsetToInt(
-					Functions.ByteOffsetsPick(
+			decimal LogY = f.LogYToUniverse(
+				f.ReadOffsetToInt(
+					f.ByteOffsetsPick(
 						Offsets.HighDefinitionRemaster.LogY,
 						Offsets.MegaModFieldOffsets.LogY
 					),
@@ -30,8 +33,8 @@ namespace UQMEdit
 			Window.UniverseY.Value = LogY / 10;
 
 			// Status
-			var statusAsByte = Functions.ReadBytesFromOffsetToLength(
-				Functions.ByteOffsetsPick(
+			var statusAsByte = f.ReadBytesFromOffsetToLength(
+				f.ByteOffsetsPick(
 					Offsets.HighDefinitionRemaster.Status,
 					Offsets.MegaModFieldOffsets.Status,
 					Offsets.Core.Status
@@ -52,8 +55,8 @@ namespace UQMEdit
 			if (statusAsByte == 7 || statusAsByte == 8)
 			{
 				var planet = Encoding.Default.GetString(
-					Functions.ReadBytesFromOffsetToLength(
-						Functions.ByteOffsetsPick(
+					f.ReadBytesFromOffsetToLength(
+						f.ByteOffsetsPick(
 							Offsets.HighDefinitionRemaster.NearestPlanet,
 							Offsets.MegaModFieldOffsets.NearestPlanet
 						),

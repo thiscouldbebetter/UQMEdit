@@ -102,10 +102,10 @@ namespace UQMEdit
 
 		private void MineralsValueChanged(object sender, EventArgs e) {
 			TotalMinerals.Value = 0;
-			TotalMinerals.Value = Common.Value + Corrosive.Value +
-										BaseMetal.Value + NobleGas.Value +
-										RareEarth.Value + Precious.Value +
-										Radioactive.Value + Exotic.Value;
+			TotalMinerals.Value = Minerals_CommonElements.Value + Minerals_Corrosives.Value +
+										Minerals_BaseMetals.Value + Minerals_NobleGases.Value +
+										Minerals_RareEarths.Value + Minerals_PreciousMetals.Value +
+										Minerals_Radioactives.Value + Minerals_Exotics.Value;
 		}
 
 		private void Save_Click(object sender, EventArgs e) {
@@ -162,7 +162,7 @@ namespace UQMEdit
 			byte i = 0;
 			foreach (object Modules in ModulesBox.Controls) {
 				if (Modules is ComboBox) {
-					(Modules as ComboBox).SelectedIndex = IsBomb.Checked ? ModulesArrayBomb[i] : ModulesArray[i];
+					(Modules as ComboBox).SelectedIndex = LanderModifications_DisplacedByBomb.Checked ? ModulesArrayBomb[i] : ModulesArray[i];
 					i++;
 				}
 			}

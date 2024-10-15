@@ -30,13 +30,13 @@
 			public const byte
 				Landers = 105,
 
-				Common = 106,
-				Corrosive = 108,
-				BaseMetal = 110,
-				NobleGas = 112,
-				RareEarth = 114,
-				Precious = 116,
-				Radioactive = 118,
+				Minerals_CommonElements = 106,
+				Minerals_Corrosives = 108,
+				Minerals_BaseMetal = 110,
+				Minerals_NobleGases = 112,
+				Minerals_RareEarths = 114,
+				Minerals_PreciousMetals = 116,
+				Radioactives = 118,
 				Exotic = 120;
 			public static byte[] Minerals = { 106, 108, 110, 112, 114, 116, 118, 120 };
 
@@ -80,13 +80,13 @@
 			public const byte
 				Landers = 69,
 
-				Common = 70,
-				Corrosive = 72,
-				BaseMetal = 74,
-				NobleGas = 76,
-				RareEarth = 78,
-				Precious = 80,
-				Radioactive = 82,
+				Minerals_CommonElements = 70,
+				Minerals_Corrosives = 72,
+				Minerals_BaseMetal = 74,
+				Minerals_NobleGases = 76,
+				Minerals_RareEarths = 78,
+				Minerals_PreciousMetals = 80,
+				Radioactives = 82,
 				Exotic = 84;
 			public static byte[] Minerals = { 70, 72, 74, 76, 78, 80, 82, 84 };
 

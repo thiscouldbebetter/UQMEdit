@@ -4,10 +4,13 @@ namespace UQMEdit
 {
 	partial class Write
 	{
-		public static void Summary() {
+		public static void Summary()
+		{
+			var f = Functions.Instance;
+
 			// Resource Units
-			Functions.WriteOffset(
-				Functions.ByteOffsetsPick(
+			f.WriteOffset(
+				f.ByteOffsetsPick(
 					Offsets.HighDefinitionRemaster.ResUnits,
 					Offsets.MegaModFieldOffsets.ResUnits
 				),
@@ -17,20 +20,20 @@ namespace UQMEdit
 				isUnsignedNotSigned: true
 			);
 
-			var ShipFuel = Window.ShipFuel.Value * 100;
-			Functions.WriteOffset(
-				Functions.ByteOffsetsPick(
+			var fuel = Window.ShipFuel.Value * 100;
+			f.WriteOffset(
+				f.ByteOffsetsPick(
 					Offsets.HighDefinitionRemaster.Fuel,
 					Offsets.MegaModFieldOffsets.Fuel
 				),
-				valueFromControl: decimal.ToUInt32(ShipFuel),
+				valueFromControl: decimal.ToUInt32(fuel),
 				lengthInBytes: 4,
 				valueMax: 161000,
 				isUnsignedNotSigned: true
 			);
 
-			Functions.WriteOffset(
-				Functions.ByteOffsetsPick(
+			f.WriteOffset(
+				f.ByteOffsetsPick(
 					Offsets.HighDefinitionRemaster.SiSCrew, 
 					Offsets.MegaModFieldOffsets.SiSCrew
 				),
@@ -40,8 +43,8 @@ namespace UQMEdit
 				isUnsignedNotSigned: true
 			);
 
-			Functions.WriteOffset(
-				Functions.ByteOffsetsPick(
+			f.WriteOffset(
+				f.ByteOffsetsPick(
 					Offsets.HighDefinitionRemaster.TotalMinerals,
 					Offsets.MegaModFieldOffsets.TotalMinerals
 				),
@@ -51,8 +54,8 @@ namespace UQMEdit
 				isUnsignedNotSigned: true
 			);
 
-			Functions.WriteOffset(
-				Functions.ByteOffsetsPick(
+			f.WriteOffset(
+				f.ByteOffsetsPick(
 					Offsets.HighDefinitionRemaster.BioData,
 					Offsets.MegaModFieldOffsets.BioData
 				),
@@ -72,8 +75,8 @@ namespace UQMEdit
 					} else {
 						moduleAsByte = 22;
 					}
-					Functions.WriteOffset(
-						Functions.ByteOffsetsPick(
+					f.WriteOffset(
+						f.ByteOffsetsPick(
 							Offsets.HighDefinitionRemaster.ModuleSlots + i,
 							Offsets.MegaModFieldOffsets.ModuleSlots + i
 						),
@@ -94,8 +97,8 @@ namespace UQMEdit
 				{
 					var thrusterIsPresent = (thrusterControl as CheckBox).Checked;
 					thrustersAsByte = (byte)(thrusterIsPresent ? 1 : 20);
-					Functions.WriteOffset(
-						Functions.ByteOffsetsPick(
+					f.WriteOffset(
+						f.ByteOffsetsPick(
 							Offsets.HighDefinitionRemaster.DriveSlots[j],
 							Offsets.MegaModFieldOffsets.DriveSlots[j]
 						),
@@ -115,8 +118,8 @@ namespace UQMEdit
 				{
 					var turningJetIsPresent = (turningJetControl as CheckBox).Checked;
 					turningJetAsByte = (byte)(turningJetIsPresent ? 2 : 21);
-					Functions.WriteOffset(
-						Functions.ByteOffsetsPick(
+					f.WriteOffset(
+						f.ByteOffsetsPick(
 							Offsets.HighDefinitionRemaster.JetSlots[k],
 							Offsets.MegaModFieldOffsets.JetSlots[k]
 						),
@@ -129,8 +132,8 @@ namespace UQMEdit
 				}
 			}
 
-			Functions.WriteOffset(
-				Functions.ByteOffsetsPick(
+			f.WriteOffset(
+				f.ByteOffsetsPick(
 					Offsets.HighDefinitionRemaster.Landers,
 					Offsets.MegaModFieldOffsets.Landers
 				),
@@ -140,88 +143,88 @@ namespace UQMEdit
 			);
 
 			// Cargo.
-			Functions.WriteOffset(
-				Functions.ByteOffsetsPick(
-					Offsets.HighDefinitionRemaster.Common,
-					Offsets.MegaModFieldOffsets.Common
+			f.WriteOffset(
+				f.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.Minerals_CommonElements,
+					Offsets.MegaModFieldOffsets.Minerals_CommonElements
 				),
-				Window.Common.Value,
+				Window.Minerals_CommonElements.Value,
 				lengthInBytes: 2,
 				valueMax: 0xFFFF
 			);
 
-			Functions.WriteOffset(
-				Functions.ByteOffsetsPick(
-					Offsets.HighDefinitionRemaster.Corrosive,
-					Offsets.MegaModFieldOffsets.Corrosive
+			f.WriteOffset(
+				f.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.Minerals_Corrosives,
+					Offsets.MegaModFieldOffsets.Minerals_Corrosives
 				),
-				Window.Corrosive.Value,
+				Window.Minerals_Corrosives.Value,
 				lengthInBytes: 2,
 				valueMax: 0xFFFF
 			);
 
-			Functions.WriteOffset(
-				Functions.ByteOffsetsPick(
-					Offsets.HighDefinitionRemaster.BaseMetal,
-					Offsets.MegaModFieldOffsets.BaseMetal
+			f.WriteOffset(
+				f.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.Minerals_BaseMetal,
+					Offsets.MegaModFieldOffsets.Minerals_BaseMetal
 				),
-				Window.BaseMetal.Value,
+				Window.Minerals_BaseMetals.Value,
 				lengthInBytes: 2,
 				valueMax: 0xFFFF
 			);
 
-			Functions.WriteOffset(
-				Functions.ByteOffsetsPick(
-					Offsets.HighDefinitionRemaster.NobleGas,
-					Offsets.MegaModFieldOffsets.NobleGas
+			f.WriteOffset(
+				f.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.Minerals_NobleGases,
+					Offsets.MegaModFieldOffsets.Minerals_NobleGases
 				),
-				Window.NobleGas.Value,
+				Window.Minerals_NobleGases.Value,
 				lengthInBytes: 2,
 				valueMax: 0xFFFF
 			);
 
-			Functions.WriteOffset(
-				Functions.ByteOffsetsPick(
-					Offsets.HighDefinitionRemaster.RareEarth,
-					Offsets.MegaModFieldOffsets.RareEarth
+			f.WriteOffset(
+				f.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.Minerals_RareEarths,
+					Offsets.MegaModFieldOffsets.Minerals_RareEarths
 				),
-				Window.RareEarth.Value,
+				Window.Minerals_RareEarths.Value,
 				lengthInBytes: 2,
 				valueMax: 0xFFFF
 			);
 
-			Functions.WriteOffset(
-				Functions.ByteOffsetsPick(
-					Offsets.HighDefinitionRemaster.Precious,
-					Offsets.MegaModFieldOffsets.Precious
+			f.WriteOffset(
+				f.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.Minerals_PreciousMetals,
+					Offsets.MegaModFieldOffsets.Minerals_PreciousMetals
 				),
-				Window.Precious.Value,
+				Window.Minerals_PreciousMetals.Value,
 				lengthInBytes: 2,
 				valueMax: 0xFFFF
 			);
 
-			Functions.WriteOffset(
-				Functions.ByteOffsetsPick(
-					Offsets.HighDefinitionRemaster.Radioactive,
-					Offsets.MegaModFieldOffsets.Radioactive
+			f.WriteOffset(
+				f.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.Radioactives,
+					Offsets.MegaModFieldOffsets.Radioactives
 				),
-				Window.Radioactive.Value,
+				Window.Minerals_Radioactives.Value,
 				lengthInBytes: 2,
 				valueMax: 0xFFFF
 			);
 
-			Functions.WriteOffset(
-				Functions.ByteOffsetsPick(
+			f.WriteOffset(
+				f.ByteOffsetsPick(
 					Offsets.HighDefinitionRemaster.Exotic,
 					Offsets.MegaModFieldOffsets.Exotic
 				),
-				Window.Exotic.Value,
+				Window.Minerals_Exotics.Value,
 				lengthInBytes: 2,
 				valueMax: 0xFFFF
 			);
 
-			Functions.WriteOffsetString(
-				Functions.ByteOffsetsPick(
+			f.WriteOffsetString(
+				f.ByteOffsetsPick(
 					Offsets.HighDefinitionRemaster.ShipName,
 					Offsets.MegaModFieldOffsets.ShipName
 				),
@@ -229,8 +232,8 @@ namespace UQMEdit
 				lengthInBytes: 16
 			);
 
-			Functions.WriteOffsetString(
-				Functions.ByteOffsetsPick(
+			f.WriteOffsetString(
+				f.ByteOffsetsPick(
 					Offsets.HighDefinitionRemaster.CaptainName,
 					Offsets.MegaModFieldOffsets.CaptainName
 				),

@@ -26,7 +26,7 @@ namespace UQMEdit
 					Window = window;
 
 					// Save Checker			
-					var loadChecker = Functions.ReadOffsetToInt(Offsets.SaveChecker, 4);
+					var loadChecker = Functions.Instance.ReadOffsetToInt(Offsets.SaveChecker, 4);
 					if (loadChecker == Constants.SaveFileTag)
 						SaveVersion = 3;
 					else if (loadChecker == Constants.MegaModTag)

@@ -139,14 +139,14 @@ namespace UQMEdit
             this.RULabel = new Label();
             this.FuelLabel = new Label();
             this.LanderUpgradesBox = new GroupBox();
-            this.IsBomb = new CheckBox();
-            this.QuakeShield = new CheckBox();
-            this.RapidFire = new CheckBox();
-            this.BioShield = new CheckBox();
-            this.DblCargo = new CheckBox();
-            this.DblSpeed = new CheckBox();
-            this.LightningShield = new CheckBox();
-            this.HeatShield = new CheckBox();
+            this.LanderModifications_DisplacedByBomb = new CheckBox();
+            this.LanderModifications_QuakeShield = new CheckBox();
+            this.LanderModifications_RapidFire = new CheckBox();
+            this.LanderModifications_BioShield = new CheckBox();
+            this.LanderModifications_DoubleCargo = new CheckBox();
+            this.LanderModifications_DoubleSpeed = new CheckBox();
+            this.LanderModifications_LightningShield = new CheckBox();
+            this.LanderModifications_HeatShield = new CheckBox();
             this.CrewLabel = new Label();
             this.Landers = new NumericUpDown();
             this.BioData = new NumericUpDown();
@@ -163,14 +163,14 @@ namespace UQMEdit
             this.BaseMetalsLabel = new Label();
             this.CorrosiveLabel = new Label();
             this.CommonLabel = new Label();
-            this.Exotic = new NumericUpDown();
-            this.Radioactive = new NumericUpDown();
-            this.Precious = new NumericUpDown();
-            this.RareEarth = new NumericUpDown();
-            this.NobleGas = new NumericUpDown();
-            this.BaseMetal = new NumericUpDown();
-            this.Corrosive = new NumericUpDown();
-            this.Common = new NumericUpDown();
+            this.Minerals_Exotics = new NumericUpDown();
+            this.Minerals_Radioactives = new NumericUpDown();
+            this.Minerals_PreciousMetals = new NumericUpDown();
+            this.Minerals_RareEarths = new NumericUpDown();
+            this.Minerals_NobleGases = new NumericUpDown();
+            this.Minerals_BaseMetals = new NumericUpDown();
+            this.Minerals_Corrosives = new NumericUpDown();
+            this.Minerals_CommonElements = new NumericUpDown();
             this.Coordinates = new TabPage();
             this.Spoilers = new CheckBox();
             this.StatusBox = new GroupBox();
@@ -212,14 +212,14 @@ namespace UQMEdit
             ((System.ComponentModel.ISupportInitialize)(this.ShipFuel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ShipCrew)).BeginInit();
             this.CargoBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Exotic)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Radioactive)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Precious)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.RareEarth)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.NobleGas)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.BaseMetal)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Corrosive)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Common)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Minerals_Exotics)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Minerals_Radioactives)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Minerals_PreciousMetals)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Minerals_RareEarths)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Minerals_NobleGases)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Minerals_BaseMetals)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Minerals_Corrosives)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Minerals_CommonElements)).BeginInit();
             this.Coordinates.SuspendLayout();
             this.StatusBox.SuspendLayout();
             this.OrbitBox.SuspendLayout();
@@ -1433,14 +1433,14 @@ namespace UQMEdit
             // 
             // LanderUpgradesBox
             // 
-            this.LanderUpgradesBox.Controls.Add(this.IsBomb);
-            this.LanderUpgradesBox.Controls.Add(this.QuakeShield);
-            this.LanderUpgradesBox.Controls.Add(this.RapidFire);
-            this.LanderUpgradesBox.Controls.Add(this.BioShield);
-            this.LanderUpgradesBox.Controls.Add(this.DblCargo);
-            this.LanderUpgradesBox.Controls.Add(this.DblSpeed);
-            this.LanderUpgradesBox.Controls.Add(this.LightningShield);
-            this.LanderUpgradesBox.Controls.Add(this.HeatShield);
+            this.LanderUpgradesBox.Controls.Add(this.LanderModifications_DisplacedByBomb);
+            this.LanderUpgradesBox.Controls.Add(this.LanderModifications_QuakeShield);
+            this.LanderUpgradesBox.Controls.Add(this.LanderModifications_RapidFire);
+            this.LanderUpgradesBox.Controls.Add(this.LanderModifications_BioShield);
+            this.LanderUpgradesBox.Controls.Add(this.LanderModifications_DoubleCargo);
+            this.LanderUpgradesBox.Controls.Add(this.LanderModifications_DoubleSpeed);
+            this.LanderUpgradesBox.Controls.Add(this.LanderModifications_LightningShield);
+            this.LanderUpgradesBox.Controls.Add(this.LanderModifications_HeatShield);
             this.LanderUpgradesBox.Location = new System.Drawing.Point(6, 175);
             this.LanderUpgradesBox.Name = "LanderUpgradesBox";
             this.LanderUpgradesBox.Size = new System.Drawing.Size(152, 172);
@@ -1450,99 +1450,99 @@ namespace UQMEdit
             // 
             // IsBomb
             // 
-            this.IsBomb.AutoCheck = false;
-            this.IsBomb.AutoSize = true;
-            this.IsBomb.Enabled = false;
-            this.IsBomb.Location = new System.Drawing.Point(82, 83);
-            this.IsBomb.Name = "IsBomb";
-            this.IsBomb.Size = new System.Drawing.Size(64, 17);
-            this.IsBomb.TabIndex = 8;
-            this.IsBomb.Text = "Is Bomb";
-            this.IsBomb.UseVisualStyleBackColor = true;
+            this.LanderModifications_DisplacedByBomb.AutoCheck = false;
+            this.LanderModifications_DisplacedByBomb.AutoSize = true;
+            this.LanderModifications_DisplacedByBomb.Enabled = false;
+            this.LanderModifications_DisplacedByBomb.Location = new System.Drawing.Point(82, 83);
+            this.LanderModifications_DisplacedByBomb.Name = "IsBomb";
+            this.LanderModifications_DisplacedByBomb.Size = new System.Drawing.Size(64, 17);
+            this.LanderModifications_DisplacedByBomb.TabIndex = 8;
+            this.LanderModifications_DisplacedByBomb.Text = "Is Bomb";
+            this.LanderModifications_DisplacedByBomb.UseVisualStyleBackColor = true;
             // 
             // QuakeShield
             // 
-            this.QuakeShield.AutoCheck = false;
-            this.QuakeShield.AutoSize = true;
-            this.QuakeShield.Enabled = false;
-            this.QuakeShield.Location = new System.Drawing.Point(6, 106);
-            this.QuakeShield.Name = "QuakeShield";
-            this.QuakeShield.Size = new System.Drawing.Size(90, 17);
-            this.QuakeShield.TabIndex = 7;
-            this.QuakeShield.Text = "Quake Shield";
-            this.QuakeShield.UseVisualStyleBackColor = true;
+            this.LanderModifications_QuakeShield.AutoCheck = false;
+            this.LanderModifications_QuakeShield.AutoSize = true;
+            this.LanderModifications_QuakeShield.Enabled = false;
+            this.LanderModifications_QuakeShield.Location = new System.Drawing.Point(6, 106);
+            this.LanderModifications_QuakeShield.Name = "QuakeShield";
+            this.LanderModifications_QuakeShield.Size = new System.Drawing.Size(90, 17);
+            this.LanderModifications_QuakeShield.TabIndex = 7;
+            this.LanderModifications_QuakeShield.Text = "Quake Shield";
+            this.LanderModifications_QuakeShield.UseVisualStyleBackColor = true;
             // 
             // RapidFire
             // 
-            this.RapidFire.AutoCheck = false;
-            this.RapidFire.AutoSize = true;
-            this.RapidFire.Enabled = false;
-            this.RapidFire.Location = new System.Drawing.Point(6, 83);
-            this.RapidFire.Name = "RapidFire";
-            this.RapidFire.Size = new System.Drawing.Size(74, 17);
-            this.RapidFire.TabIndex = 6;
-            this.RapidFire.Text = "Rapid Fire";
-            this.RapidFire.UseVisualStyleBackColor = true;
+            this.LanderModifications_RapidFire.AutoCheck = false;
+            this.LanderModifications_RapidFire.AutoSize = true;
+            this.LanderModifications_RapidFire.Enabled = false;
+            this.LanderModifications_RapidFire.Location = new System.Drawing.Point(6, 83);
+            this.LanderModifications_RapidFire.Name = "RapidFire";
+            this.LanderModifications_RapidFire.Size = new System.Drawing.Size(74, 17);
+            this.LanderModifications_RapidFire.TabIndex = 6;
+            this.LanderModifications_RapidFire.Text = "Rapid Fire";
+            this.LanderModifications_RapidFire.UseVisualStyleBackColor = true;
             // 
             // BioShield
             // 
-            this.BioShield.AutoCheck = false;
-            this.BioShield.AutoSize = true;
-            this.BioShield.Enabled = false;
-            this.BioShield.Location = new System.Drawing.Point(6, 37);
-            this.BioShield.Name = "BioShield";
-            this.BioShield.Size = new System.Drawing.Size(73, 17);
-            this.BioShield.TabIndex = 5;
-            this.BioShield.Text = "Bio-Shield";
-            this.BioShield.UseVisualStyleBackColor = true;
+            this.LanderModifications_BioShield.AutoCheck = false;
+            this.LanderModifications_BioShield.AutoSize = true;
+            this.LanderModifications_BioShield.Enabled = false;
+            this.LanderModifications_BioShield.Location = new System.Drawing.Point(6, 37);
+            this.LanderModifications_BioShield.Name = "BioShield";
+            this.LanderModifications_BioShield.Size = new System.Drawing.Size(73, 17);
+            this.LanderModifications_BioShield.TabIndex = 5;
+            this.LanderModifications_BioShield.Text = "Bio-Shield";
+            this.LanderModifications_BioShield.UseVisualStyleBackColor = true;
             // 
             // DblCargo
             // 
-            this.DblCargo.AutoCheck = false;
-            this.DblCargo.AutoSize = true;
-            this.DblCargo.Enabled = false;
-            this.DblCargo.Location = new System.Drawing.Point(6, 60);
-            this.DblCargo.Name = "DblCargo";
-            this.DblCargo.Size = new System.Drawing.Size(91, 17);
-            this.DblCargo.TabIndex = 4;
-            this.DblCargo.Text = "Double Cargo";
-            this.DblCargo.UseVisualStyleBackColor = true;
+            this.LanderModifications_DoubleCargo.AutoCheck = false;
+            this.LanderModifications_DoubleCargo.AutoSize = true;
+            this.LanderModifications_DoubleCargo.Enabled = false;
+            this.LanderModifications_DoubleCargo.Location = new System.Drawing.Point(6, 60);
+            this.LanderModifications_DoubleCargo.Name = "DblCargo";
+            this.LanderModifications_DoubleCargo.Size = new System.Drawing.Size(91, 17);
+            this.LanderModifications_DoubleCargo.TabIndex = 4;
+            this.LanderModifications_DoubleCargo.Text = "Double Cargo";
+            this.LanderModifications_DoubleCargo.UseVisualStyleBackColor = true;
             // 
             // DblSpeed
             // 
-            this.DblSpeed.AutoCheck = false;
-            this.DblSpeed.AutoSize = true;
-            this.DblSpeed.Enabled = false;
-            this.DblSpeed.Location = new System.Drawing.Point(6, 14);
-            this.DblSpeed.Name = "DblSpeed";
-            this.DblSpeed.Size = new System.Drawing.Size(94, 17);
-            this.DblSpeed.TabIndex = 3;
-            this.DblSpeed.Text = "Double Speed";
-            this.DblSpeed.UseVisualStyleBackColor = true;
+            this.LanderModifications_DoubleSpeed.AutoCheck = false;
+            this.LanderModifications_DoubleSpeed.AutoSize = true;
+            this.LanderModifications_DoubleSpeed.Enabled = false;
+            this.LanderModifications_DoubleSpeed.Location = new System.Drawing.Point(6, 14);
+            this.LanderModifications_DoubleSpeed.Name = "DblSpeed";
+            this.LanderModifications_DoubleSpeed.Size = new System.Drawing.Size(94, 17);
+            this.LanderModifications_DoubleSpeed.TabIndex = 3;
+            this.LanderModifications_DoubleSpeed.Text = "Double Speed";
+            this.LanderModifications_DoubleSpeed.UseVisualStyleBackColor = true;
             // 
             // LightningShield
             // 
-            this.LightningShield.AutoCheck = false;
-            this.LightningShield.AutoSize = true;
-            this.LightningShield.Enabled = false;
-            this.LightningShield.Location = new System.Drawing.Point(6, 129);
-            this.LightningShield.Name = "LightningShield";
-            this.LightningShield.Size = new System.Drawing.Size(101, 17);
-            this.LightningShield.TabIndex = 2;
-            this.LightningShield.Text = "Lightning Shield";
-            this.LightningShield.UseVisualStyleBackColor = true;
+            this.LanderModifications_LightningShield.AutoCheck = false;
+            this.LanderModifications_LightningShield.AutoSize = true;
+            this.LanderModifications_LightningShield.Enabled = false;
+            this.LanderModifications_LightningShield.Location = new System.Drawing.Point(6, 129);
+            this.LanderModifications_LightningShield.Name = "LightningShield";
+            this.LanderModifications_LightningShield.Size = new System.Drawing.Size(101, 17);
+            this.LanderModifications_LightningShield.TabIndex = 2;
+            this.LanderModifications_LightningShield.Text = "Lightning Shield";
+            this.LanderModifications_LightningShield.UseVisualStyleBackColor = true;
             // 
             // HeatShield
             // 
-            this.HeatShield.AutoCheck = false;
-            this.HeatShield.AutoSize = true;
-            this.HeatShield.Enabled = false;
-            this.HeatShield.Location = new System.Drawing.Point(6, 152);
-            this.HeatShield.Name = "HeatShield";
-            this.HeatShield.Size = new System.Drawing.Size(81, 17);
-            this.HeatShield.TabIndex = 1;
-            this.HeatShield.Text = "Heat Shield";
-            this.HeatShield.UseVisualStyleBackColor = true;
+            this.LanderModifications_HeatShield.AutoCheck = false;
+            this.LanderModifications_HeatShield.AutoSize = true;
+            this.LanderModifications_HeatShield.Enabled = false;
+            this.LanderModifications_HeatShield.Location = new System.Drawing.Point(6, 152);
+            this.LanderModifications_HeatShield.Name = "HeatShield";
+            this.LanderModifications_HeatShield.Size = new System.Drawing.Size(81, 17);
+            this.LanderModifications_HeatShield.TabIndex = 1;
+            this.LanderModifications_HeatShield.Text = "Heat Shield";
+            this.LanderModifications_HeatShield.UseVisualStyleBackColor = true;
             // 
             // CrewLabel
             // 
@@ -1645,14 +1645,14 @@ namespace UQMEdit
             this.CargoBox.Controls.Add(this.BaseMetalsLabel);
             this.CargoBox.Controls.Add(this.CorrosiveLabel);
             this.CargoBox.Controls.Add(this.CommonLabel);
-            this.CargoBox.Controls.Add(this.Exotic);
-            this.CargoBox.Controls.Add(this.Radioactive);
-            this.CargoBox.Controls.Add(this.Precious);
-            this.CargoBox.Controls.Add(this.RareEarth);
-            this.CargoBox.Controls.Add(this.NobleGas);
-            this.CargoBox.Controls.Add(this.BaseMetal);
-            this.CargoBox.Controls.Add(this.Corrosive);
-            this.CargoBox.Controls.Add(this.Common);
+            this.CargoBox.Controls.Add(this.Minerals_Exotics);
+            this.CargoBox.Controls.Add(this.Minerals_Radioactives);
+            this.CargoBox.Controls.Add(this.Minerals_PreciousMetals);
+            this.CargoBox.Controls.Add(this.Minerals_RareEarths);
+            this.CargoBox.Controls.Add(this.Minerals_NobleGases);
+            this.CargoBox.Controls.Add(this.Minerals_BaseMetals);
+            this.CargoBox.Controls.Add(this.Minerals_Corrosives);
+            this.CargoBox.Controls.Add(this.Minerals_CommonElements);
             this.CargoBox.Location = new System.Drawing.Point(6, 6);
             this.CargoBox.Name = "CargoBox";
             this.CargoBox.Size = new System.Drawing.Size(172, 255);
@@ -1751,155 +1751,155 @@ namespace UQMEdit
             // 
             // Exotic
             // 
-            this.Exotic.Increment = new decimal(new int[] {
+            this.Minerals_Exotics.Increment = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.Exotic.Location = new System.Drawing.Point(90, 201);
-            this.Exotic.Maximum = new decimal(new int[] {
+            this.Minerals_Exotics.Location = new System.Drawing.Point(90, 201);
+            this.Minerals_Exotics.Maximum = new decimal(new int[] {
             65535,
             0,
             0,
             0});
-            this.Exotic.Name = "Exotic";
-            this.Exotic.Size = new System.Drawing.Size(76, 20);
-            this.Exotic.TabIndex = 7;
-            this.Exotic.TextAlign = HorizontalAlignment.Center;
-            this.Exotic.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
+            this.Minerals_Exotics.Name = "Exotic";
+            this.Minerals_Exotics.Size = new System.Drawing.Size(76, 20);
+            this.Minerals_Exotics.TabIndex = 7;
+            this.Minerals_Exotics.TextAlign = HorizontalAlignment.Center;
+            this.Minerals_Exotics.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
             // 
             // Radioactive
             // 
-            this.Radioactive.Increment = new decimal(new int[] {
+            this.Minerals_Radioactives.Increment = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.Radioactive.Location = new System.Drawing.Point(90, 175);
-            this.Radioactive.Maximum = new decimal(new int[] {
+            this.Minerals_Radioactives.Location = new System.Drawing.Point(90, 175);
+            this.Minerals_Radioactives.Maximum = new decimal(new int[] {
             65535,
             0,
             0,
             0});
-            this.Radioactive.Name = "Radioactive";
-            this.Radioactive.Size = new System.Drawing.Size(76, 20);
-            this.Radioactive.TabIndex = 6;
-            this.Radioactive.TextAlign = HorizontalAlignment.Center;
-            this.Radioactive.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
+            this.Minerals_Radioactives.Name = "Radioactive";
+            this.Minerals_Radioactives.Size = new System.Drawing.Size(76, 20);
+            this.Minerals_Radioactives.TabIndex = 6;
+            this.Minerals_Radioactives.TextAlign = HorizontalAlignment.Center;
+            this.Minerals_Radioactives.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
             // 
             // Precious
             // 
-            this.Precious.Increment = new decimal(new int[] {
+            this.Minerals_PreciousMetals.Increment = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.Precious.Location = new System.Drawing.Point(90, 149);
-            this.Precious.Maximum = new decimal(new int[] {
+            this.Minerals_PreciousMetals.Location = new System.Drawing.Point(90, 149);
+            this.Minerals_PreciousMetals.Maximum = new decimal(new int[] {
             65535,
             0,
             0,
             0});
-            this.Precious.Name = "Precious";
-            this.Precious.Size = new System.Drawing.Size(76, 20);
-            this.Precious.TabIndex = 5;
-            this.Precious.TextAlign = HorizontalAlignment.Center;
-            this.Precious.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
+            this.Minerals_PreciousMetals.Name = "Precious";
+            this.Minerals_PreciousMetals.Size = new System.Drawing.Size(76, 20);
+            this.Minerals_PreciousMetals.TabIndex = 5;
+            this.Minerals_PreciousMetals.TextAlign = HorizontalAlignment.Center;
+            this.Minerals_PreciousMetals.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
             // 
             // RareEarth
             // 
-            this.RareEarth.Increment = new decimal(new int[] {
+            this.Minerals_RareEarths.Increment = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.RareEarth.Location = new System.Drawing.Point(90, 123);
-            this.RareEarth.Maximum = new decimal(new int[] {
+            this.Minerals_RareEarths.Location = new System.Drawing.Point(90, 123);
+            this.Minerals_RareEarths.Maximum = new decimal(new int[] {
             65535,
             0,
             0,
             0});
-            this.RareEarth.Name = "RareEarth";
-            this.RareEarth.Size = new System.Drawing.Size(76, 20);
-            this.RareEarth.TabIndex = 4;
-            this.RareEarth.TextAlign = HorizontalAlignment.Center;
-            this.RareEarth.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
+            this.Minerals_RareEarths.Name = "RareEarth";
+            this.Minerals_RareEarths.Size = new System.Drawing.Size(76, 20);
+            this.Minerals_RareEarths.TabIndex = 4;
+            this.Minerals_RareEarths.TextAlign = HorizontalAlignment.Center;
+            this.Minerals_RareEarths.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
             // 
             // NobleGas
             // 
-            this.NobleGas.Increment = new decimal(new int[] {
+            this.Minerals_NobleGases.Increment = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.NobleGas.Location = new System.Drawing.Point(90, 97);
-            this.NobleGas.Maximum = new decimal(new int[] {
+            this.Minerals_NobleGases.Location = new System.Drawing.Point(90, 97);
+            this.Minerals_NobleGases.Maximum = new decimal(new int[] {
             65535,
             0,
             0,
             0});
-            this.NobleGas.Name = "NobleGas";
-            this.NobleGas.Size = new System.Drawing.Size(76, 20);
-            this.NobleGas.TabIndex = 3;
-            this.NobleGas.TextAlign = HorizontalAlignment.Center;
-            this.NobleGas.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
+            this.Minerals_NobleGases.Name = "NobleGas";
+            this.Minerals_NobleGases.Size = new System.Drawing.Size(76, 20);
+            this.Minerals_NobleGases.TabIndex = 3;
+            this.Minerals_NobleGases.TextAlign = HorizontalAlignment.Center;
+            this.Minerals_NobleGases.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
             // 
             // BaseMetal
             // 
-            this.BaseMetal.Increment = new decimal(new int[] {
+            this.Minerals_BaseMetals.Increment = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.BaseMetal.Location = new System.Drawing.Point(90, 71);
-            this.BaseMetal.Maximum = new decimal(new int[] {
+            this.Minerals_BaseMetals.Location = new System.Drawing.Point(90, 71);
+            this.Minerals_BaseMetals.Maximum = new decimal(new int[] {
             65535,
             0,
             0,
             0});
-            this.BaseMetal.Name = "BaseMetal";
-            this.BaseMetal.Size = new System.Drawing.Size(76, 20);
-            this.BaseMetal.TabIndex = 2;
-            this.BaseMetal.TextAlign = HorizontalAlignment.Center;
-            this.BaseMetal.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
+            this.Minerals_BaseMetals.Name = "BaseMetal";
+            this.Minerals_BaseMetals.Size = new System.Drawing.Size(76, 20);
+            this.Minerals_BaseMetals.TabIndex = 2;
+            this.Minerals_BaseMetals.TextAlign = HorizontalAlignment.Center;
+            this.Minerals_BaseMetals.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
             // 
             // Corrosive
             // 
-            this.Corrosive.Increment = new decimal(new int[] {
+            this.Minerals_Corrosives.Increment = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.Corrosive.Location = new System.Drawing.Point(90, 45);
-            this.Corrosive.Maximum = new decimal(new int[] {
+            this.Minerals_Corrosives.Location = new System.Drawing.Point(90, 45);
+            this.Minerals_Corrosives.Maximum = new decimal(new int[] {
             65535,
             0,
             0,
             0});
-            this.Corrosive.Name = "Corrosive";
-            this.Corrosive.Size = new System.Drawing.Size(76, 20);
-            this.Corrosive.TabIndex = 1;
-            this.Corrosive.TextAlign = HorizontalAlignment.Center;
-            this.Corrosive.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
+            this.Minerals_Corrosives.Name = "Corrosive";
+            this.Minerals_Corrosives.Size = new System.Drawing.Size(76, 20);
+            this.Minerals_Corrosives.TabIndex = 1;
+            this.Minerals_Corrosives.TextAlign = HorizontalAlignment.Center;
+            this.Minerals_Corrosives.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
             // 
             // Common
             // 
-            this.Common.Increment = new decimal(new int[] {
+            this.Minerals_CommonElements.Increment = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.Common.Location = new System.Drawing.Point(90, 19);
-            this.Common.Maximum = new decimal(new int[] {
+            this.Minerals_CommonElements.Location = new System.Drawing.Point(90, 19);
+            this.Minerals_CommonElements.Maximum = new decimal(new int[] {
             65535,
             0,
             0,
             0});
-            this.Common.Name = "Common";
-            this.Common.Size = new System.Drawing.Size(76, 20);
-            this.Common.TabIndex = 0;
-            this.Common.TextAlign = HorizontalAlignment.Center;
-            this.Common.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
+            this.Minerals_CommonElements.Name = "Common";
+            this.Minerals_CommonElements.Size = new System.Drawing.Size(76, 20);
+            this.Minerals_CommonElements.TabIndex = 0;
+            this.Minerals_CommonElements.TextAlign = HorizontalAlignment.Center;
+            this.Minerals_CommonElements.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
             // 
             // Coordinates
             // 
@@ -2172,14 +2172,14 @@ namespace UQMEdit
             ((System.ComponentModel.ISupportInitialize)(this.ShipCrew)).EndInit();
             this.CargoBox.ResumeLayout(false);
             this.CargoBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Exotic)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Radioactive)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Precious)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.RareEarth)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.NobleGas)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.BaseMetal)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Corrosive)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Common)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Minerals_Exotics)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Minerals_Radioactives)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Minerals_PreciousMetals)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Minerals_RareEarths)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Minerals_NobleGases)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Minerals_BaseMetals)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Minerals_Corrosives)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Minerals_CommonElements)).EndInit();
             this.Coordinates.ResumeLayout(false);
             this.Coordinates.PerformLayout();
             this.StatusBox.ResumeLayout(false);
@@ -2244,14 +2244,14 @@ namespace UQMEdit
 		private Label ModuleLabel12;
 		public TextBox CustomSeed;
 		public GroupBox LanderUpgradesBox;
-		public CheckBox IsBomb;
-		public CheckBox QuakeShield;
-		public CheckBox RapidFire;
-		public CheckBox BioShield;
-		public CheckBox DblCargo;
-		public CheckBox DblSpeed;
-		public CheckBox LightningShield;
-		public CheckBox HeatShield;
+		public CheckBox LanderModifications_DisplacedByBomb;
+		public CheckBox LanderModifications_QuakeShield;
+		public CheckBox LanderModifications_RapidFire;
+		public CheckBox LanderModifications_BioShield;
+		public CheckBox LanderModifications_DoubleCargo;
+		public CheckBox LanderModifications_DoubleSpeed;
+		public CheckBox LanderModifications_LightningShield;
+		public CheckBox LanderModifications_HeatShield;
 		public GroupBox ShipStatusBox;
 		public TextBox Credits;
 		private Label label58;
@@ -2276,14 +2276,14 @@ namespace UQMEdit
 		private Label BaseMetalsLabel;
 		private Label CorrosiveLabel;
 		private Label CommonLabel;
-		public NumericUpDown Exotic;
-		public NumericUpDown Radioactive;
-		public NumericUpDown Precious;
-		public NumericUpDown RareEarth;
-		public NumericUpDown NobleGas;
-		public NumericUpDown BaseMetal;
-		public NumericUpDown Corrosive;
-		public NumericUpDown Common;
+		public NumericUpDown Minerals_Exotics;
+		public NumericUpDown Minerals_Radioactives;
+		public NumericUpDown Minerals_PreciousMetals;
+		public NumericUpDown Minerals_RareEarths;
+		public NumericUpDown Minerals_NobleGases;
+		public NumericUpDown Minerals_BaseMetals;
+		public NumericUpDown Minerals_Corrosives;
+		public NumericUpDown Minerals_CommonElements;
 		public ListBox Devices;
 		public ComboBox CurrentStatus;
 		public TextBox NearestPlanet;

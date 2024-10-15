@@ -10,15 +10,18 @@ namespace UQMEdit
 		public static string SaveName;
 		public static string Date = "";
 
-		public static void Summary() {
+		public static void Summary()
+		{
+
+			var f = Functions.Instance;
 
 			if (SaveVersion >= 2)
 			{
-				var magic = Functions.ReadOffsetToInt(Offsets.SaveNameMagic, 4);
-                var nameSize = (magic - 160);
+				var magic = f.ReadOffsetToInt(Offsets.SaveNameMagic, 4);
+				var nameSize = (magic - 160);
 
-                SaveName = Encoding.Default.GetString(
-					Functions.ReadBytesFromOffsetToLength(
+				SaveName = Encoding.Default.GetString(
+					f.ReadBytesFromOffsetToLength(
 						SaveVersion == 3
 						? Offsets.Core.SaveName
 						: Offsets.MegaModFieldOffsets.SaveName,
@@ -29,7 +32,7 @@ namespace UQMEdit
 			else if (SaveVersion == 1)
 			{
 				SaveName = Encoding.Default.GetString(
-					Functions.ReadBytesFromOffsetToLength(
+					f.ReadBytesFromOffsetToLength(
 						Offsets.HighDefinitionRemaster.SaveName,
 						lengthInBytes: 31
 					)
@@ -38,16 +41,16 @@ namespace UQMEdit
 				SaveName = "Saved Game - Date: ";
 			}
 
-			Window.ResUnits.Value = Functions.ReadOffsetToInt(
-				Functions.ByteOffsetsPick(
+			Window.ResUnits.Value = f.ReadOffsetToInt(
+				f.ByteOffsetsPick(
 					Offsets.HighDefinitionRemaster.ResUnits,
 					Offsets.MegaModFieldOffsets.ResUnits
 				),
 				lengthInBytes: 4
 			);
 
-			var fuel = Functions.ReadOffsetToInt(
-				Functions.ByteOffsetsPick(
+			var fuel = f.ReadOffsetToInt(
+				f.ByteOffsetsPick(
 					Offsets.HighDefinitionRemaster.Fuel,
 					Offsets.MegaModFieldOffsets.Fuel
 				),
@@ -56,8 +59,8 @@ namespace UQMEdit
 			fuel = fuel > 160100 ? 160100 : fuel;
 			Window.ShipFuel.Value = fuel / 100;
 
-			Window.ShipCrew.Value = Functions.ReadOffsetToInt(
-				Functions.ByteOffsetsPick(
+			Window.ShipCrew.Value = f.ReadOffsetToInt(
+				f.ByteOffsetsPick(
 					Offsets.HighDefinitionRemaster.SiSCrew,
 					Offsets.MegaModFieldOffsets.SiSCrew
 				),
@@ -65,8 +68,8 @@ namespace UQMEdit
 				bitWidth: 16
 			);
 
-			Window.BioData.Value = Functions.ReadOffsetToInt(
-				Functions.ByteOffsetsPick(
+			Window.BioData.Value = f.ReadOffsetToInt(
+				f.ByteOffsetsPick(
 					Offsets.HighDefinitionRemaster.BioData,
 					Offsets.MegaModFieldOffsets.BioData
 				),
@@ -75,8 +78,8 @@ namespace UQMEdit
 
 			// Modules
 			var modules =
-				Functions.ReadBytesFromOffsetToLength(
-					Functions.ByteOffsetsPick(
+				f.ReadBytesFromOffsetToLength(
+					f.ByteOffsetsPick(
 						Offsets.HighDefinitionRemaster.ModuleSlots,
 						Offsets.MegaModFieldOffsets.ModuleSlots
 					),
@@ -95,8 +98,8 @@ namespace UQMEdit
 			}
 
 			var thrustersArray =
-				Functions.ReadBytesFromOffsetToLength(
-					Functions.ByteOffsetsPick(
+				f.ReadBytesFromOffsetToLength(
+					f.ByteOffsetsPick(
 						Offsets.HighDefinitionRemaster.DriveSlots[0],
 						Offsets.MegaModFieldOffsets.DriveSlots[0]
 					),
@@ -114,8 +117,8 @@ namespace UQMEdit
 			}
 
 			var turningJets =
-				Functions.ReadBytesFromOffsetToLength(
-					Functions.ByteOffsetsPick(
+				f.ReadBytesFromOffsetToLength(
+					f.ByteOffsetsPick(
 						Offsets.HighDefinitionRemaster.JetSlots[0],
 						Offsets.MegaModFieldOffsets.JetSlots[0]
 					),
@@ -132,8 +135,8 @@ namespace UQMEdit
 			}
 
 			Window.Landers.Value =
-				Functions.ReadBytesFromOffsetToLength(
-					Functions.ByteOffsetsPick(
+				f.ReadBytesFromOffsetToLength(
+					f.ByteOffsetsPick(
 						Offsets.HighDefinitionRemaster.Landers,
 						Offsets.MegaModFieldOffsets.Landers
 					),
@@ -141,35 +144,90 @@ namespace UQMEdit
 				)[0];
 
 			// Cargo.
-			Window.Common.Value =
-				Functions.ReadOffsetToInt(
-					Functions.ByteOffsetsPick(
-						Offsets.HighDefinitionRemaster.Common,
-						Offsets.MegaModFieldOffsets.Common
+			Window.Minerals_CommonElements.Value =
+				f.ReadOffsetToInt(
+					f.ByteOffsetsPick(
+						Offsets.HighDefinitionRemaster.Minerals_CommonElements,
+						Offsets.MegaModFieldOffsets.Minerals_CommonElements
 					),
 					lengthInBytes: 2,
 					bitWidth: 16
 				);
-			Window.Corrosive.Value =
-				Functions.ReadOffsetToInt(
-					Functions.ByteOffsetsPick(
-						Offsets.HighDefinitionRemaster.Corrosive,
-						Offsets.MegaModFieldOffsets.Corrosive
+
+			Window.Minerals_Corrosives.Value =
+				f.ReadOffsetToInt(
+					f.ByteOffsetsPick(
+						Offsets.HighDefinitionRemaster.Minerals_Corrosives,
+						Offsets.MegaModFieldOffsets.Minerals_Corrosives
 					),
 					lengthInBytes: 2,
 					bitWidth: 16
 				);
-			Window.BaseMetal.Value = Functions.ReadOffsetToInt(Functions.ByteOffsetsPick(Offsets.HighDefinitionRemaster.BaseMetal, Offsets.MegaModFieldOffsets.BaseMetal), 2, 16);
-			Window.NobleGas.Value = Functions.ReadOffsetToInt(Functions.ByteOffsetsPick(Offsets.HighDefinitionRemaster.NobleGas, Offsets.MegaModFieldOffsets.NobleGas), 2, 16);
-			Window.RareEarth.Value = Functions.ReadOffsetToInt(Functions.ByteOffsetsPick(Offsets.HighDefinitionRemaster.RareEarth, Offsets.MegaModFieldOffsets.RareEarth), 2, 16);
-			Window.Precious.Value = Functions.ReadOffsetToInt(Functions.ByteOffsetsPick(Offsets.HighDefinitionRemaster.Precious, Offsets.MegaModFieldOffsets.Precious), 2, 16);
-			Window.Radioactive.Value = Functions.ReadOffsetToInt(Functions.ByteOffsetsPick(Offsets.HighDefinitionRemaster.Radioactive, Offsets.MegaModFieldOffsets.Radioactive), 2, 16);
-			Window.Exotic.Value = Functions.ReadOffsetToInt(Functions.ByteOffsetsPick(Offsets.HighDefinitionRemaster.Exotic, Offsets.MegaModFieldOffsets.Exotic), 2, 16);
+
+			Window.Minerals_BaseMetals.Value =
+				f.ReadOffsetToInt(
+					f.ByteOffsetsPick(
+						Offsets.HighDefinitionRemaster.Minerals_BaseMetal,
+						Offsets.MegaModFieldOffsets.Minerals_BaseMetal
+					),
+                    lengthInBytes: 2,
+					16
+				);
+
+			Window.Minerals_NobleGases.Value =
+				f.ReadOffsetToInt(
+					f.ByteOffsetsPick(
+						Offsets.HighDefinitionRemaster.Minerals_NobleGases,
+						Offsets.MegaModFieldOffsets.Minerals_NobleGases
+					),
+                    lengthInBytes: 2,
+                    bitWidth: 16
+                );
+
+			Window.Minerals_RareEarths.Value =
+				f.ReadOffsetToInt(
+					f.ByteOffsetsPick(
+						Offsets.HighDefinitionRemaster.Minerals_RareEarths,
+						Offsets.MegaModFieldOffsets.Minerals_RareEarths
+					),
+                    lengthInBytes: 2,
+                    bitWidth: 16
+                );
+
+			Window.Minerals_PreciousMetals.Value =
+				f.ReadOffsetToInt(
+					f.ByteOffsetsPick(
+						Offsets.HighDefinitionRemaster.Minerals_PreciousMetals,
+						Offsets.MegaModFieldOffsets.Minerals_PreciousMetals
+					),
+                    lengthInBytes: 2,
+                    bitWidth: 16
+                );
+
+			Window.Minerals_Radioactives.Value =
+				f.ReadOffsetToInt(
+					f.ByteOffsetsPick(
+						Offsets.HighDefinitionRemaster.Radioactives,
+						Offsets.MegaModFieldOffsets.Radioactives
+					),
+                    lengthInBytes: 2,
+                    bitWidth: 16
+                );
+
+			Window.Minerals_Exotics.Value =
+				f.ReadOffsetToInt(
+					f.ByteOffsetsPick(
+						Offsets.HighDefinitionRemaster.Exotic,
+						Offsets.MegaModFieldOffsets.Exotic
+					),
+					lengthInBytes: 2,
+                    bitWidth: 16
+                );
 
 			Window.ShipName.Text =
 				Encoding.Default.GetString(
-					Functions.ReadBytesFromOffsetToLength(
-						Functions.ByteOffsetsPick(
+					f.ReadBytesFromOffsetToLength(
+						f.ByteOffsetsPick(
 							Offsets.HighDefinitionRemaster.ShipName,
 							Offsets.MegaModFieldOffsets.ShipName
 						),
@@ -179,8 +237,8 @@ namespace UQMEdit
 
 			Window.CommanderName.Text =
 				Encoding.Default.GetString(
-					Functions.ReadBytesFromOffsetToLength(
-						Functions.ByteOffsetsPick(
+					f.ReadBytesFromOffsetToLength(
+						f.ByteOffsetsPick(
 							Offsets.HighDefinitionRemaster.CaptainName,
 							Offsets.MegaModFieldOffsets.CaptainName
 						),
@@ -190,8 +248,8 @@ namespace UQMEdit
 
 			//  Lander Mods
 			byte landerModificationsAsByte =
-				Functions.ReadBytesFromOffsetToLength(
-					Functions.ByteOffsetsPick(
+				f.ReadBytesFromOffsetToLength(
+					f.ByteOffsetsPick(
 						Offsets.HighDefinitionRemaster.LanderModifications,
 						Offsets.MegaModFieldOffsets.LanderModificiations,
 						Offsets.Core.LanderModifications
@@ -207,18 +265,18 @@ namespace UQMEdit
 					: ((landerModificationsAsByte & otherValue) != 0);
 			}
 
-			Window.IsBomb.Checked = LanderModsBool(128, true);
-			Window.BioShield.Checked = LanderModsBool(1);
-			Window.QuakeShield.Checked = LanderModsBool(2);
-			Window.LightningShield.Checked = LanderModsBool(4);
-			Window.HeatShield.Checked = LanderModsBool(8);
-			Window.DblSpeed.Checked = LanderModsBool(16);
-			Window.DblCargo.Checked = LanderModsBool(32);
-			Window.RapidFire.Checked = LanderModsBool(64);
+			Window.LanderModifications_DisplacedByBomb.Checked = LanderModsBool(128, isBomb: true);
+			Window.LanderModifications_BioShield.Checked = LanderModsBool(1);
+			Window.LanderModifications_QuakeShield.Checked = LanderModsBool(2);
+			Window.LanderModifications_LightningShield.Checked = LanderModsBool(4);
+			Window.LanderModifications_HeatShield.Checked = LanderModsBool(8);
+			Window.LanderModifications_DoubleSpeed.Checked = LanderModsBool(16);
+			Window.LanderModifications_DoubleCargo.Checked = LanderModsBool(32);
+			Window.LanderModifications_RapidFire.Checked = LanderModsBool(64);
 
 			// Time & Date
-			var day = Functions.ReadBytesFromOffsetToLength(
-				Functions.ByteOffsetsPick(
+			var day = f.ReadBytesFromOffsetToLength(
+				f.ByteOffsetsPick(
 					Offsets.HighDefinitionRemaster.Date[0],
 					Offsets.MegaModFieldOffsets.Date[0],
 					Offsets.Core.Date[0]
@@ -226,8 +284,8 @@ namespace UQMEdit
 				lengthInBytes: 1
 			)[0];
 
-			var month = Functions.ReadBytesFromOffsetToLength(
-				Functions.ByteOffsetsPick(
+			var month = f.ReadBytesFromOffsetToLength(
+				f.ByteOffsetsPick(
 					Offsets.HighDefinitionRemaster.Date[1],
 					Offsets.MegaModFieldOffsets.Date[1],
 					Offsets.Core.Date[1]
@@ -235,8 +293,8 @@ namespace UQMEdit
 				lengthInBytes: 1
 			)[0];
 
-			var year = Functions.ReadOffsetToInt(
-				Functions.ByteOffsetsPick(
+			var year = f.ReadOffsetToInt(
+				f.ByteOffsetsPick(
 					Offsets.HighDefinitionRemaster.Date[2],
 					Offsets.MegaModFieldOffsets.Date[2],
 					Offsets.Core.Date[2]
@@ -250,8 +308,8 @@ namespace UQMEdit
 				+ " " + day
 				+ "·" + year;
 
-			Window.Credits.Text = Functions.ReadOffsetToInt(
-				Functions.ByteOffsetsPick(
+			Window.Credits.Text = f.ReadOffsetToInt(
+				f.ByteOffsetsPick(
 					Offsets.HighDefinitionRemaster.Credits,
 					Offsets.MegaModFieldOffsets.Credits,
 					Offsets.Core.Credits
@@ -260,8 +318,8 @@ namespace UQMEdit
 				bitWidth: 16
 			).ToString();
 
-			var escortShipsCountAsRead = Functions.ReadBytesFromOffsetToLength(
-				Functions.ByteOffsetsPick(
+			var escortShipsCountAsRead = f.ReadBytesFromOffsetToLength(
+				f.ByteOffsetsPick(
 					Offsets.HighDefinitionRemaster.Escorts[0],
 					Offsets.MegaModFieldOffsets.Escorts[0],
 					Offsets.Core.Escorts[0]
@@ -269,8 +327,8 @@ namespace UQMEdit
 				lengthInBytes: 1
 			)[0];
 			var escortShipsAsBytes =
-				Functions.ReadBytesFromOffsetToLength(
-					Functions.ByteOffsetsPick(
+				f.ReadBytesFromOffsetToLength(
+					f.ByteOffsetsPick(
 						Offsets.HighDefinitionRemaster.Escorts[1],
 						Offsets.MegaModFieldOffsets.Escorts[1],
 						Offsets.Core.Escorts[1]
@@ -307,8 +365,8 @@ namespace UQMEdit
 			}
 
 			var devicesCount =
-				Functions.ReadBytesFromOffsetToLength(
-					Functions.ByteOffsetsPick(
+				f.ReadBytesFromOffsetToLength(
+					f.ByteOffsetsPick(
 						Offsets.HighDefinitionRemaster.Devices[0],
 						Offsets.MegaModFieldOffsets.Devices[0],
 						Offsets.Core.Devices[0]
@@ -318,8 +376,8 @@ namespace UQMEdit
 
 			var devicesAsObjects = new object[devicesCount];
 			var devicesAsBytes =
-				Functions.ReadBytesFromOffsetToLength(
-					Functions.ByteOffsetsPick(
+				f.ReadBytesFromOffsetToLength(
+					f.ByteOffsetsPick(
 						Offsets.HighDefinitionRemaster.Devices[1],
 						Offsets.MegaModFieldOffsets.Devices[1],
 						Offsets.Core.Devices[1]
@@ -345,14 +403,14 @@ namespace UQMEdit
 			if (SaveVersion == 2)
 			{
 				Window.difficultyBox.SelectedIndex =
-					Functions.ReadBytesFromOffsetToLength(
+					f.ReadBytesFromOffsetToLength(
 						Offsets.MegaModFieldOffsets.Difficulty,
 						lengthInBytes: 1
 					)[0];
 
 				Window.extendedCheckBox.Checked =
 					Convert.ToBoolean(
-						Functions.ReadBytesFromOffsetToLength(
+						f.ReadBytesFromOffsetToLength(
 							Offsets.MegaModFieldOffsets.Extended,
 							lengthInBytes: 1
 						)[0]
@@ -360,12 +418,12 @@ namespace UQMEdit
 
 				Window.nomadCheckBox.Checked =
 					Convert.ToBoolean(
-						Functions.ReadBytesFromOffsetToLength(
+						f.ReadBytesFromOffsetToLength(
 							Offsets.MegaModFieldOffsets.Nomad, lengthInBytes: 1
 						)[0]
 					);
 
-				Window.CustomSeed.Text = Functions.ReadOffsetToInt(
+				Window.CustomSeed.Text = f.ReadOffsetToInt(
 					Offsets.MegaModFieldOffsets.CustomSeed,
 					lengthInBytes: 4,
 					bitWidth: 32
