@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 
 namespace UQMEdit
 {
@@ -9,25 +6,64 @@ namespace UQMEdit
 	{
 		public static void Coordinates() {
 			// X Coordinates
-			decimal LogX = Functions.LogXToUniverse(Functions.ReadOffsetToInt(Functions.OffsPick(Offs.HD.LogX, Offs.MM.LogX), 4));
+			decimal LogX = Functions.LogXToUniverse(
+				Functions.ReadOffsetToInt(
+					Functions.ByteOffsetsPick(
+						Offsets.HighDefinitionRemaster.LogX,
+						Offsets.MegaModFieldOffsets.LogX
+					),
+					lengthInBytes: 4
+				)
+			);
 			Window.UniverseX.Value = LogX / 10;
+
 			// Y Coordinates
-			decimal LogY = Functions.LogYToUniverse(Functions.ReadOffsetToInt(Functions.OffsPick(Offs.HD.LogY, Offs.MM.LogY), 4));
+			decimal LogY = Functions.LogYToUniverse(
+				Functions.ReadOffsetToInt(
+					Functions.ByteOffsetsPick(
+						Offsets.HighDefinitionRemaster.LogY,
+						Offsets.MegaModFieldOffsets.LogY
+					),
+					lengthInBytes: 4
+				)
+			);
 			Window.UniverseY.Value = LogY / 10;
 
 			// Status
-			byte Status = Functions.ReadOffset(Functions.OffsPick(Offs.HD.Status, Offs.MM.Status, Offs.Core.Status), 1)[0];
-			if (Status < 0 || Status >= Vars.StatusName.Length) {
+			var statusAsByte = Functions.ReadBytesFromOffsetToLength(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.Status,
+					Offsets.MegaModFieldOffsets.Status,
+					Offsets.Core.Status
+				),
+				lengthInBytes: 1
+			)[0];
+
+			if (statusAsByte < 0 || statusAsByte >= Constants.StatusNames.Length)
+			{
 				Window.CurrentStatus.SelectedIndex = 9;
-			} else {
-				Window.CurrentStatus.SelectedIndex = Status;
+			}
+			else
+			{
+				Window.CurrentStatus.SelectedIndex = statusAsByte;
 			}
 
 			// Planet Orbit
-			if (Status == 7 || Status == 8) {
-				string Planet = Encoding.Default.GetString(Functions.ReadOffset(Functions.OffsPick(Offs.HD.NearestPlanet, Offs.MM.NearestPlanet), 16));
-				Window.NearestPlanet.Text = Planet;
-			} else {
+			if (statusAsByte == 7 || statusAsByte == 8)
+			{
+				var planet = Encoding.Default.GetString(
+					Functions.ReadBytesFromOffsetToLength(
+						Functions.ByteOffsetsPick(
+							Offsets.HighDefinitionRemaster.NearestPlanet,
+							Offsets.MegaModFieldOffsets.NearestPlanet
+						),
+						16
+					)
+				);
+				Window.NearestPlanet.Text = planet;
+			}
+			else
+			{
 				Window.NearestPlanet.Text = "Not In Orbit";
 			}
 		}

@@ -1,16 +1,15 @@
 ﻿using System;
 using System.IO;
-using System.Text;
-using System.Globalization;
 
 namespace UQMEdit
 {
 	class Functions
 	{
-		public static byte[] StringToByteArray(string String, int MaxLength) {
-			char[] charArr = String.ToCharArray();
-			byte[] bytes = new byte[MaxLength];
-			for (int i = 0; i < MaxLength; i++) {
+		public static byte[] StringToByteArray(string stringToConvert, int maxLength)
+		{
+			var charArr = stringToConvert.ToCharArray();
+			var bytes = new byte[maxLength];
+			for (int i = 0; i < maxLength; i++) {
 				if (i < charArr.Length)
 					bytes[i] = Convert.ToByte(charArr[i]);
 				else
@@ -19,91 +18,105 @@ namespace UQMEdit
 			return bytes;
 		}
 
-		public static byte[] ReadOffset(int Offset, int ByteLength, bool Reverse = false) {
-			Read.Stream.Seek(Offset, !Reverse ? SeekOrigin.Begin : SeekOrigin.End);
-			Read.Stream.Read(Read.FileBuffer, 0, ByteLength);
+		public static byte[] ReadBytesFromOffsetToLength(int offsetInBytes, int lengthInBytes, bool isReversed = false)
+		{
+			Read.Stream.Seek(offsetInBytes, !isReversed ? SeekOrigin.Begin : SeekOrigin.End);
+			Read.Stream.Read(Read.FileBuffer, 0, lengthInBytes);
 			return Read.FileBuffer;
 		}
-		public static int ReadOffsetToInt(int Offset, int ByteLength, int Is16or32 = 32, bool Reverse = false) {
-			byte[] Buffer = ReadOffset(Offset, ByteLength, Reverse);
-			int Query = (Is16or32 == 16) ? BitConverter.ToUInt16(Buffer, 0) : BitConverter.ToInt32(Buffer, 0);
-			return Query;
+		public static int ReadOffsetToInt(
+			int offsetInBytes, int lengthInBytes, int bitWidth = 32, bool isReversed = false
+		)
+		{
+			var bytesRead = ReadBytesFromOffsetToLength(offsetInBytes, lengthInBytes, isReversed);
+			int query =
+				(bitWidth == 16)
+				? BitConverter.ToUInt16(bytesRead, 0)
+				: BitConverter.ToInt32(bytesRead, 0);
+			return query;
 		}
-		public static bool ReadGameState(int Offset) {
-			bool ReadBool;
-			byte[] Buffer = ReadOffset(Offset, 1);
-			ReadBool = (Buffer[0] > 0) ? true : false;
-			return ReadBool;
+		public static bool ReadGameStateFromOffset(int offsetInBytes) {
+			bool wasReadSuccessful;
+			var gameStateAsBytes = ReadBytesFromOffsetToLength(offsetInBytes, 1);
+			wasReadSuccessful = (gameStateAsBytes[0] > 0);
+			return wasReadSuccessful;
 		}
 
-		public static void WriteOffset(int Offset, decimal SpinnerValue, int ByteLength, uint Limit, bool IsUINT = false) {
-			Write.Stream.Seek(Offset, SeekOrigin.Begin);
-			if (IsUINT) {
-				Write.uNum = Decimal.ToUInt32(SpinnerValue);
-				if (Write.uNum >= Limit) {
-					Write.uNum = Limit;
+		public static void WriteOffset(
+			int offsetInBytes,
+			decimal valueFromControl,
+			int lengthInBytes,
+			uint valueMax,
+			bool isUnsignedNotSigned = false
+		) {
+			Write.Stream.Seek(offsetInBytes, SeekOrigin.Begin);
+			if (isUnsignedNotSigned) {
+				Write.uNum = decimal.ToUInt32(valueFromControl);
+				if (Write.uNum >= valueMax) {
+					Write.uNum = valueMax;
 				}
 				Write.FileBuffer = BitConverter.GetBytes(Write.uNum);
 			} else {
-				Write.Num = Decimal.ToInt32(SpinnerValue);
-				if (Write.Num >= Limit) {
-					Write.Num = (int)Limit;
+				Write.Num = decimal.ToInt32(valueFromControl);
+				if (Write.Num >= valueMax) {
+					Write.Num = (int)valueMax;
 				}
 				Write.FileBuffer = BitConverter.GetBytes(Write.Num);
 			}
-			Write.Stream.Write(Write.FileBuffer, 0, ByteLength);
+			Write.Stream.Write(Write.FileBuffer, 0, lengthInBytes);
 		}
 
-		public static void WriteOffsetString(int Offset, string String, int ByteLength) {
-			Write.Stream.Seek(Offset, SeekOrigin.Begin);
-			Write.FileBuffer = StringToByteArray(String, ByteLength);
-			Write.Stream.Write(Write.FileBuffer, 0, ByteLength);
+		public static void WriteOffsetString(int offset, string stringToWrite, int lengthInBytes) {
+			Write.Stream.Seek(offset, SeekOrigin.Begin);
+			Write.FileBuffer = StringToByteArray(stringToWrite, lengthInBytes);
+			Write.Stream.Write(Write.FileBuffer, 0, lengthInBytes);
 		}
 
-		public static int OffsPick(int HD, int MegaMod, int Core = 0) {
+		public static int ByteOffsetsPick(int highDefinitionRemaster, int megaMod, int core = 0) {
 			switch (Read.SaveVersion) {
-				case 3:
-					return (Core > 0 ? Core : MegaMod);
-				case 2:
-					return MegaMod;
-				case 1:
-					return HD;
-				case 0:
+                case 0:
+                    return (highDefinitionRemaster - 48);
+                case 1:
+                    return highDefinitionRemaster;
+                case 2:
+                    return megaMod;
+                case 3:
+					return (core > 0 ? core : megaMod);
 				default:
-					return (HD - 48);
+					return (highDefinitionRemaster - 48);
 			}
 		}
 
-		public static int HSCoordChecker(int Old, int New) {
+		public static int HSCoordChecker(int valueOld, int valueNew) {
 			if (Read.SaveVersion == 0 || Read.SaveVersion == 3)
-				return Old;
+				return valueOld;
 			else
-				return New;
+				return valueNew;
 		}
 
 		public static int RoundingError(int div) {
 			return (div >> 1);
 		}
 
-		public static int LogXToUniverse(int LogX) {
-			int UniverseUnits = HSCoordChecker(Vars.UniverseUnitsOld, Vars.UniverseUnits);
-			int LogUnits = HSCoordChecker(Vars.LogUnitsXOld, Vars.LogUnits);
-			return (LogX * UniverseUnits + RoundingError(LogUnits)) / LogUnits;
+		public static int LogXToUniverse(int logX) {
+			int UniverseUnits = HSCoordChecker(Constants.UniverseUnitsOld, Constants.UniverseUnits);
+			int LogUnits = HSCoordChecker(Constants.LogUnitsXOld, Constants.LogUnits);
+			return (logX * UniverseUnits + RoundingError(LogUnits)) / LogUnits;
 		}
-		public static int LogYToUniverse(int LogY) {
-			int LogUnits = HSCoordChecker(Vars.LogUnitsYOld, Vars.LogUnits);
-			return Vars.MaxUniverse - ((LogY * Vars.UniverseUnits + RoundingError(LogUnits)) / LogUnits);
+		public static int LogYToUniverse(int logY) {
+			int LogUnits = HSCoordChecker(Constants.LogUnitsYOld, Constants.LogUnits);
+			return Constants.MaxUniverse - ((logY * Constants.UniverseUnits + RoundingError(LogUnits)) / LogUnits);
 		}
 
-		public static int UniverseToLogX(int UniverseX) {
-			UniverseX -= HSCoordChecker(3, 0);
-			int UniverseUnits = HSCoordChecker(Vars.UniverseUnitsOld, Vars.UniverseUnits);
-			int LogUnits = HSCoordChecker(Vars.LogUnitsXOld, Vars.LogUnits);
-			return (UniverseX * Vars.LogUnits + RoundingError(Vars.UniverseUnits)) / Vars.UniverseUnits;
+		public static int UniverseToLogX(int universeX) {
+			universeX -= HSCoordChecker(3, 0);
+			int UniverseUnits = HSCoordChecker(Constants.UniverseUnitsOld, Constants.UniverseUnits);
+			int LogUnits = HSCoordChecker(Constants.LogUnitsXOld, Constants.LogUnits);
+			return (universeX * Constants.LogUnits + RoundingError(Constants.UniverseUnits)) / Constants.UniverseUnits;
 		}
-		public static int UniverseToLogY(int UniverseY) {
-			int LogUnits = HSCoordChecker(Vars.LogUnitsYOld, Vars.LogUnits);
-			return ((Vars.MaxUniverse - UniverseY) * LogUnits + RoundingError(Vars.UniverseUnits)) / Vars.UniverseUnits;
+		public static int UniverseToLogY(int universeY) {
+			int LogUnits = HSCoordChecker(Constants.LogUnitsYOld, Constants.LogUnits);
+			return ((Constants.MaxUniverse - universeY) * LogUnits + RoundingError(Constants.UniverseUnits)) / Constants.UniverseUnits;
 		}
 	}
 }

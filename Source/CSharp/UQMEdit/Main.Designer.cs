@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Windows.Forms;
 
 namespace UQMEdit
 {
@@ -29,168 +30,168 @@ namespace UQMEdit
 		private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.Open = new System.Windows.Forms.ToolStripButton();
-            this.Reload = new System.Windows.Forms.ToolStripButton();
-            this.Save = new System.Windows.Forms.ToolStripButton();
-            this.version = new System.Windows.Forms.ToolStripLabel();
-            this.Tabs = new System.Windows.Forms.TabControl();
-            this.Summary = new System.Windows.Forms.TabPage();
-            this.DevicesBox = new System.Windows.Forms.GroupBox();
-            this.Devices = new System.Windows.Forms.ListBox();
-            this.TotalMinerals = new System.Windows.Forms.NumericUpDown();
-            this.ThrusterBox = new System.Windows.Forms.GroupBox();
-            this.MaxThrustLabel = new System.Windows.Forms.Label();
-            this.MaxThrusters = new System.Windows.Forms.Button();
-            this.Thruster10 = new System.Windows.Forms.CheckBox();
-            this.Thruster9 = new System.Windows.Forms.CheckBox();
-            this.Thruster8 = new System.Windows.Forms.CheckBox();
-            this.Thruster7 = new System.Windows.Forms.CheckBox();
-            this.Thruster6 = new System.Windows.Forms.CheckBox();
-            this.Thruster5 = new System.Windows.Forms.CheckBox();
-            this.Thruster4 = new System.Windows.Forms.CheckBox();
-            this.Thruster3 = new System.Windows.Forms.CheckBox();
-            this.Thruster2 = new System.Windows.Forms.CheckBox();
-            this.Thruster1 = new System.Windows.Forms.CheckBox();
-            this.Thruster0 = new System.Windows.Forms.CheckBox();
-            this.JetsBox = new System.Windows.Forms.GroupBox();
-            this.MaxJetsLabel = new System.Windows.Forms.Label();
-            this.Jets7 = new System.Windows.Forms.CheckBox();
-            this.MaxJets = new System.Windows.Forms.Button();
-            this.Jets6 = new System.Windows.Forms.CheckBox();
-            this.Jets5 = new System.Windows.Forms.CheckBox();
-            this.Jets4 = new System.Windows.Forms.CheckBox();
-            this.Jets3 = new System.Windows.Forms.CheckBox();
-            this.Jets2 = new System.Windows.Forms.CheckBox();
-            this.Jets1 = new System.Windows.Forms.CheckBox();
-            this.Jets0 = new System.Windows.Forms.CheckBox();
-            this.SeedBox = new System.Windows.Forms.GroupBox();
-            this.CustomSeed = new System.Windows.Forms.TextBox();
-            this.ShipNameBox = new System.Windows.Forms.GroupBox();
-            this.ShipName = new System.Windows.Forms.TextBox();
-            this.CaptainBox = new System.Windows.Forms.GroupBox();
-            this.CommanderName = new System.Windows.Forms.TextBox();
-            this.ShipsBox = new System.Windows.Forms.GroupBox();
-            this.Ship01 = new System.Windows.Forms.ComboBox();
-            this.Ship02 = new System.Windows.Forms.ComboBox();
-            this.Ship03 = new System.Windows.Forms.ComboBox();
-            this.Ship04 = new System.Windows.Forms.ComboBox();
-            this.Ship05 = new System.Windows.Forms.ComboBox();
-            this.Ship06 = new System.Windows.Forms.ComboBox();
-            this.Ship07 = new System.Windows.Forms.ComboBox();
-            this.Ship08 = new System.Windows.Forms.ComboBox();
-            this.Ship09 = new System.Windows.Forms.ComboBox();
-            this.Ship10 = new System.Windows.Forms.ComboBox();
-            this.Ship11 = new System.Windows.Forms.ComboBox();
-            this.Ship12 = new System.Windows.Forms.ComboBox();
-            this.ShipLabel01 = new System.Windows.Forms.Label();
-            this.ShipLabel12 = new System.Windows.Forms.Label();
-            this.ShipLabel02 = new System.Windows.Forms.Label();
-            this.ShipLabel11 = new System.Windows.Forms.Label();
-            this.ShipLabel10 = new System.Windows.Forms.Label();
-            this.ShipLabel03 = new System.Windows.Forms.Label();
-            this.ShipLabel09 = new System.Windows.Forms.Label();
-            this.ShipLabel08 = new System.Windows.Forms.Label();
-            this.ShipLabel04 = new System.Windows.Forms.Label();
-            this.ShipLabel07 = new System.Windows.Forms.Label();
-            this.ShipLabel06 = new System.Windows.Forms.Label();
-            this.ShipLabel05 = new System.Windows.Forms.Label();
-            this.ModulesBox = new System.Windows.Forms.GroupBox();
-            this.MaxModulesLabel = new System.Windows.Forms.Label();
-            this.UpgradeToMax = new System.Windows.Forms.Button();
-            this.Module16 = new System.Windows.Forms.ComboBox();
-            this.Module15 = new System.Windows.Forms.ComboBox();
-            this.Module14 = new System.Windows.Forms.ComboBox();
-            this.Module13 = new System.Windows.Forms.ComboBox();
-            this.Module12 = new System.Windows.Forms.ComboBox();
-            this.Module11 = new System.Windows.Forms.ComboBox();
-            this.Module10 = new System.Windows.Forms.ComboBox();
-            this.Module09 = new System.Windows.Forms.ComboBox();
-            this.Module08 = new System.Windows.Forms.ComboBox();
-            this.Module07 = new System.Windows.Forms.ComboBox();
-            this.Module06 = new System.Windows.Forms.ComboBox();
-            this.ModuleLabel01 = new System.Windows.Forms.Label();
-            this.ModuleLabel02 = new System.Windows.Forms.Label();
-            this.Module05 = new System.Windows.Forms.ComboBox();
-            this.ModuleLabel03 = new System.Windows.Forms.Label();
-            this.Module04 = new System.Windows.Forms.ComboBox();
-            this.ModuleLabel04 = new System.Windows.Forms.Label();
-            this.Module03 = new System.Windows.Forms.ComboBox();
-            this.ModuleLabel05 = new System.Windows.Forms.Label();
-            this.Module02 = new System.Windows.Forms.ComboBox();
-            this.ModuleLabel06 = new System.Windows.Forms.Label();
-            this.Module01 = new System.Windows.Forms.ComboBox();
-            this.ModuleLabel07 = new System.Windows.Forms.Label();
-            this.ModuleLabel16 = new System.Windows.Forms.Label();
-            this.ModuleLabel08 = new System.Windows.Forms.Label();
-            this.ModuleLabel15 = new System.Windows.Forms.Label();
-            this.ModuleLabel09 = new System.Windows.Forms.Label();
-            this.ModuleLabel14 = new System.Windows.Forms.Label();
-            this.ModuleLabel10 = new System.Windows.Forms.Label();
-            this.ModuleLabel13 = new System.Windows.Forms.Label();
-            this.ModuleLabel11 = new System.Windows.Forms.Label();
-            this.ModuleLabel12 = new System.Windows.Forms.Label();
-            this.ShipStatusBox = new System.Windows.Forms.GroupBox();
-            this.Credits = new System.Windows.Forms.TextBox();
-            this.label58 = new System.Windows.Forms.Label();
-            this.LandersLabel = new System.Windows.Forms.Label();
-            this.BioDataLabel = new System.Windows.Forms.Label();
-            this.RULabel = new System.Windows.Forms.Label();
-            this.FuelLabel = new System.Windows.Forms.Label();
-            this.LanderUpgradesBox = new System.Windows.Forms.GroupBox();
-            this.IsBomb = new System.Windows.Forms.CheckBox();
-            this.QuakeShield = new System.Windows.Forms.CheckBox();
-            this.RapidFire = new System.Windows.Forms.CheckBox();
-            this.BioShield = new System.Windows.Forms.CheckBox();
-            this.DblCargo = new System.Windows.Forms.CheckBox();
-            this.DblSpeed = new System.Windows.Forms.CheckBox();
-            this.LightningShield = new System.Windows.Forms.CheckBox();
-            this.HeatShield = new System.Windows.Forms.CheckBox();
-            this.CrewLabel = new System.Windows.Forms.Label();
-            this.Landers = new System.Windows.Forms.NumericUpDown();
-            this.BioData = new System.Windows.Forms.NumericUpDown();
-            this.ResUnits = new System.Windows.Forms.NumericUpDown();
-            this.ShipFuel = new System.Windows.Forms.NumericUpDown();
-            this.ShipCrew = new System.Windows.Forms.NumericUpDown();
-            this.CargoBox = new System.Windows.Forms.GroupBox();
-            this.TotalLabel = new System.Windows.Forms.Label();
-            this.ExoticsLabel = new System.Windows.Forms.Label();
-            this.RadioactivsLabel = new System.Windows.Forms.Label();
-            this.PreciousMetalsLabel = new System.Windows.Forms.Label();
-            this.RareEarthsLabel = new System.Windows.Forms.Label();
-            this.NoblesGasesLabel = new System.Windows.Forms.Label();
-            this.BaseMetalsLabel = new System.Windows.Forms.Label();
-            this.CorrosiveLabel = new System.Windows.Forms.Label();
-            this.CommonLabel = new System.Windows.Forms.Label();
-            this.Exotic = new System.Windows.Forms.NumericUpDown();
-            this.Radioactive = new System.Windows.Forms.NumericUpDown();
-            this.Precious = new System.Windows.Forms.NumericUpDown();
-            this.RareEarth = new System.Windows.Forms.NumericUpDown();
-            this.NobleGas = new System.Windows.Forms.NumericUpDown();
-            this.BaseMetal = new System.Windows.Forms.NumericUpDown();
-            this.Corrosive = new System.Windows.Forms.NumericUpDown();
-            this.Common = new System.Windows.Forms.NumericUpDown();
-            this.Coordinates = new System.Windows.Forms.TabPage();
-            this.Spoilers = new System.Windows.Forms.CheckBox();
-            this.StatusBox = new System.Windows.Forms.GroupBox();
-            this.CurrentStatus = new System.Windows.Forms.ComboBox();
-            this.OrbitBox = new System.Windows.Forms.GroupBox();
-            this.NearestPlanet = new System.Windows.Forms.TextBox();
-            this.NearestStarBox = new System.Windows.Forms.GroupBox();
-            this.NearestStar = new System.Windows.Forms.TextBox();
-            this.HSCoordsBox = new System.Windows.Forms.GroupBox();
-            this.UniYLabel = new System.Windows.Forms.Label();
-            this.UniXLabel = new System.Windows.Forms.Label();
-            this.UniverseY = new System.Windows.Forms.NumericUpDown();
-            this.UniverseX = new System.Windows.Forms.NumericUpDown();
-            this.StarList = new System.Windows.Forms.ListBox();
-            this.ReadOnly = new System.Windows.Forms.ToolTip(this.components);
-            this.MaxLimits = new System.Windows.Forms.ToolTip(this.components);
-            this.megaModModes = new System.Windows.Forms.GroupBox();
-            this.difficultyBox = new System.Windows.Forms.ComboBox();
-            this.difficultyLabel = new System.Windows.Forms.Label();
-            this.extendedCheckBox = new System.Windows.Forms.CheckBox();
-            this.nomadCheckBox = new System.Windows.Forms.CheckBox();
+            this.toolStrip1 = new ToolStrip();
+            this.Open = new ToolStripButton();
+            this.Reload = new ToolStripButton();
+            this.Save = new ToolStripButton();
+            this.version = new ToolStripLabel();
+            this.Tabs = new TabControl();
+            this.Summary = new TabPage();
+            this.DevicesBox = new GroupBox();
+            this.Devices = new ListBox();
+            this.TotalMinerals = new NumericUpDown();
+            this.ThrusterBox = new GroupBox();
+            this.MaxThrustLabel = new Label();
+            this.MaxThrusters = new Button();
+            this.Thruster10 = new CheckBox();
+            this.Thruster9 = new CheckBox();
+            this.Thruster8 = new CheckBox();
+            this.Thruster7 = new CheckBox();
+            this.Thruster6 = new CheckBox();
+            this.Thruster5 = new CheckBox();
+            this.Thruster4 = new CheckBox();
+            this.Thruster3 = new CheckBox();
+            this.Thruster2 = new CheckBox();
+            this.Thruster1 = new CheckBox();
+            this.Thruster0 = new CheckBox();
+            this.JetsBox = new GroupBox();
+            this.MaxJetsLabel = new Label();
+            this.Jets7 = new CheckBox();
+            this.MaxJets = new Button();
+            this.Jets6 = new CheckBox();
+            this.Jets5 = new CheckBox();
+            this.Jets4 = new CheckBox();
+            this.Jets3 = new CheckBox();
+            this.Jets2 = new CheckBox();
+            this.Jets1 = new CheckBox();
+            this.Jets0 = new CheckBox();
+            this.SeedBox = new GroupBox();
+            this.CustomSeed = new TextBox();
+            this.ShipNameBox = new GroupBox();
+            this.ShipName = new TextBox();
+            this.CaptainBox = new GroupBox();
+            this.CommanderName = new TextBox();
+            this.ShipsBox = new GroupBox();
+            this.Ship01 = new ComboBox();
+            this.Ship02 = new ComboBox();
+            this.Ship03 = new ComboBox();
+            this.Ship04 = new ComboBox();
+            this.Ship05 = new ComboBox();
+            this.Ship06 = new ComboBox();
+            this.Ship07 = new ComboBox();
+            this.Ship08 = new ComboBox();
+            this.Ship09 = new ComboBox();
+            this.Ship10 = new ComboBox();
+            this.Ship11 = new ComboBox();
+            this.Ship12 = new ComboBox();
+            this.ShipLabel01 = new Label();
+            this.ShipLabel12 = new Label();
+            this.ShipLabel02 = new Label();
+            this.ShipLabel11 = new Label();
+            this.ShipLabel10 = new Label();
+            this.ShipLabel03 = new Label();
+            this.ShipLabel09 = new Label();
+            this.ShipLabel08 = new Label();
+            this.ShipLabel04 = new Label();
+            this.ShipLabel07 = new Label();
+            this.ShipLabel06 = new Label();
+            this.ShipLabel05 = new Label();
+            this.ModulesBox = new GroupBox();
+            this.MaxModulesLabel = new Label();
+            this.UpgradeToMax = new Button();
+            this.Module16 = new ComboBox();
+            this.Module15 = new ComboBox();
+            this.Module14 = new ComboBox();
+            this.Module13 = new ComboBox();
+            this.Module12 = new ComboBox();
+            this.Module11 = new ComboBox();
+            this.Module10 = new ComboBox();
+            this.Module09 = new ComboBox();
+            this.Module08 = new ComboBox();
+            this.Module07 = new ComboBox();
+            this.Module06 = new ComboBox();
+            this.ModuleLabel01 = new Label();
+            this.ModuleLabel02 = new Label();
+            this.Module05 = new ComboBox();
+            this.ModuleLabel03 = new Label();
+            this.Module04 = new ComboBox();
+            this.ModuleLabel04 = new Label();
+            this.Module03 = new ComboBox();
+            this.ModuleLabel05 = new Label();
+            this.Module02 = new ComboBox();
+            this.ModuleLabel06 = new Label();
+            this.Module01 = new ComboBox();
+            this.ModuleLabel07 = new Label();
+            this.ModuleLabel16 = new Label();
+            this.ModuleLabel08 = new Label();
+            this.ModuleLabel15 = new Label();
+            this.ModuleLabel09 = new Label();
+            this.ModuleLabel14 = new Label();
+            this.ModuleLabel10 = new Label();
+            this.ModuleLabel13 = new Label();
+            this.ModuleLabel11 = new Label();
+            this.ModuleLabel12 = new Label();
+            this.ShipStatusBox = new GroupBox();
+            this.Credits = new TextBox();
+            this.label58 = new Label();
+            this.LandersLabel = new Label();
+            this.BioDataLabel = new Label();
+            this.RULabel = new Label();
+            this.FuelLabel = new Label();
+            this.LanderUpgradesBox = new GroupBox();
+            this.IsBomb = new CheckBox();
+            this.QuakeShield = new CheckBox();
+            this.RapidFire = new CheckBox();
+            this.BioShield = new CheckBox();
+            this.DblCargo = new CheckBox();
+            this.DblSpeed = new CheckBox();
+            this.LightningShield = new CheckBox();
+            this.HeatShield = new CheckBox();
+            this.CrewLabel = new Label();
+            this.Landers = new NumericUpDown();
+            this.BioData = new NumericUpDown();
+            this.ResUnits = new NumericUpDown();
+            this.ShipFuel = new NumericUpDown();
+            this.ShipCrew = new NumericUpDown();
+            this.CargoBox = new GroupBox();
+            this.TotalLabel = new Label();
+            this.ExoticsLabel = new Label();
+            this.RadioactivsLabel = new Label();
+            this.PreciousMetalsLabel = new Label();
+            this.RareEarthsLabel = new Label();
+            this.NoblesGasesLabel = new Label();
+            this.BaseMetalsLabel = new Label();
+            this.CorrosiveLabel = new Label();
+            this.CommonLabel = new Label();
+            this.Exotic = new NumericUpDown();
+            this.Radioactive = new NumericUpDown();
+            this.Precious = new NumericUpDown();
+            this.RareEarth = new NumericUpDown();
+            this.NobleGas = new NumericUpDown();
+            this.BaseMetal = new NumericUpDown();
+            this.Corrosive = new NumericUpDown();
+            this.Common = new NumericUpDown();
+            this.Coordinates = new TabPage();
+            this.Spoilers = new CheckBox();
+            this.StatusBox = new GroupBox();
+            this.CurrentStatus = new ComboBox();
+            this.OrbitBox = new GroupBox();
+            this.NearestPlanet = new TextBox();
+            this.NearestStarBox = new GroupBox();
+            this.NearestStar = new TextBox();
+            this.HSCoordsBox = new GroupBox();
+            this.UniYLabel = new Label();
+            this.UniXLabel = new Label();
+            this.UniverseY = new NumericUpDown();
+            this.UniverseX = new NumericUpDown();
+            this.StarList = new ListBox();
+            this.ReadOnly = new ToolTip(this.components);
+            this.MaxLimits = new ToolTip(this.components);
+            this.megaModModes = new GroupBox();
+            this.difficultyBox = new ComboBox();
+            this.difficultyLabel = new Label();
+            this.extendedCheckBox = new CheckBox();
+            this.nomadCheckBox = new CheckBox();
             this.toolStrip1.SuspendLayout();
             this.Tabs.SuspendLayout();
             this.Summary.SuspendLayout();
@@ -231,15 +232,15 @@ namespace UQMEdit
             // 
             // toolStrip1
             // 
-            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStrip1.GripStyle = ToolStripGripStyle.Hidden;
+            this.toolStrip1.Items.AddRange(new ToolStripItem[] {
             this.Open,
             this.Reload,
             this.Save,
             this.version});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.toolStrip1.RenderMode = ToolStripRenderMode.System;
             this.toolStrip1.Size = new System.Drawing.Size(873, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
@@ -265,7 +266,7 @@ namespace UQMEdit
             // 
             // Save
             // 
-            this.Save.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.Save.DisplayStyle = ToolStripItemDisplayStyle.Image;
             this.Save.Enabled = false;
             this.Save.Image = new Bitmap("Resources/Save.Image.png"); // global::UQMEdit.Properties.Resources.Save_Image;
             this.Save.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -276,7 +277,7 @@ namespace UQMEdit
             // 
             // version
             // 
-            this.version.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.version.Alignment = ToolStripItemAlignment.Right;
             this.version.Name = "version";
             this.version.Size = new System.Drawing.Size(37, 22);
             this.version.Text = "v1.0.0";
@@ -308,7 +309,7 @@ namespace UQMEdit
             this.Summary.Controls.Add(this.CargoBox);
             this.Summary.Location = new System.Drawing.Point(4, 22);
             this.Summary.Name = "Summary";
-            this.Summary.Padding = new System.Windows.Forms.Padding(3);
+            this.Summary.Padding = new Padding(3);
             this.Summary.Size = new System.Drawing.Size(863, 474);
             this.Summary.TabIndex = 0;
             this.Summary.Text = "Summary";
@@ -329,7 +330,7 @@ namespace UQMEdit
             this.Devices.FormattingEnabled = true;
             this.Devices.Location = new System.Drawing.Point(6, 19);
             this.Devices.Name = "Devices";
-            this.Devices.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.Devices.SelectionMode = SelectionMode.None;
             this.Devices.Size = new System.Drawing.Size(160, 121);
             this.Devices.TabIndex = 1;
             // 
@@ -345,7 +346,7 @@ namespace UQMEdit
             this.TotalMinerals.ReadOnly = true;
             this.TotalMinerals.Size = new System.Drawing.Size(76, 20);
             this.TotalMinerals.TabIndex = 16;
-            this.TotalMinerals.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.TotalMinerals.TextAlign = HorizontalAlignment.Center;
             // 
             // ThrusterBox
             // 
@@ -613,7 +614,7 @@ namespace UQMEdit
             this.CustomSeed.ReadOnly = true;
             this.CustomSeed.Size = new System.Drawing.Size(160, 20);
             this.CustomSeed.TabIndex = 70;
-            this.CustomSeed.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.CustomSeed.TextAlign = HorizontalAlignment.Center;
             this.ReadOnly.SetToolTip(this.CustomSeed, "Read Only");
             // 
             // ShipNameBox
@@ -633,7 +634,7 @@ namespace UQMEdit
             this.ShipName.Name = "ShipName";
             this.ShipName.Size = new System.Drawing.Size(152, 20);
             this.ShipName.TabIndex = 0;
-            this.ShipName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.ShipName.TextAlign = HorizontalAlignment.Center;
             // 
             // CaptainBox
             // 
@@ -652,7 +653,7 @@ namespace UQMEdit
             this.CommanderName.Name = "CommanderName";
             this.CommanderName.Size = new System.Drawing.Size(152, 20);
             this.CommanderName.TabIndex = 1;
-            this.CommanderName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.CommanderName.TextAlign = HorizontalAlignment.Center;
             // 
             // ShipsBox
             // 
@@ -691,7 +692,7 @@ namespace UQMEdit
             // 
             this.Ship01.BackColor = System.Drawing.SystemColors.Menu;
             this.Ship01.DisplayMember = "Text";
-            this.Ship01.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+            this.Ship01.DropDownStyle = ComboBoxStyle.Simple;
             this.Ship01.FormattingEnabled = true;
             this.Ship01.Location = new System.Drawing.Point(28, 19);
             this.Ship01.Name = "Ship01";
@@ -703,7 +704,7 @@ namespace UQMEdit
             // 
             this.Ship02.BackColor = System.Drawing.SystemColors.Menu;
             this.Ship02.DisplayMember = "Text";
-            this.Ship02.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+            this.Ship02.DropDownStyle = ComboBoxStyle.Simple;
             this.Ship02.FormattingEnabled = true;
             this.Ship02.Location = new System.Drawing.Point(28, 46);
             this.Ship02.Name = "Ship02";
@@ -715,7 +716,7 @@ namespace UQMEdit
             // 
             this.Ship03.BackColor = System.Drawing.SystemColors.Menu;
             this.Ship03.DisplayMember = "Text";
-            this.Ship03.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+            this.Ship03.DropDownStyle = ComboBoxStyle.Simple;
             this.Ship03.FormattingEnabled = true;
             this.Ship03.Location = new System.Drawing.Point(28, 73);
             this.Ship03.Name = "Ship03";
@@ -727,7 +728,7 @@ namespace UQMEdit
             // 
             this.Ship04.BackColor = System.Drawing.SystemColors.Menu;
             this.Ship04.DisplayMember = "Text";
-            this.Ship04.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+            this.Ship04.DropDownStyle = ComboBoxStyle.Simple;
             this.Ship04.FormattingEnabled = true;
             this.Ship04.Location = new System.Drawing.Point(28, 100);
             this.Ship04.Name = "Ship04";
@@ -739,7 +740,7 @@ namespace UQMEdit
             // 
             this.Ship05.BackColor = System.Drawing.SystemColors.Menu;
             this.Ship05.DisplayMember = "Text";
-            this.Ship05.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+            this.Ship05.DropDownStyle = ComboBoxStyle.Simple;
             this.Ship05.FormattingEnabled = true;
             this.Ship05.Location = new System.Drawing.Point(28, 127);
             this.Ship05.Name = "Ship05";
@@ -751,7 +752,7 @@ namespace UQMEdit
             // 
             this.Ship06.BackColor = System.Drawing.SystemColors.Menu;
             this.Ship06.DisplayMember = "Text";
-            this.Ship06.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+            this.Ship06.DropDownStyle = ComboBoxStyle.Simple;
             this.Ship06.FormattingEnabled = true;
             this.Ship06.Location = new System.Drawing.Point(28, 154);
             this.Ship06.Name = "Ship06";
@@ -763,7 +764,7 @@ namespace UQMEdit
             // 
             this.Ship07.BackColor = System.Drawing.SystemColors.Menu;
             this.Ship07.DisplayMember = "Text";
-            this.Ship07.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+            this.Ship07.DropDownStyle = ComboBoxStyle.Simple;
             this.Ship07.FormattingEnabled = true;
             this.Ship07.Location = new System.Drawing.Point(28, 180);
             this.Ship07.Name = "Ship07";
@@ -775,7 +776,7 @@ namespace UQMEdit
             // 
             this.Ship08.BackColor = System.Drawing.SystemColors.Menu;
             this.Ship08.DisplayMember = "Text";
-            this.Ship08.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+            this.Ship08.DropDownStyle = ComboBoxStyle.Simple;
             this.Ship08.FormattingEnabled = true;
             this.Ship08.Location = new System.Drawing.Point(28, 207);
             this.Ship08.Name = "Ship08";
@@ -787,7 +788,7 @@ namespace UQMEdit
             // 
             this.Ship09.BackColor = System.Drawing.SystemColors.Menu;
             this.Ship09.DisplayMember = "Text";
-            this.Ship09.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+            this.Ship09.DropDownStyle = ComboBoxStyle.Simple;
             this.Ship09.FormattingEnabled = true;
             this.Ship09.Location = new System.Drawing.Point(28, 234);
             this.Ship09.Name = "Ship09";
@@ -799,7 +800,7 @@ namespace UQMEdit
             // 
             this.Ship10.BackColor = System.Drawing.SystemColors.Menu;
             this.Ship10.DisplayMember = "Text";
-            this.Ship10.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+            this.Ship10.DropDownStyle = ComboBoxStyle.Simple;
             this.Ship10.FormattingEnabled = true;
             this.Ship10.Location = new System.Drawing.Point(28, 261);
             this.Ship10.Name = "Ship10";
@@ -811,7 +812,7 @@ namespace UQMEdit
             // 
             this.Ship11.BackColor = System.Drawing.SystemColors.Menu;
             this.Ship11.DisplayMember = "Text";
-            this.Ship11.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+            this.Ship11.DropDownStyle = ComboBoxStyle.Simple;
             this.Ship11.FormattingEnabled = true;
             this.Ship11.Location = new System.Drawing.Point(28, 288);
             this.Ship11.Name = "Ship11";
@@ -823,7 +824,7 @@ namespace UQMEdit
             // 
             this.Ship12.BackColor = System.Drawing.SystemColors.Menu;
             this.Ship12.DisplayMember = "Text";
-            this.Ship12.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+            this.Ship12.DropDownStyle = ComboBoxStyle.Simple;
             this.Ship12.FormattingEnabled = true;
             this.Ship12.Location = new System.Drawing.Point(28, 315);
             this.Ship12.Name = "Ship12";
@@ -1003,8 +1004,8 @@ namespace UQMEdit
             // Module16
             // 
             this.Module16.DisplayMember = "Text";
-            this.Module16.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Module16.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.Module16.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.Module16.FlatStyle = FlatStyle.System;
             this.Module16.FormattingEnabled = true;
             this.Module16.Location = new System.Drawing.Point(74, 428);
             this.Module16.Name = "Module16";
@@ -1016,8 +1017,8 @@ namespace UQMEdit
             // Module15
             // 
             this.Module15.DisplayMember = "Text";
-            this.Module15.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Module15.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.Module15.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.Module15.FlatStyle = FlatStyle.System;
             this.Module15.FormattingEnabled = true;
             this.Module15.Location = new System.Drawing.Point(74, 401);
             this.Module15.Name = "Module15";
@@ -1029,8 +1030,8 @@ namespace UQMEdit
             // Module14
             // 
             this.Module14.DisplayMember = "Text";
-            this.Module14.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Module14.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.Module14.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.Module14.FlatStyle = FlatStyle.System;
             this.Module14.FormattingEnabled = true;
             this.Module14.Location = new System.Drawing.Point(74, 374);
             this.Module14.Name = "Module14";
@@ -1042,8 +1043,8 @@ namespace UQMEdit
             // Module13
             // 
             this.Module13.DisplayMember = "Text";
-            this.Module13.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Module13.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.Module13.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.Module13.FlatStyle = FlatStyle.System;
             this.Module13.FormattingEnabled = true;
             this.Module13.Location = new System.Drawing.Point(74, 347);
             this.Module13.Name = "Module13";
@@ -1055,8 +1056,8 @@ namespace UQMEdit
             // Module12
             // 
             this.Module12.DisplayMember = "Text";
-            this.Module12.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Module12.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.Module12.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.Module12.FlatStyle = FlatStyle.System;
             this.Module12.FormattingEnabled = true;
             this.Module12.Location = new System.Drawing.Point(74, 320);
             this.Module12.Name = "Module12";
@@ -1068,8 +1069,8 @@ namespace UQMEdit
             // Module11
             // 
             this.Module11.DisplayMember = "Text";
-            this.Module11.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Module11.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.Module11.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.Module11.FlatStyle = FlatStyle.System;
             this.Module11.FormattingEnabled = true;
             this.Module11.Location = new System.Drawing.Point(74, 293);
             this.Module11.Name = "Module11";
@@ -1081,8 +1082,8 @@ namespace UQMEdit
             // Module10
             // 
             this.Module10.DisplayMember = "Text";
-            this.Module10.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Module10.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.Module10.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.Module10.FlatStyle = FlatStyle.System;
             this.Module10.FormattingEnabled = true;
             this.Module10.Location = new System.Drawing.Point(74, 266);
             this.Module10.Name = "Module10";
@@ -1094,8 +1095,8 @@ namespace UQMEdit
             // Module09
             // 
             this.Module09.DisplayMember = "Text";
-            this.Module09.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Module09.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.Module09.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.Module09.FlatStyle = FlatStyle.System;
             this.Module09.FormattingEnabled = true;
             this.Module09.Location = new System.Drawing.Point(74, 239);
             this.Module09.Name = "Module09";
@@ -1107,8 +1108,8 @@ namespace UQMEdit
             // Module08
             // 
             this.Module08.DisplayMember = "Text";
-            this.Module08.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Module08.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.Module08.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.Module08.FlatStyle = FlatStyle.System;
             this.Module08.FormattingEnabled = true;
             this.Module08.Location = new System.Drawing.Point(74, 212);
             this.Module08.Name = "Module08";
@@ -1120,8 +1121,8 @@ namespace UQMEdit
             // Module07
             // 
             this.Module07.DisplayMember = "Text";
-            this.Module07.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Module07.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.Module07.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.Module07.FlatStyle = FlatStyle.System;
             this.Module07.FormattingEnabled = true;
             this.Module07.Location = new System.Drawing.Point(74, 185);
             this.Module07.Name = "Module07";
@@ -1133,8 +1134,8 @@ namespace UQMEdit
             // Module06
             // 
             this.Module06.DisplayMember = "Text";
-            this.Module06.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Module06.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.Module06.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.Module06.FlatStyle = FlatStyle.System;
             this.Module06.FormattingEnabled = true;
             this.Module06.Location = new System.Drawing.Point(74, 158);
             this.Module06.Name = "Module06";
@@ -1164,8 +1165,8 @@ namespace UQMEdit
             // Module05
             // 
             this.Module05.DisplayMember = "Text";
-            this.Module05.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Module05.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.Module05.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.Module05.FlatStyle = FlatStyle.System;
             this.Module05.FormattingEnabled = true;
             this.Module05.Location = new System.Drawing.Point(74, 131);
             this.Module05.Name = "Module05";
@@ -1186,8 +1187,8 @@ namespace UQMEdit
             // Module04
             // 
             this.Module04.DisplayMember = "Text";
-            this.Module04.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Module04.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.Module04.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.Module04.FlatStyle = FlatStyle.System;
             this.Module04.FormattingEnabled = true;
             this.Module04.Location = new System.Drawing.Point(74, 104);
             this.Module04.Name = "Module04";
@@ -1208,8 +1209,8 @@ namespace UQMEdit
             // Module03
             // 
             this.Module03.DisplayMember = "Text";
-            this.Module03.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Module03.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.Module03.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.Module03.FlatStyle = FlatStyle.System;
             this.Module03.FormattingEnabled = true;
             this.Module03.Location = new System.Drawing.Point(74, 77);
             this.Module03.Name = "Module03";
@@ -1230,8 +1231,8 @@ namespace UQMEdit
             // Module02
             // 
             this.Module02.DisplayMember = "Text";
-            this.Module02.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Module02.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.Module02.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.Module02.FlatStyle = FlatStyle.System;
             this.Module02.FormattingEnabled = true;
             this.Module02.Location = new System.Drawing.Point(74, 50);
             this.Module02.Name = "Module02";
@@ -1252,8 +1253,8 @@ namespace UQMEdit
             // Module01
             // 
             this.Module01.DisplayMember = "Text";
-            this.Module01.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Module01.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.Module01.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.Module01.FlatStyle = FlatStyle.System;
             this.Module01.FormattingEnabled = true;
             this.Module01.Location = new System.Drawing.Point(74, 23);
             this.Module01.Name = "Module01";
@@ -1382,7 +1383,7 @@ namespace UQMEdit
             this.Credits.ReadOnly = true;
             this.Credits.Size = new System.Drawing.Size(88, 20);
             this.Credits.TabIndex = 16;
-            this.Credits.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Credits.TextAlign = HorizontalAlignment.Center;
             this.ReadOnly.SetToolTip(this.Credits, "Read Only");
             // 
             // label58
@@ -1563,7 +1564,7 @@ namespace UQMEdit
             this.Landers.Name = "Landers";
             this.Landers.Size = new System.Drawing.Size(88, 20);
             this.Landers.TabIndex = 6;
-            this.Landers.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Landers.TextAlign = HorizontalAlignment.Center;
             // 
             // BioData
             // 
@@ -1581,7 +1582,7 @@ namespace UQMEdit
             this.BioData.Name = "BioData";
             this.BioData.Size = new System.Drawing.Size(88, 20);
             this.BioData.TabIndex = 5;
-            this.BioData.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.BioData.TextAlign = HorizontalAlignment.Center;
             // 
             // ResUnits
             // 
@@ -1599,7 +1600,7 @@ namespace UQMEdit
             this.ResUnits.Name = "ResUnits";
             this.ResUnits.Size = new System.Drawing.Size(88, 20);
             this.ResUnits.TabIndex = 4;
-            this.ResUnits.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.ResUnits.TextAlign = HorizontalAlignment.Center;
             // 
             // ShipFuel
             // 
@@ -1618,7 +1619,7 @@ namespace UQMEdit
             this.ShipFuel.Name = "ShipFuel";
             this.ShipFuel.Size = new System.Drawing.Size(88, 20);
             this.ShipFuel.TabIndex = 3;
-            this.ShipFuel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.ShipFuel.TextAlign = HorizontalAlignment.Center;
             // 
             // ShipCrew
             // 
@@ -1631,7 +1632,7 @@ namespace UQMEdit
             this.ShipCrew.Name = "ShipCrew";
             this.ShipCrew.Size = new System.Drawing.Size(88, 20);
             this.ShipCrew.TabIndex = 2;
-            this.ShipCrew.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.ShipCrew.TextAlign = HorizontalAlignment.Center;
             // 
             // CargoBox
             // 
@@ -1764,7 +1765,7 @@ namespace UQMEdit
             this.Exotic.Name = "Exotic";
             this.Exotic.Size = new System.Drawing.Size(76, 20);
             this.Exotic.TabIndex = 7;
-            this.Exotic.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Exotic.TextAlign = HorizontalAlignment.Center;
             this.Exotic.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
             // 
             // Radioactive
@@ -1783,7 +1784,7 @@ namespace UQMEdit
             this.Radioactive.Name = "Radioactive";
             this.Radioactive.Size = new System.Drawing.Size(76, 20);
             this.Radioactive.TabIndex = 6;
-            this.Radioactive.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Radioactive.TextAlign = HorizontalAlignment.Center;
             this.Radioactive.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
             // 
             // Precious
@@ -1802,7 +1803,7 @@ namespace UQMEdit
             this.Precious.Name = "Precious";
             this.Precious.Size = new System.Drawing.Size(76, 20);
             this.Precious.TabIndex = 5;
-            this.Precious.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Precious.TextAlign = HorizontalAlignment.Center;
             this.Precious.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
             // 
             // RareEarth
@@ -1821,7 +1822,7 @@ namespace UQMEdit
             this.RareEarth.Name = "RareEarth";
             this.RareEarth.Size = new System.Drawing.Size(76, 20);
             this.RareEarth.TabIndex = 4;
-            this.RareEarth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.RareEarth.TextAlign = HorizontalAlignment.Center;
             this.RareEarth.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
             // 
             // NobleGas
@@ -1840,7 +1841,7 @@ namespace UQMEdit
             this.NobleGas.Name = "NobleGas";
             this.NobleGas.Size = new System.Drawing.Size(76, 20);
             this.NobleGas.TabIndex = 3;
-            this.NobleGas.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.NobleGas.TextAlign = HorizontalAlignment.Center;
             this.NobleGas.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
             // 
             // BaseMetal
@@ -1859,7 +1860,7 @@ namespace UQMEdit
             this.BaseMetal.Name = "BaseMetal";
             this.BaseMetal.Size = new System.Drawing.Size(76, 20);
             this.BaseMetal.TabIndex = 2;
-            this.BaseMetal.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.BaseMetal.TextAlign = HorizontalAlignment.Center;
             this.BaseMetal.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
             // 
             // Corrosive
@@ -1878,7 +1879,7 @@ namespace UQMEdit
             this.Corrosive.Name = "Corrosive";
             this.Corrosive.Size = new System.Drawing.Size(76, 20);
             this.Corrosive.TabIndex = 1;
-            this.Corrosive.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Corrosive.TextAlign = HorizontalAlignment.Center;
             this.Corrosive.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
             // 
             // Common
@@ -1897,7 +1898,7 @@ namespace UQMEdit
             this.Common.Name = "Common";
             this.Common.Size = new System.Drawing.Size(76, 20);
             this.Common.TabIndex = 0;
-            this.Common.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Common.TextAlign = HorizontalAlignment.Center;
             this.Common.ValueChanged += new System.EventHandler(this.MineralsValueChanged);
             // 
             // Coordinates
@@ -1910,7 +1911,7 @@ namespace UQMEdit
             this.Coordinates.Controls.Add(this.StarList);
             this.Coordinates.Location = new System.Drawing.Point(4, 22);
             this.Coordinates.Name = "Coordinates";
-            this.Coordinates.Padding = new System.Windows.Forms.Padding(3);
+            this.Coordinates.Padding = new Padding(3);
             this.Coordinates.Size = new System.Drawing.Size(863, 474);
             this.Coordinates.TabIndex = 1;
             this.Coordinates.Text = "Coordinates";
@@ -1940,7 +1941,7 @@ namespace UQMEdit
             // CurrentStatus
             // 
             this.CurrentStatus.BackColor = System.Drawing.SystemColors.Menu;
-            this.CurrentStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+            this.CurrentStatus.DropDownStyle = ComboBoxStyle.Simple;
             this.CurrentStatus.FormattingEnabled = true;
             this.CurrentStatus.Location = new System.Drawing.Point(6, 19);
             this.CurrentStatus.Name = "CurrentStatus";
@@ -2057,7 +2058,7 @@ namespace UQMEdit
             // 
             // StarList
             // 
-            this.StarList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.StarList.BorderStyle = BorderStyle.FixedSingle;
             this.StarList.FormattingEnabled = true;
             this.StarList.Location = new System.Drawing.Point(171, 6);
             this.StarList.Name = "StarList";
@@ -2083,7 +2084,7 @@ namespace UQMEdit
             // 
             this.difficultyBox.BackColor = System.Drawing.SystemColors.Menu;
             this.difficultyBox.DisplayMember = "Text";
-            this.difficultyBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+            this.difficultyBox.DropDownStyle = ComboBoxStyle.Simple;
             this.difficultyBox.FormattingEnabled = true;
             this.difficultyBox.Location = new System.Drawing.Point(58, 14);
             this.difficultyBox.Name = "difficultyBox";
@@ -2127,7 +2128,7 @@ namespace UQMEdit
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(873, 529);
             this.Controls.Add(this.Tabs);
             this.Controls.Add(this.toolStrip1);
@@ -2136,8 +2137,8 @@ namespace UQMEdit
             this.MaximumSize = new System.Drawing.Size(889, 568);
             this.MinimumSize = new System.Drawing.Size(889, 568);
             this.Name = "Main";
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.SizeGripStyle = SizeGripStyle.Hide;
+            this.StartPosition = FormStartPosition.CenterScreen;
             this.Text = "The UQM Save Editor";
             this.Shown += new System.EventHandler(this.Main_Shown);
             this.toolStrip1.ResumeLayout(false);
@@ -2199,167 +2200,167 @@ namespace UQMEdit
 
 		#endregion
 
-		private System.Windows.Forms.ToolStrip toolStrip1;
-		private System.Windows.Forms.ToolStripButton Open;
-		private System.Windows.Forms.ToolStripButton Reload;
-		private System.Windows.Forms.ToolStripButton Save;
-		private System.Windows.Forms.TabControl Tabs;
-		private System.Windows.Forms.TabPage Summary;
-		private System.Windows.Forms.TabPage Coordinates;
-		private System.Windows.Forms.ListBox StarList;
-		public System.Windows.Forms.GroupBox ModulesBox;
-		public System.Windows.Forms.Button UpgradeToMax;
-		public System.Windows.Forms.ComboBox Module16;
-		public System.Windows.Forms.ComboBox Module15;
-		public System.Windows.Forms.ComboBox Module14;
-		public System.Windows.Forms.ComboBox Module13;
-		public System.Windows.Forms.ComboBox Module12;
-		public System.Windows.Forms.ComboBox Module11;
-		public System.Windows.Forms.ComboBox Module10;
-		public System.Windows.Forms.ComboBox Module09;
-		public System.Windows.Forms.ComboBox Module08;
-		public System.Windows.Forms.ComboBox Module07;
-		public System.Windows.Forms.ComboBox Module06;
-		private System.Windows.Forms.Label ModuleLabel01;
-		private System.Windows.Forms.Label ModuleLabel02;
-		public System.Windows.Forms.ComboBox Module05;
-		private System.Windows.Forms.Label ModuleLabel03;
-		public System.Windows.Forms.ComboBox Module04;
-		private System.Windows.Forms.Label ModuleLabel04;
-		public System.Windows.Forms.ComboBox Module03;
-		private System.Windows.Forms.Label ModuleLabel05;
-		public System.Windows.Forms.ComboBox Module02;
-		private System.Windows.Forms.Label ModuleLabel06;
-		public System.Windows.Forms.ComboBox Module01;
-		private System.Windows.Forms.Label ModuleLabel07;
-		private System.Windows.Forms.Label ModuleLabel16;
-		private System.Windows.Forms.Label ModuleLabel08;
-		private System.Windows.Forms.Label ModuleLabel15;
-		private System.Windows.Forms.Label ModuleLabel09;
-		private System.Windows.Forms.Label ModuleLabel14;
-		private System.Windows.Forms.Label ModuleLabel10;
-		private System.Windows.Forms.Label ModuleLabel13;
-		private System.Windows.Forms.Label ModuleLabel11;
-		private System.Windows.Forms.Label ModuleLabel12;
-		public System.Windows.Forms.TextBox CustomSeed;
-		public System.Windows.Forms.GroupBox LanderUpgradesBox;
-		public System.Windows.Forms.CheckBox IsBomb;
-		public System.Windows.Forms.CheckBox QuakeShield;
-		public System.Windows.Forms.CheckBox RapidFire;
-		public System.Windows.Forms.CheckBox BioShield;
-		public System.Windows.Forms.CheckBox DblCargo;
-		public System.Windows.Forms.CheckBox DblSpeed;
-		public System.Windows.Forms.CheckBox LightningShield;
-		public System.Windows.Forms.CheckBox HeatShield;
-		public System.Windows.Forms.GroupBox ShipStatusBox;
-		public System.Windows.Forms.TextBox Credits;
-		private System.Windows.Forms.Label label58;
-		public System.Windows.Forms.TextBox CommanderName;
-		private System.Windows.Forms.Label LandersLabel;
-		public System.Windows.Forms.Label BioDataLabel;
-		private System.Windows.Forms.Label RULabel;
-		private System.Windows.Forms.Label FuelLabel;
-		private System.Windows.Forms.Label CrewLabel;
-		public System.Windows.Forms.NumericUpDown Landers;
-		public System.Windows.Forms.NumericUpDown BioData;
-		public System.Windows.Forms.NumericUpDown ResUnits;
-		public System.Windows.Forms.NumericUpDown ShipFuel;
-		public System.Windows.Forms.NumericUpDown ShipCrew;
-		public System.Windows.Forms.TextBox ShipName;
-		public System.Windows.Forms.GroupBox CargoBox;
-		private System.Windows.Forms.Label ExoticsLabel;
-		public System.Windows.Forms.Label RadioactivsLabel;
-		private System.Windows.Forms.Label PreciousMetalsLabel;
-		private System.Windows.Forms.Label RareEarthsLabel;
-		private System.Windows.Forms.Label NoblesGasesLabel;
-		private System.Windows.Forms.Label BaseMetalsLabel;
-		private System.Windows.Forms.Label CorrosiveLabel;
-		private System.Windows.Forms.Label CommonLabel;
-		public System.Windows.Forms.NumericUpDown Exotic;
-		public System.Windows.Forms.NumericUpDown Radioactive;
-		public System.Windows.Forms.NumericUpDown Precious;
-		public System.Windows.Forms.NumericUpDown RareEarth;
-		public System.Windows.Forms.NumericUpDown NobleGas;
-		public System.Windows.Forms.NumericUpDown BaseMetal;
-		public System.Windows.Forms.NumericUpDown Corrosive;
-		public System.Windows.Forms.NumericUpDown Common;
-		public System.Windows.Forms.ListBox Devices;
-		public System.Windows.Forms.ComboBox CurrentStatus;
-		public System.Windows.Forms.TextBox NearestPlanet;
-		private System.Windows.Forms.GroupBox HSCoordsBox;
-		public System.Windows.Forms.TextBox NearestStar;
-		private System.Windows.Forms.Label UniYLabel;
-		private System.Windows.Forms.Label UniXLabel;
-		public System.Windows.Forms.NumericUpDown UniverseY;
-		public System.Windows.Forms.NumericUpDown UniverseX;
-		public System.Windows.Forms.GroupBox ShipsBox;
-		public System.Windows.Forms.ComboBox Ship01;
-		public System.Windows.Forms.ComboBox Ship02;
-		public System.Windows.Forms.ComboBox Ship03;
-		public System.Windows.Forms.ComboBox Ship04;
-		public System.Windows.Forms.ComboBox Ship05;
-		public System.Windows.Forms.ComboBox Ship06;
-		public System.Windows.Forms.ComboBox Ship07;
-		public System.Windows.Forms.ComboBox Ship08;
-		public System.Windows.Forms.ComboBox Ship09;
-		public System.Windows.Forms.ComboBox Ship10;
-		public System.Windows.Forms.ComboBox Ship11;
-		public System.Windows.Forms.ComboBox Ship12;
-		private System.Windows.Forms.Label ShipLabel01;
-		private System.Windows.Forms.Label ShipLabel12;
-		private System.Windows.Forms.Label ShipLabel02;
-		private System.Windows.Forms.Label ShipLabel11;
-		private System.Windows.Forms.Label ShipLabel10;
-		private System.Windows.Forms.Label ShipLabel03;
-		private System.Windows.Forms.Label ShipLabel09;
-		private System.Windows.Forms.Label ShipLabel08;
-		private System.Windows.Forms.Label ShipLabel04;
-		private System.Windows.Forms.Label ShipLabel07;
-		private System.Windows.Forms.Label ShipLabel06;
-		private System.Windows.Forms.Label ShipLabel05;
-		private System.Windows.Forms.Label TotalLabel;
-		private System.Windows.Forms.GroupBox NearestStarBox;
-		private System.Windows.Forms.GroupBox StatusBox;
-		private System.Windows.Forms.GroupBox OrbitBox;
-		private System.Windows.Forms.GroupBox ShipNameBox;
-		private System.Windows.Forms.GroupBox CaptainBox;
-		private System.Windows.Forms.GroupBox SeedBox;
-		private System.Windows.Forms.CheckBox Spoilers;
-		private System.Windows.Forms.Button MaxJets;
-		private System.Windows.Forms.Button MaxThrusters;
-		public System.Windows.Forms.CheckBox Thruster10;
-		public System.Windows.Forms.CheckBox Thruster9;
-		public System.Windows.Forms.CheckBox Thruster8;
-		public System.Windows.Forms.CheckBox Thruster7;
-		public System.Windows.Forms.CheckBox Thruster6;
-		public System.Windows.Forms.CheckBox Thruster5;
-		public System.Windows.Forms.CheckBox Thruster4;
-		public System.Windows.Forms.CheckBox Thruster3;
-		public System.Windows.Forms.CheckBox Thruster2;
-		public System.Windows.Forms.CheckBox Thruster1;
-		public System.Windows.Forms.CheckBox Thruster0;
-		public System.Windows.Forms.CheckBox Jets7;
-		public System.Windows.Forms.CheckBox Jets6;
-		public System.Windows.Forms.CheckBox Jets5;
-		public System.Windows.Forms.CheckBox Jets4;
-		public System.Windows.Forms.CheckBox Jets3;
-		public System.Windows.Forms.CheckBox Jets2;
-		public System.Windows.Forms.CheckBox Jets1;
-		public System.Windows.Forms.CheckBox Jets0;
-		private System.Windows.Forms.Label MaxThrustLabel;
-		private System.Windows.Forms.Label MaxJetsLabel;
-		private System.Windows.Forms.Label MaxModulesLabel;
-		public System.Windows.Forms.GroupBox ThrusterBox;
-		public System.Windows.Forms.GroupBox JetsBox;
-		private System.Windows.Forms.GroupBox DevicesBox;
-		private System.Windows.Forms.ToolTip ReadOnly;
-		private System.Windows.Forms.ToolTip MaxLimits;
-		public System.Windows.Forms.NumericUpDown TotalMinerals;
-        private System.Windows.Forms.ToolStripLabel version;
-        private System.Windows.Forms.GroupBox megaModModes;
-        public System.Windows.Forms.CheckBox nomadCheckBox;
-        public System.Windows.Forms.CheckBox extendedCheckBox;
-        private System.Windows.Forms.Label difficultyLabel;
-        public System.Windows.Forms.ComboBox difficultyBox;
+		private ToolStrip toolStrip1;
+		private ToolStripButton Open;
+		private ToolStripButton Reload;
+		private ToolStripButton Save;
+		private TabControl Tabs;
+		private TabPage Summary;
+		private TabPage Coordinates;
+		private ListBox StarList;
+		public GroupBox ModulesBox;
+		public Button UpgradeToMax;
+		public ComboBox Module16;
+		public ComboBox Module15;
+		public ComboBox Module14;
+		public ComboBox Module13;
+		public ComboBox Module12;
+		public ComboBox Module11;
+		public ComboBox Module10;
+		public ComboBox Module09;
+		public ComboBox Module08;
+		public ComboBox Module07;
+		public ComboBox Module06;
+		private Label ModuleLabel01;
+		private Label ModuleLabel02;
+		public ComboBox Module05;
+		private Label ModuleLabel03;
+		public ComboBox Module04;
+		private Label ModuleLabel04;
+		public ComboBox Module03;
+		private Label ModuleLabel05;
+		public ComboBox Module02;
+		private Label ModuleLabel06;
+		public ComboBox Module01;
+		private Label ModuleLabel07;
+		private Label ModuleLabel16;
+		private Label ModuleLabel08;
+		private Label ModuleLabel15;
+		private Label ModuleLabel09;
+		private Label ModuleLabel14;
+		private Label ModuleLabel10;
+		private Label ModuleLabel13;
+		private Label ModuleLabel11;
+		private Label ModuleLabel12;
+		public TextBox CustomSeed;
+		public GroupBox LanderUpgradesBox;
+		public CheckBox IsBomb;
+		public CheckBox QuakeShield;
+		public CheckBox RapidFire;
+		public CheckBox BioShield;
+		public CheckBox DblCargo;
+		public CheckBox DblSpeed;
+		public CheckBox LightningShield;
+		public CheckBox HeatShield;
+		public GroupBox ShipStatusBox;
+		public TextBox Credits;
+		private Label label58;
+		public TextBox CommanderName;
+		private Label LandersLabel;
+		public Label BioDataLabel;
+		private Label RULabel;
+		private Label FuelLabel;
+		private Label CrewLabel;
+		public NumericUpDown Landers;
+		public NumericUpDown BioData;
+		public NumericUpDown ResUnits;
+		public NumericUpDown ShipFuel;
+		public NumericUpDown ShipCrew;
+		public TextBox ShipName;
+		public GroupBox CargoBox;
+		private Label ExoticsLabel;
+		public Label RadioactivsLabel;
+		private Label PreciousMetalsLabel;
+		private Label RareEarthsLabel;
+		private Label NoblesGasesLabel;
+		private Label BaseMetalsLabel;
+		private Label CorrosiveLabel;
+		private Label CommonLabel;
+		public NumericUpDown Exotic;
+		public NumericUpDown Radioactive;
+		public NumericUpDown Precious;
+		public NumericUpDown RareEarth;
+		public NumericUpDown NobleGas;
+		public NumericUpDown BaseMetal;
+		public NumericUpDown Corrosive;
+		public NumericUpDown Common;
+		public ListBox Devices;
+		public ComboBox CurrentStatus;
+		public TextBox NearestPlanet;
+		private GroupBox HSCoordsBox;
+		public TextBox NearestStar;
+		private Label UniYLabel;
+		private Label UniXLabel;
+		public NumericUpDown UniverseY;
+		public NumericUpDown UniverseX;
+		public GroupBox ShipsBox;
+		public ComboBox Ship01;
+		public ComboBox Ship02;
+		public ComboBox Ship03;
+		public ComboBox Ship04;
+		public ComboBox Ship05;
+		public ComboBox Ship06;
+		public ComboBox Ship07;
+		public ComboBox Ship08;
+		public ComboBox Ship09;
+		public ComboBox Ship10;
+		public ComboBox Ship11;
+		public ComboBox Ship12;
+		private Label ShipLabel01;
+		private Label ShipLabel12;
+		private Label ShipLabel02;
+		private Label ShipLabel11;
+		private Label ShipLabel10;
+		private Label ShipLabel03;
+		private Label ShipLabel09;
+		private Label ShipLabel08;
+		private Label ShipLabel04;
+		private Label ShipLabel07;
+		private Label ShipLabel06;
+		private Label ShipLabel05;
+		private Label TotalLabel;
+		private GroupBox NearestStarBox;
+		private GroupBox StatusBox;
+		private GroupBox OrbitBox;
+		private GroupBox ShipNameBox;
+		private GroupBox CaptainBox;
+		private GroupBox SeedBox;
+		private CheckBox Spoilers;
+		private Button MaxJets;
+		private Button MaxThrusters;
+		public CheckBox Thruster10;
+		public CheckBox Thruster9;
+		public CheckBox Thruster8;
+		public CheckBox Thruster7;
+		public CheckBox Thruster6;
+		public CheckBox Thruster5;
+		public CheckBox Thruster4;
+		public CheckBox Thruster3;
+		public CheckBox Thruster2;
+		public CheckBox Thruster1;
+		public CheckBox Thruster0;
+		public CheckBox Jets7;
+		public CheckBox Jets6;
+		public CheckBox Jets5;
+		public CheckBox Jets4;
+		public CheckBox Jets3;
+		public CheckBox Jets2;
+		public CheckBox Jets1;
+		public CheckBox Jets0;
+		private Label MaxThrustLabel;
+		private Label MaxJetsLabel;
+		private Label MaxModulesLabel;
+		public GroupBox ThrusterBox;
+		public GroupBox JetsBox;
+		private GroupBox DevicesBox;
+		private ToolTip ReadOnly;
+		private ToolTip MaxLimits;
+		public NumericUpDown TotalMinerals;
+        private ToolStripLabel version;
+        private GroupBox megaModModes;
+        public CheckBox nomadCheckBox;
+        public CheckBox extendedCheckBox;
+        private Label difficultyLabel;
+        public ComboBox difficultyBox;
     }
 }

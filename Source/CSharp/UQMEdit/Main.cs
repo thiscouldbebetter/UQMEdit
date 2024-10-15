@@ -1,7 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Threading;
@@ -23,7 +20,7 @@ namespace UQMEdit
 
 			foreach (object ships in ShipsBox.Controls) {
 				if (ships is ComboBox) {
-					(ships as ComboBox).Items.AddRange(Vars.ShipNames);
+					(ships as ComboBox).Items.AddRange(Constants.ShipNames);
 				}
 			}
 			foreach (object current in ModulesBox.Controls) {
@@ -31,8 +28,8 @@ namespace UQMEdit
 					(current as ComboBox).Items.AddRange(ShipModules);
 				}
 			}
-			CurrentStatus.Items.AddRange(Vars.StatusName);
-			difficultyBox.Items.AddRange(Vars.Difficulties);
+			CurrentStatus.Items.AddRange(Constants.StatusNames);
+			difficultyBox.Items.AddRange(Constants.DifficultyLevels);
 			Spoilers.Checked = false;
 
 			string PathVanilla, PathHD, PathMegaMod, PathRemix, PathDesired;
@@ -76,19 +73,19 @@ namespace UQMEdit
 				SeedBox.Visible = false;
 				megaModModes.Visible = false;
 				switch (Read.SaveVersion) {
-					case 3:
+                    case 0:
+                        TitleText += ": Core v0.7.0 - ";
+                        break;
+                    case 1:
+                        TitleText += ": HD-mod v0.7.0 - ";
+                        break;
+                    case 2:
+                        TitleText += ": MegaMod v0.8.0.85 - ";
+                        SeedBox.Visible = true;
+                        megaModModes.Visible = true;
+                        break;
+                    case 3:
 						TitleText += ": Core v0.8.0 - ";
-						break;
-					case 2:
-						TitleText += ": MegaMod v0.8.0.85 - ";
-						SeedBox.Visible = true;
-						megaModModes.Visible = true;
-						break;
-					case 1:
-						TitleText += ": HD-mod v0.7.0 - ";
-						break;
-					case 0:
-						TitleText += ": Core v0.7.0 - ";
 						break;
 					default:
 						break;

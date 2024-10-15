@@ -1,29 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace UQMEdit
 {
-	class Vars
+	class Constants
 	{
-		public const int SaveTagHD = 0x65707573;	// "supe"
-		public const int SaveFileTag = 0x01534d55;	// "UMS\x01": UQM Save version 1
-		public const int MegaModTag = 0x4147454D;	// "MEGA"
+		public const int
+			SaveTagHD = 0x65707573,	// "supe"
+			SaveFileTag = 0x01534d55,	// "UMS\x01": UQM Save version 1
+			MegaModTag = 0x4147454D,	// "MEGA"
 
-		// HS Coord Vars
-		public const int MaxUniverse = 9999;
+			// HS Coord Vars
+			MaxUniverse = 9999,
 
-		public const int UniverseUnitsOld = 6250;
-		public const int UniverseUnits = 625;
+			UniverseUnitsOld = 6250,
+			UniverseUnits = 625,
 
-		public const int LogUnits = 10000;
-		public const int LogUnitsXOld = 99840;
-		public const int LogUnitsYOld = 12000;
+			LogUnits = 10000,
+			LogUnitsXOld = 99840,
+			LogUnitsYOld = 12000;
 
 		//public const byte SaveNameSize = 64;
 
-		public static string[] DeviceName = new string[]
+		public static string[] DeviceNames = new string[]
 		{
 			"Quasi Portal",
 			"Talking Pet",
@@ -54,6 +51,7 @@ namespace UQMEdit
 			"Glowing Rod",
 			"Moon Base"
 		};
+
 		public static string[] ShipNames = new string[]
 		{
 			"Arilou Skiff",
@@ -83,7 +81,7 @@ namespace UQMEdit
 			"Empty"
 		};
 
-		public static string[] StatusName = new string[]
+		public static string[] StatusNames = new string[]
 		{
 			"Super Melee",
 			"Last Battle",
@@ -97,7 +95,7 @@ namespace UQMEdit
 			"Unknown"
 		};
 
-		public static string[] Difficulties = new string[]
+		public static string[] DifficultyLevels = new string[]
 		{
 			"Normal",
 			"Easy",
@@ -107,14 +105,9 @@ namespace UQMEdit
 
 	public class Modules
 	{
-		public byte HexCode {
-			get;
-			private set;
-		}
-		public string Text {
-			get;
-			private set;
-		}
+		public byte HexCode { get; private set; }
+		public string Text { get; private set; }
+
 		public Modules(byte hexcode, string text) {
 			HexCode = hexcode;
 			Text = text;

@@ -1,9 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Windows.Forms;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Windows.Forms;
 
 namespace UQMEdit
 {
@@ -11,71 +6,237 @@ namespace UQMEdit
 	{
 		public static void Summary() {
 			// Resource Units
-			Functions.WriteOffset(Functions.OffsPick(Offs.HD.ResUnits, Offs.MM.ResUnits), Window.ResUnits.Value, 4, 0xFFFFFFFF, true);
-			// Fuel
-			decimal ShipFuel = Window.ShipFuel.Value * 100;
-			Functions.WriteOffset(Functions.OffsPick(Offs.HD.Fuel, Offs.MM.Fuel), Decimal.ToUInt32(ShipFuel), 4, 161000, true);
-			// Crew
-			Functions.WriteOffset(Functions.OffsPick(Offs.HD.SiSCrew, Offs.MM.SiSCrew), Window.ShipCrew.Value, 2, 800, true);
-			// Total Minerals
-			Functions.WriteOffset(Functions.OffsPick(Offs.HD.TotalMinerals, Offs.MM.TotalMinerals), Window.TotalMinerals.Value, 2, 8000, true);
-			// Bio Data
-			Functions.WriteOffset(Functions.OffsPick(Offs.HD.BioData, Offs.MM.BioData), Window.BioData.Value, 2, 0xFFFF, true);
+			Functions.WriteOffset(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.ResUnits,
+					Offsets.MegaModFieldOffsets.ResUnits
+				),
+				valueFromControl: Window.ResUnits.Value,
+				lengthInBytes: 4,
+				valueMax: 0xFFFFFFFF,
+				isUnsignedNotSigned: true
+			);
+
+			var ShipFuel = Window.ShipFuel.Value * 100;
+			Functions.WriteOffset(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.Fuel,
+					Offsets.MegaModFieldOffsets.Fuel
+				),
+				valueFromControl: decimal.ToUInt32(ShipFuel),
+				lengthInBytes: 4,
+				valueMax: 161000,
+				isUnsignedNotSigned: true
+			);
+
+			Functions.WriteOffset(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.SiSCrew, 
+					Offsets.MegaModFieldOffsets.SiSCrew
+				),
+				valueFromControl: Window.ShipCrew.Value,
+				lengthInBytes: 2,
+				valueMax: 800,
+				isUnsignedNotSigned: true
+			);
+
+			Functions.WriteOffset(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.TotalMinerals,
+					Offsets.MegaModFieldOffsets.TotalMinerals
+				),
+				valueFromControl: Window.TotalMinerals.Value,
+				lengthInBytes: 2,
+				valueMax: 8000,
+				isUnsignedNotSigned: true
+			);
+
+			Functions.WriteOffset(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.BioData,
+					Offsets.MegaModFieldOffsets.BioData
+				),
+				valueFromControl: Window.BioData.Value,
+				lengthInBytes: 2,
+				valueMax: 0xFFFF,
+				isUnsignedNotSigned: true
+			);
 
 			// Modules
-			byte Mods, i = 0;
-			foreach (object Mod in Window.ModulesBox.Controls) {
-				if (Mod is ComboBox) {
-					int Index = (Mod as ComboBox).SelectedIndex;
-					if (Index > 0) {
-						Mods = (byte)(Index + 2);
+			byte moduleAsByte, i = 0;
+			foreach (var modulesControl in Window.ModulesBox.Controls) {
+				if (modulesControl is ComboBox) {
+					int modulePresentCode = (modulesControl as ComboBox).SelectedIndex;
+					if (modulePresentCode > 0) {
+						moduleAsByte = (byte)(modulePresentCode + 2);
 					} else {
-						Mods = 22;
+						moduleAsByte = 22;
 					}
-					Functions.WriteOffset(Functions.OffsPick(Offs.HD.ModuleSlots + i, Offs.MM.ModuleSlots + i), Mods, 1, 22, true);
+					Functions.WriteOffset(
+						Functions.ByteOffsetsPick(
+							Offsets.HighDefinitionRemaster.ModuleSlots + i,
+							Offsets.MegaModFieldOffsets.ModuleSlots + i
+						),
+						valueFromControl: moduleAsByte,
+						lengthInBytes: 1,
+						valueMax: 22,
+						isUnsignedNotSigned: true
+					);
 					i++;
 				}
 			}
 
 			// Thrusters
-			byte Thrusters, j = 0;
-			foreach (object Thruster in Window.ThrusterBox.Controls) {
-				if (Thruster is CheckBox) {
-					bool Index = (Thruster as CheckBox).Checked;
-					Thrusters = (byte)(Index ? 1 : 20);
-					Functions.WriteOffset(Functions.OffsPick(Offs.HD.DriveSlots[j], Offs.MM.DriveSlots[j]), Thrusters, 1, 20, true);
+			byte thrustersAsByte, j = 0;
+			foreach (var thrusterControl in Window.ThrusterBox.Controls)
+			{
+				if (thrusterControl is CheckBox)
+				{
+					var thrusterIsPresent = (thrusterControl as CheckBox).Checked;
+					thrustersAsByte = (byte)(thrusterIsPresent ? 1 : 20);
+					Functions.WriteOffset(
+						Functions.ByteOffsetsPick(
+							Offsets.HighDefinitionRemaster.DriveSlots[j],
+							Offsets.MegaModFieldOffsets.DriveSlots[j]
+						),
+						thrustersAsByte,
+						lengthInBytes: 1,
+						valueMax: 20,
+						isUnsignedNotSigned: true
+					);
 					j++;
 				}
 			}
 
-			// Thrusters
-			byte Jets, k = 0;
-			foreach (object Jet in Window.JetsBox.Controls) {
-				if (Jet is CheckBox) {
-					bool Index = (Jet as CheckBox).Checked;
-					Jets = (byte)(Index ? 2 : 21);
-					Functions.WriteOffset(Functions.OffsPick(Offs.HD.JetSlots[k], Offs.MM.JetSlots[k]), Jets, 1, 21, true);
+			byte turningJetAsByte, k = 0;
+			foreach (var turningJetControl in Window.JetsBox.Controls)
+			{
+				if (turningJetControl is CheckBox)
+				{
+					var turningJetIsPresent = (turningJetControl as CheckBox).Checked;
+					turningJetAsByte = (byte)(turningJetIsPresent ? 2 : 21);
+					Functions.WriteOffset(
+						Functions.ByteOffsetsPick(
+							Offsets.HighDefinitionRemaster.JetSlots[k],
+							Offsets.MegaModFieldOffsets.JetSlots[k]
+						),
+						turningJetAsByte,
+						lengthInBytes: 1,
+						valueMax: 21,
+						isUnsignedNotSigned: true
+					);
 					k++;
 				}
 			}
 
-			// Landers
-			Functions.WriteOffset(Functions.OffsPick(Offs.HD.Landers, Offs.MM.Landers), Window.Landers.Value, 1, 10);
+			Functions.WriteOffset(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.Landers,
+					Offsets.MegaModFieldOffsets.Landers
+				),
+				Window.Landers.Value,
+				lengthInBytes: 1,
+				valueMax: 10
+			);
 
-			// Cargo
-			Functions.WriteOffset(Functions.OffsPick(Offs.HD.Common, Offs.MM.Common), Window.Common.Value, 2, 0xFFFF);
-			Functions.WriteOffset(Functions.OffsPick(Offs.HD.Corrosive, Offs.MM.Corrosive), Window.Corrosive.Value, 2, 0xFFFF);
-			Functions.WriteOffset(Functions.OffsPick(Offs.HD.BaseMetal, Offs.MM.BaseMetal), Window.BaseMetal.Value, 2, 0xFFFF);
-			Functions.WriteOffset(Functions.OffsPick(Offs.HD.NobleGas, Offs.MM.NobleGas), Window.NobleGas.Value, 2, 0xFFFF);
-			Functions.WriteOffset(Functions.OffsPick(Offs.HD.RareEarth, Offs.MM.RareEarth), Window.RareEarth.Value, 2, 0xFFFF);
-			Functions.WriteOffset(Functions.OffsPick(Offs.HD.Precious, Offs.MM.Precious), Window.Precious.Value, 2, 0xFFFF);
-			Functions.WriteOffset(Functions.OffsPick(Offs.HD.Radioactive, Offs.MM.Radioactive), Window.Radioactive.Value, 2, 0xFFFF);
-			Functions.WriteOffset(Functions.OffsPick(Offs.HD.Exotic, Offs.MM.Exotic), Window.Exotic.Value, 2, 0xFFFF);
+			// Cargo.
+			Functions.WriteOffset(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.Common,
+					Offsets.MegaModFieldOffsets.Common
+				),
+				Window.Common.Value,
+				lengthInBytes: 2,
+				valueMax: 0xFFFF
+			);
 
-			// Ship Name
-			Functions.WriteOffsetString(Functions.OffsPick(Offs.HD.ShipName, Offs.MM.ShipName), Window.ShipName.Text, 16);
-			// Captain Name
-			Functions.WriteOffsetString(Functions.OffsPick(Offs.HD.CaptainName, Offs.MM.CaptainName), Window.CommanderName.Text, 16);
+			Functions.WriteOffset(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.Corrosive,
+					Offsets.MegaModFieldOffsets.Corrosive
+				),
+				Window.Corrosive.Value,
+				lengthInBytes: 2,
+				valueMax: 0xFFFF
+			);
+
+			Functions.WriteOffset(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.BaseMetal,
+					Offsets.MegaModFieldOffsets.BaseMetal
+				),
+				Window.BaseMetal.Value,
+				lengthInBytes: 2,
+				valueMax: 0xFFFF
+			);
+
+			Functions.WriteOffset(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.NobleGas,
+					Offsets.MegaModFieldOffsets.NobleGas
+				),
+				Window.NobleGas.Value,
+				lengthInBytes: 2,
+				valueMax: 0xFFFF
+			);
+
+			Functions.WriteOffset(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.RareEarth,
+					Offsets.MegaModFieldOffsets.RareEarth
+				),
+				Window.RareEarth.Value,
+				lengthInBytes: 2,
+				valueMax: 0xFFFF
+			);
+
+			Functions.WriteOffset(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.Precious,
+					Offsets.MegaModFieldOffsets.Precious
+				),
+				Window.Precious.Value,
+				lengthInBytes: 2,
+				valueMax: 0xFFFF
+			);
+
+			Functions.WriteOffset(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.Radioactive,
+					Offsets.MegaModFieldOffsets.Radioactive
+				),
+				Window.Radioactive.Value,
+				lengthInBytes: 2,
+				valueMax: 0xFFFF
+			);
+
+			Functions.WriteOffset(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.Exotic,
+					Offsets.MegaModFieldOffsets.Exotic
+				),
+				Window.Exotic.Value,
+				lengthInBytes: 2,
+				valueMax: 0xFFFF
+			);
+
+			Functions.WriteOffsetString(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.ShipName,
+					Offsets.MegaModFieldOffsets.ShipName
+				),
+				Window.ShipName.Text,
+				lengthInBytes: 16
+			);
+
+			Functions.WriteOffsetString(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.CaptainName,
+					Offsets.MegaModFieldOffsets.CaptainName
+				),
+				Window.CommanderName.Text,
+				lengthInBytes: 16
+			);
 		}
 	}
 }

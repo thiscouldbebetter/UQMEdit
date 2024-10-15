@@ -14,87 +14,199 @@ namespace UQMEdit
 
 			if (SaveVersion >= 2)
 			{
-				int Magic = Functions.ReadOffsetToInt(Offs.SaveNameMagic, 4);
-                int NameSize = (Magic - 160);
+				var magic = Functions.ReadOffsetToInt(Offsets.SaveNameMagic, 4);
+                var nameSize = (magic - 160);
 
-                SaveName = Encoding.Default.GetString(Functions.ReadOffset(SaveVersion == 3 ? Offs.Core.SaveName : Offs.MM.SaveName, NameSize));
-			} else if (SaveVersion == 1) {
-				SaveName = Encoding.Default.GetString(Functions.ReadOffset(Offs.HD.SaveName, 31));
+                SaveName = Encoding.Default.GetString(
+					Functions.ReadBytesFromOffsetToLength(
+						SaveVersion == 3
+						? Offsets.Core.SaveName
+						: Offsets.MegaModFieldOffsets.SaveName,
+						nameSize
+					)
+				);
+			}
+			else if (SaveVersion == 1)
+			{
+				SaveName = Encoding.Default.GetString(
+					Functions.ReadBytesFromOffsetToLength(
+						Offsets.HighDefinitionRemaster.SaveName,
+						lengthInBytes: 31
+					)
+				);
 			} else {
 				SaveName = "Saved Game - Date: ";
 			}
 
-			// Resource Units
-			Window.ResUnits.Value = Functions.ReadOffsetToInt(Functions.OffsPick(Offs.HD.ResUnits, Offs.MM.ResUnits), 4);
-			// Fuel
-			decimal fuel = Functions.ReadOffsetToInt(Functions.OffsPick(Offs.HD.Fuel, Offs.MM.Fuel), 4);
+			Window.ResUnits.Value = Functions.ReadOffsetToInt(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.ResUnits,
+					Offsets.MegaModFieldOffsets.ResUnits
+				),
+				lengthInBytes: 4
+			);
+
+			var fuel = Functions.ReadOffsetToInt(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.Fuel,
+					Offsets.MegaModFieldOffsets.Fuel
+				),
+				lengthInBytes: 4
+			);
 			fuel = fuel > 160100 ? 160100 : fuel;
 			Window.ShipFuel.Value = fuel / 100;
-			// SiS Crew
-			Window.ShipCrew.Value = Functions.ReadOffsetToInt(Functions.OffsPick(Offs.HD.SiSCrew, Offs.MM.SiSCrew), 4, 16);
-			// Life Forms
-			Window.BioData.Value = Functions.ReadOffsetToInt(Functions.OffsPick(Offs.HD.BioData, Offs.MM.BioData), 2, 16);
 
+			Window.ShipCrew.Value = Functions.ReadOffsetToInt(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.SiSCrew,
+					Offsets.MegaModFieldOffsets.SiSCrew
+				),
+				lengthInBytes: 4,
+				bitWidth: 16
+			);
+
+			Window.BioData.Value = Functions.ReadOffsetToInt(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.BioData,
+					Offsets.MegaModFieldOffsets.BioData
+				),
+				lengthInBytes: 2,
+				bitWidth: 16);
 
 			// Modules
-			byte[] ModulesArray = Functions.ReadOffset(Functions.OffsPick(Offs.HD.ModuleSlots, Offs.MM.ModuleSlots), 16);
-			byte MDCount = 0;
-			foreach (object Modules in Window.ModulesBox.Controls) {
-				if (Modules is ComboBox) {
-					if (ModulesArray[MDCount] < 20) {
-						(Modules as ComboBox).SelectedIndex = ModulesArray[MDCount] - 2;
+			var modules =
+				Functions.ReadBytesFromOffsetToLength(
+					Functions.ByteOffsetsPick(
+						Offsets.HighDefinitionRemaster.ModuleSlots,
+						Offsets.MegaModFieldOffsets.ModuleSlots
+					),
+					lengthInBytes: 16
+				);
+			var moduleCount = 0;
+			foreach (var modulesControl in Window.ModulesBox.Controls) {
+				if (modulesControl is ComboBox) {
+					if (modules[moduleCount] < 20) {
+						(modulesControl as ComboBox).SelectedIndex = modules[moduleCount] - 2;
 					} else {
-						(Modules as ComboBox).SelectedIndex = 0;
+						(modulesControl as ComboBox).SelectedIndex = 0;
 					}
-					MDCount++;
+					moduleCount++;
 				}
 			}
 
-			// Anti-Mat Thrusters
-			byte[] ThrustersArray = Functions.ReadOffset(Functions.OffsPick(Offs.HD.DriveSlots[0], Offs.MM.DriveSlots[0]), 11);
-			byte TCount = 0;
-			foreach (object Thrusters in Window.ThrusterBox.Controls) {
-				if (Thrusters is CheckBox) {
-					(Thrusters as CheckBox).Checked = ThrustersArray[TCount] == 1 ? true : false;
-					TCount++;
+			var thrustersArray =
+				Functions.ReadBytesFromOffsetToLength(
+					Functions.ByteOffsetsPick(
+						Offsets.HighDefinitionRemaster.DriveSlots[0],
+						Offsets.MegaModFieldOffsets.DriveSlots[0]
+					),
+					lengthInBytes: 11
+				);
+
+			var thrustersCount = 0;
+			foreach (var thrustersControl in Window.ThrusterBox.Controls) {
+				if (thrustersControl is CheckBox)
+				{
+					(thrustersControl as CheckBox).Checked =
+						(thrustersArray[thrustersCount] == 1);
+					thrustersCount++;
 				}
 			}
 
-			// Turning Jets
-			byte[] JetsArray = Functions.ReadOffset(Functions.OffsPick(Offs.HD.JetSlots[0], Offs.MM.JetSlots[0]), 8);
-			byte JCount = 0;
-			foreach (object Jets in Window.JetsBox.Controls) {
-				if (Jets is CheckBox) {
-					(Jets as CheckBox).Checked = JetsArray[JCount] == 2 ? true : false;
-					JCount++;
+			var turningJets =
+				Functions.ReadBytesFromOffsetToLength(
+					Functions.ByteOffsetsPick(
+						Offsets.HighDefinitionRemaster.JetSlots[0],
+						Offsets.MegaModFieldOffsets.JetSlots[0]
+					),
+					lengthInBytes: 8
+				);
+
+			var turningJetsCount = 0;
+			foreach (var turningJetsControl in Window.JetsBox.Controls) {
+				if (turningJetsControl is CheckBox) {
+					(turningJetsControl as CheckBox).Checked =
+						(turningJets[turningJetsCount] == 2);
+					turningJetsCount++;
 				}
 			}
 
-			// Landers
-			Window.Landers.Value = Functions.ReadOffset(Functions.OffsPick(Offs.HD.Landers, Offs.MM.Landers), 1)[0];
+			Window.Landers.Value =
+				Functions.ReadBytesFromOffsetToLength(
+					Functions.ByteOffsetsPick(
+						Offsets.HighDefinitionRemaster.Landers,
+						Offsets.MegaModFieldOffsets.Landers
+					),
+					1
+				)[0];
 
-			// Cargo
-			Window.Common.Value = Functions.ReadOffsetToInt(Functions.OffsPick(Offs.HD.Common, Offs.MM.Common), 2, 16);
-			Window.Corrosive.Value = Functions.ReadOffsetToInt(Functions.OffsPick(Offs.HD.Corrosive, Offs.MM.Corrosive), 2, 16);
-			Window.BaseMetal.Value = Functions.ReadOffsetToInt(Functions.OffsPick(Offs.HD.BaseMetal, Offs.MM.BaseMetal), 2, 16);
-			Window.NobleGas.Value = Functions.ReadOffsetToInt(Functions.OffsPick(Offs.HD.NobleGas, Offs.MM.NobleGas), 2, 16);
-			Window.RareEarth.Value = Functions.ReadOffsetToInt(Functions.OffsPick(Offs.HD.RareEarth, Offs.MM.RareEarth), 2, 16);
-			Window.Precious.Value = Functions.ReadOffsetToInt(Functions.OffsPick(Offs.HD.Precious, Offs.MM.Precious), 2, 16);
-			Window.Radioactive.Value = Functions.ReadOffsetToInt(Functions.OffsPick(Offs.HD.Radioactive, Offs.MM.Radioactive), 2, 16);
-			Window.Exotic.Value = Functions.ReadOffsetToInt(Functions.OffsPick(Offs.HD.Exotic, Offs.MM.Exotic), 2, 16);
+			// Cargo.
+			Window.Common.Value =
+				Functions.ReadOffsetToInt(
+					Functions.ByteOffsetsPick(
+						Offsets.HighDefinitionRemaster.Common,
+						Offsets.MegaModFieldOffsets.Common
+					),
+					lengthInBytes: 2,
+					bitWidth: 16
+				);
+			Window.Corrosive.Value =
+				Functions.ReadOffsetToInt(
+					Functions.ByteOffsetsPick(
+						Offsets.HighDefinitionRemaster.Corrosive,
+						Offsets.MegaModFieldOffsets.Corrosive
+					),
+					lengthInBytes: 2,
+					bitWidth: 16
+				);
+			Window.BaseMetal.Value = Functions.ReadOffsetToInt(Functions.ByteOffsetsPick(Offsets.HighDefinitionRemaster.BaseMetal, Offsets.MegaModFieldOffsets.BaseMetal), 2, 16);
+			Window.NobleGas.Value = Functions.ReadOffsetToInt(Functions.ByteOffsetsPick(Offsets.HighDefinitionRemaster.NobleGas, Offsets.MegaModFieldOffsets.NobleGas), 2, 16);
+			Window.RareEarth.Value = Functions.ReadOffsetToInt(Functions.ByteOffsetsPick(Offsets.HighDefinitionRemaster.RareEarth, Offsets.MegaModFieldOffsets.RareEarth), 2, 16);
+			Window.Precious.Value = Functions.ReadOffsetToInt(Functions.ByteOffsetsPick(Offsets.HighDefinitionRemaster.Precious, Offsets.MegaModFieldOffsets.Precious), 2, 16);
+			Window.Radioactive.Value = Functions.ReadOffsetToInt(Functions.ByteOffsetsPick(Offsets.HighDefinitionRemaster.Radioactive, Offsets.MegaModFieldOffsets.Radioactive), 2, 16);
+			Window.Exotic.Value = Functions.ReadOffsetToInt(Functions.ByteOffsetsPick(Offsets.HighDefinitionRemaster.Exotic, Offsets.MegaModFieldOffsets.Exotic), 2, 16);
 
-			// Ship Name
-			Window.ShipName.Text = Encoding.Default.GetString(Functions.ReadOffset(Functions.OffsPick(Offs.HD.ShipName, Offs.MM.ShipName), 16));
-			// Captain Name
-			Window.CommanderName.Text = Encoding.Default.GetString(Functions.ReadOffset(Functions.OffsPick(Offs.HD.CaptainName, Offs.MM.CaptainName), 16));
+			Window.ShipName.Text =
+				Encoding.Default.GetString(
+					Functions.ReadBytesFromOffsetToLength(
+						Functions.ByteOffsetsPick(
+							Offsets.HighDefinitionRemaster.ShipName,
+							Offsets.MegaModFieldOffsets.ShipName
+						),
+						lengthInBytes: 16
+					)
+				);
+
+			Window.CommanderName.Text =
+				Encoding.Default.GetString(
+					Functions.ReadBytesFromOffsetToLength(
+						Functions.ByteOffsetsPick(
+							Offsets.HighDefinitionRemaster.CaptainName,
+							Offsets.MegaModFieldOffsets.CaptainName
+						),
+						lengthInBytes: 16
+					)
+				);
 
 			//  Lander Mods
-			byte LanderMods = Functions.ReadOffset(Functions.OffsPick(Offs.HD.LanderMods, Offs.MM.LanderMods, Offs.Core.LanderMods), 1)[0];
-			bool LanderModsBool(int OtherValue, bool Bomb = false) {
-				if (!Bomb)
-					return ((LanderMods | 128) & OtherValue) != 0 ? true : false;
-				return (LanderMods & OtherValue) != 0 ? true : false;
+			byte landerModificationsAsByte =
+				Functions.ReadBytesFromOffsetToLength(
+					Functions.ByteOffsetsPick(
+						Offsets.HighDefinitionRemaster.LanderModifications,
+						Offsets.MegaModFieldOffsets.LanderModificiations,
+						Offsets.Core.LanderModifications
+					),
+					lengthInBytes: 1
+				)[0];
+
+			bool LanderModsBool(int otherValue, bool isBomb = false)
+			{
+				return
+					!isBomb
+					? (((landerModificationsAsByte | 128) & otherValue) != 0)
+					: ((landerModificationsAsByte & otherValue) != 0);
 			}
+
 			Window.IsBomb.Checked = LanderModsBool(128, true);
 			Window.BioShield.Checked = LanderModsBool(1);
 			Window.QuakeShield.Checked = LanderModsBool(2);
@@ -105,53 +217,159 @@ namespace UQMEdit
 			Window.RapidFire.Checked = LanderModsBool(64);
 
 			// Time & Date
-			int Month = 0, Year = 0, Day = 0;
-			Day = Functions.ReadOffset(Functions.OffsPick(Offs.HD.Date[0], Offs.MM.Date[0], Offs.Core.Date[0]), 1)[0];
-			Month = Functions.ReadOffset(Functions.OffsPick(Offs.HD.Date[1], Offs.MM.Date[1], Offs.Core.Date[1]), 1)[0];
-			Year = Functions.ReadOffsetToInt(Functions.OffsPick(Offs.HD.Date[2], Offs.MM.Date[2], Offs.Core.Date[2]), 2, 16);
-			Date = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(Month).ToUpper() + " " + Day + "·" + Year;
+			var day = Functions.ReadBytesFromOffsetToLength(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.Date[0],
+					Offsets.MegaModFieldOffsets.Date[0],
+					Offsets.Core.Date[0]
+				),
+				lengthInBytes: 1
+			)[0];
 
-			// Credits
-			Window.Credits.Text = Functions.ReadOffsetToInt(Functions.OffsPick(Offs.HD.Credits, Offs.MM.Credits, Offs.Core.Credits), 2, 16).ToString();
+			var month = Functions.ReadBytesFromOffsetToLength(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.Date[1],
+					Offsets.MegaModFieldOffsets.Date[1],
+					Offsets.Core.Date[1]
+				),
+				lengthInBytes: 1
+			)[0];
 
-			//  Escorts
-			byte NumberOfShips = Functions.ReadOffset(Functions.OffsPick(Offs.HD.Escorts[0], Offs.MM.Escorts[0], Offs.Core.Escorts[0]), 1)[0];
-			byte[] ShipsArray = Functions.ReadOffset(Functions.OffsPick(Offs.HD.Escorts[1], Offs.MM.Escorts[1], Offs.Core.Escorts[1]), NumberOfShips);
-			byte ShipCount = 0;
-			foreach (object current in Window.ShipsBox.Controls) {
-				if (current is ComboBox) {
-					if (ShipCount < NumberOfShips) {
-						if (ShipsArray[ShipCount] < Vars.ShipNames.Length && ShipsArray[ShipCount] >= 0) {
-							(current as ComboBox).SelectedIndex = ShipsArray[ShipCount];
-						} else {
-							(current as ComboBox).SelectedIndex = 24;
+			var year = Functions.ReadOffsetToInt(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.Date[2],
+					Offsets.MegaModFieldOffsets.Date[2],
+					Offsets.Core.Date[2]
+				),
+				lengthInBytes: 2,
+				bitWidth: 16
+			);
+
+			Date =
+				CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(month).ToUpper()
+				+ " " + day
+				+ "·" + year;
+
+			Window.Credits.Text = Functions.ReadOffsetToInt(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.Credits,
+					Offsets.MegaModFieldOffsets.Credits,
+					Offsets.Core.Credits
+				),
+				lengthInBytes: 2,
+				bitWidth: 16
+			).ToString();
+
+			var escortShipsCountAsRead = Functions.ReadBytesFromOffsetToLength(
+				Functions.ByteOffsetsPick(
+					Offsets.HighDefinitionRemaster.Escorts[0],
+					Offsets.MegaModFieldOffsets.Escorts[0],
+					Offsets.Core.Escorts[0]
+				),
+				lengthInBytes: 1
+			)[0];
+			var escortShipsAsBytes =
+				Functions.ReadBytesFromOffsetToLength(
+					Functions.ByteOffsetsPick(
+						Offsets.HighDefinitionRemaster.Escorts[1],
+						Offsets.MegaModFieldOffsets.Escorts[1],
+						Offsets.Core.Escorts[1]
+					),
+					escortShipsCountAsRead
+				);
+
+			var escortShipsCountAsCounted = 0;
+			foreach (var shipsControl in Window.ShipsBox.Controls)
+			{
+				if (shipsControl is ComboBox)
+				{
+					if (escortShipsCountAsCounted < escortShipsCountAsRead)
+					{
+						if
+						(
+							escortShipsAsBytes[escortShipsCountAsCounted] < Constants.ShipNames.Length
+							&& escortShipsAsBytes[escortShipsCountAsCounted] >= 0
+						)
+						{
+							(shipsControl as ComboBox).SelectedIndex = escortShipsAsBytes[escortShipsCountAsCounted];
 						}
-						ShipCount++;
-					} else {
-						(current as ComboBox).SelectedIndex = 24;
+						else
+						{
+							(shipsControl as ComboBox).SelectedIndex = 24;
+						}
+						escortShipsCountAsCounted++;
+					}
+					else
+					{
+						(shipsControl as ComboBox).SelectedIndex = 24;
 					}
 				}
 			}
 
-			//  Devices
-			byte NumberOfDevices = Functions.ReadOffset(Functions.OffsPick(Offs.HD.Devices[0], Offs.MM.Devices[0], Offs.Core.Devices[0]), 1)[0];
-			object[] DevicesIntArray = new object[NumberOfDevices];
-			byte[] DevicesArray = Functions.ReadOffset(Functions.OffsPick(Offs.HD.Devices[1], Offs.MM.Devices[1], Offs.Core.Devices[1]), NumberOfDevices);
-			for (byte i = 0; i < NumberOfDevices; i++) {
-				if (DevicesArray[i] < 0 || DevicesArray[i] >= Vars.DeviceName.Length)
-					DevicesIntArray[i] = "Please report this [0x" + DevicesArray[i].ToString("X2") + "]";
+			var devicesCount =
+				Functions.ReadBytesFromOffsetToLength(
+					Functions.ByteOffsetsPick(
+						Offsets.HighDefinitionRemaster.Devices[0],
+						Offsets.MegaModFieldOffsets.Devices[0],
+						Offsets.Core.Devices[0]
+					),
+					lengthInBytes: 1
+				)[0];
+
+			var devicesAsObjects = new object[devicesCount];
+			var devicesAsBytes =
+				Functions.ReadBytesFromOffsetToLength(
+					Functions.ByteOffsetsPick(
+						Offsets.HighDefinitionRemaster.Devices[1],
+						Offsets.MegaModFieldOffsets.Devices[1],
+						Offsets.Core.Devices[1]
+					),
+					devicesCount
+				);
+
+			for (var i = 0; i < devicesCount; i++)
+			{
+				if (devicesAsBytes[i] < 0 || devicesAsBytes[i] >= Constants.DeviceNames.Length)
+				{
+					devicesAsObjects[i] = "Please report this [0x" + devicesAsBytes[i].ToString("X2") + "]";
+				}
 				else
-					DevicesIntArray[i] = Vars.DeviceName[DevicesArray[i]];
+				{
+					devicesAsObjects[i] = Constants.DeviceNames[devicesAsBytes[i]];
+				}
 			}
 			Window.Devices.Items.Clear();
-			Window.Devices.Items.AddRange(DevicesIntArray);
+			Window.Devices.Items.AddRange(devicesAsObjects);
 
 			// Custom Seed
-			if (SaveVersion == 2) {
-				Window.difficultyBox.SelectedIndex = Functions.ReadOffset(Offs.MM.Difficulty, 1)[0];
-				Window.extendedCheckBox.Checked = Convert.ToBoolean(Functions.ReadOffset(Offs.MM.Extended, 1)[0]);
-				Window.nomadCheckBox.Checked = Convert.ToBoolean(Functions.ReadOffset(Offs.MM.Nomad, 1)[0]);
-				Window.CustomSeed.Text = Functions.ReadOffsetToInt(Offs.MM.CustomSeed, 4, 32).ToString();
+			if (SaveVersion == 2)
+			{
+				Window.difficultyBox.SelectedIndex =
+					Functions.ReadBytesFromOffsetToLength(
+						Offsets.MegaModFieldOffsets.Difficulty,
+						lengthInBytes: 1
+					)[0];
+
+				Window.extendedCheckBox.Checked =
+					Convert.ToBoolean(
+						Functions.ReadBytesFromOffsetToLength(
+							Offsets.MegaModFieldOffsets.Extended,
+							lengthInBytes: 1
+						)[0]
+					);
+
+				Window.nomadCheckBox.Checked =
+					Convert.ToBoolean(
+						Functions.ReadBytesFromOffsetToLength(
+							Offsets.MegaModFieldOffsets.Nomad, lengthInBytes: 1
+						)[0]
+					);
+
+				Window.CustomSeed.Text = Functions.ReadOffsetToInt(
+					Offsets.MegaModFieldOffsets.CustomSeed,
+					lengthInBytes: 4,
+					bitWidth: 32
+				).ToString();
 			}
 		}
 	}

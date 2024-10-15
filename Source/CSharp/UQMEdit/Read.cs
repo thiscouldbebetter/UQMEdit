@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Windows.Forms;
 
 namespace UQMEdit
@@ -11,33 +10,36 @@ namespace UQMEdit
 		public static byte[] FileBuffer;
 		public static byte SaveVersion = 0;
 
-		public static void Open(string FileName, Main window) {
-			if (!File.Exists(FileName)) {
-				MessageBox.Show("Could not find path: " + FileName);
-				return;
+		public static void Open(string fileToLoadName, Main window) {
+
+			if (!File.Exists(fileToLoadName))
+			{
+				MessageBox.Show("Could not find file at path: " + fileToLoadName);
 			}
-
-			Stream = new FileStream(FileName, FileMode.Open);
-			int FileSize = (int)Stream.Length;  // get file length
-			FileBuffer = new byte[FileSize];    // create buffer
-			Window = window;
-
-			// Save Checker			
-			int LoadChecker = Functions.ReadOffsetToInt(Offs.SaveChecker, 4);
-			if (LoadChecker == Vars.SaveFileTag)
-				SaveVersion = 3;
-			else if (LoadChecker == Vars.MegaModTag)
-				SaveVersion = 2;
-			else if (LoadChecker == Vars.SaveTagHD)
-				SaveVersion = 1;
 			else
-				SaveVersion = 0;
+			{
 
-			Coordinates();
-			Summary();
+				using (Stream = new FileStream(fileToLoadName, FileMode.Open))
+				{
+					var fileSize = (int)Stream.Length;  // get file length
+					FileBuffer = new byte[fileSize];    // create buffer
+					Window = window;
 
-			Stream.Close();
-			Stream.Dispose();
+					// Save Checker			
+					var loadChecker = Functions.ReadOffsetToInt(Offsets.SaveChecker, 4);
+					if (loadChecker == Constants.SaveFileTag)
+						SaveVersion = 3;
+					else if (loadChecker == Constants.MegaModTag)
+						SaveVersion = 2;
+					else if (loadChecker == Constants.SaveTagHD)
+						SaveVersion = 1;
+					else
+						SaveVersion = 0;
+
+					Coordinates();
+					Summary();
+				}
+			}
 		}
 	}
 }
