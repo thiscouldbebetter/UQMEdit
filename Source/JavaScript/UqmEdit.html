@@ -100,6 +100,14 @@ class ByteStream
 		return bytesRead;
 	}
 
+	readBytesToEnd()
+	{
+		var bytesToReadCount =
+			this.bytes.length - this.byteCurrentIndex;
+		var bytesRead = this.readBytes(bytesToReadCount);
+		return bytesRead;
+	}
+
 	readInteger16Bit()
 	{
 		var bytesRead = this.readBytes(2);
@@ -126,10 +134,41 @@ class ByteStream
 
 	readString(charactersToRead)
 	{
-		var bytesRead = this.readBytes(charactersToRead);
+		var bytesRead = this.readBytes(charactersToRead).filter(x => x > 0);
 		var stringRead =
 			bytesRead.map(x => String.fromCharCode(x) ).join("");
+		stringRead = stringRead.trim();
 		return stringRead;
+	}
+
+	readStringToEnd()
+	{
+		var bytesRead = this.readBytesToEnd();
+		var stringRead = bytesRead.map(x => String.fromCharCode(x) ).join("");
+		return stringRead;
+	}
+
+
+	writeByte(byteToWrite)
+	{
+		this.bytes[this.byteCurrentIndex] = byteToWrite;
+		this.byteCurrentIndex++;
+	}
+
+	writeBytes(bytesToWrite)
+	{
+		bytesToWrite.forEach(x => this.writeByte(x) );
+	}
+
+	writeString(stringToWrite, lengthInBytes)
+	{
+		var stringAsBytes =
+			stringToWrite.split("").map(x => x.charCodeAt(0) );
+		this.writeBytes(stringAsBytes);
+		for (var i = stringAsBytes.length; i < lengthInBytes; i++)
+		{
+			this.writeByte(0);
+		}
 	}
 }
 
@@ -139,6 +178,14 @@ class Coords
 	{
 		this.x = x;
 		this.y = y;
+	}
+
+	static fromByteStream(reader)
+	{
+		var posX = reader.readInteger32Bit();
+		var posY = reader.readInteger32Bit();
+		var pos = new Coords(posX, posY);
+		return pos;
 	}
 }
 
@@ -151,7 +198,7 @@ class SaveState
 		resourceUnits,
 		fuel,
 		flagshipCrew,
-		menerals,
+		minerals,
 		biodataCount,
 		modules,
 		landerCount,
@@ -169,7 +216,8 @@ class SaveState
 		escortShips,
 		devices,
 		resFactor,
-		saveName
+		saveName,
+		bytesRemaining
 	)
 	{
 		this.header         = header;
@@ -177,7 +225,7 @@ class SaveState
 		this.resourceUnits  = resourceUnits;
 		this.fuel           = fuel;
 		this.flagshipCrew   = flagshipCrew;
-		this.menerals       = menerals;
+		this.minerals       = minerals;
 		this.biodataCount   = biodataCount;
 		this.modules        = modules;
 		this.landerCount    = landerCount;
@@ -196,78 +244,51 @@ class SaveState
 		this.devices        = devices;
 		this.resFactor      = resFactor;
 		this.saveName       = saveName;
+		this.bytesRemaining = bytesRemaining;
 	}
+
+	// Bytes.
 
 	static fromBytes(saveStateAsBytes)
 	{
 		var reader = new ByteStream(saveStateAsBytes);
-		var magicString = reader.readString(8);
-		var magicNumber = reader.readInteger32Bit();
-		var posX = reader.readInteger32Bit();
-		var posY = reader.readInteger32Bit();
+
+		var header = SaveStateHeader.fromByteStream(reader);
+
+		var pos = Coords.fromByteStream(reader);
+
 		var resourceUnits = reader.readInteger32Bit();
 		var fuel = reader.readInteger32Bit();
 		var flagshipCrew = reader.readInteger16Bit();
-		var mineralCountAll = reader.readInteger16Bit();
+		var mineralsAll = reader.readInteger16Bit();
 		var biodataCount = reader.readInteger16Bit();
-		var moduleSlots = reader.readBytes(16);
-		var driveSlots = reader.readBytes(11);
-		var turningJetSlots = reader.readBytes(8);
+
+		var modules = SaveStateModules.fromByteStream(reader);
+
 		var landerCount = reader.readByte();
-		var mineralCountCommonElements = reader.readInteger16Bit();
-		var mineralCountCorrosives = reader.readInteger16Bit();
-		var mineralCountBaseMetals = reader.readInteger16Bit();
-		var mineralCountNobleGases = reader.readInteger16Bit();
-		var mineralCountRareEarths = reader.readInteger16Bit();
-		var mineralCountPreciousMetals = reader.readInteger16Bit();
-		var mineralCountRadioactives = reader.readInteger16Bit();
-		var mineralCountExotics = reader.readInteger16Bit();
+
+		var minerals =
+			SaveStateMinerals.fromByteStream(reader);
+
 		var flagshipName = reader.readString(16);
 		var captainName = reader.readString(16);
 		var nearestPlanet = reader.readString(16);
 
 		// How do these work?
-		var difficulty = reader.readByte();
-		var extended = reader.readByte();
-		var nomad = reader.readByte();
-		var customSeed = reader.readByte();
+		var difficulty = reader.readByte(); // ?
+		var extended = reader.readByte(); // ?
+		var nomad = reader.readByte(); // ?
+		var customSeed = reader.readInteger32Bit(); // ?
 
 		var status = reader.readByte();
 		var landerMods = reader.readByte();
-		var date = reader.readBytes(3);
+		var date = reader.readBytes(4);
 		var credits = reader.readInteger16Bit();
-		var escortShips0 = reader.readByte();
-		var devices0 = reader.readByte();
-		var escortShips1 = reader.readByte();
-		var devices1 = reader.readByte();
 
-		var resFactor = reader.readByte(); // ?
-		var saveName = reader.readString(32);
-
-		// Consolidate some fields.
-
-		var header = new SaveStateHeader(magicString, magicNumber);
-
-		var pos = new Coords(posX, posY);
-
-		var minerals = new SaveStateMinerals
-		(
-			mineralCountCommonElements,
-			mineralCountCorrosives,
-			mineralCountBaseMetals,
-			mineralCountNobleGases,
-			mineralCountRareEarths,
-			mineralCountPreciousMetals,
-			mineralCountRadioactives,
-			mineralCountExotics
-		);
-
-		var modules = new SaveStateModules
-		(
-			moduleSlots,
-			driveSlots,
-			turningJetSlots
-		);
+		var escortShips0 = reader.readByte(); // 149
+		var devices0 = reader.readByte(); // 150
+		var escortShips1 = reader.readBytes(12); // 151-162
+		var devices1 = reader.readBytes(8); // 163
 
 		var escortShips = new SaveStateEscortShips
 		(
@@ -278,6 +299,11 @@ class SaveState
 		(
 			devices0, devices1
 		);
+
+		var resFactor = reader.readByte(); // ? - 179
+		var saveName = reader.readString(32);
+
+		var bytesRemaining = reader.readBytesToEnd();
 
 		var saveState = new SaveState
 		(
@@ -304,10 +330,60 @@ class SaveState
 			escortShips,
 			devices,
 			resFactor,
-			saveName
+			saveName,
+			bytesRemaining
 		);
 
 		return saveState;
+	}
+
+	toBytes()
+	{
+		var writer = new ByteStream([]);
+
+		writer.writeBytes(this.header.toBytes() );
+
+		writer.writeBytes(this.pos.toBytes() );
+
+		writer.writeInteger32Bits(this.resourceUnits);
+		writer.writeInteger32Bit(this.fuel);
+		writer.writeInteger16Bit(this.flagshipCrew);
+		writer.writeInteger16Bit(this.biodataCount);
+
+		writer.writeBytes(this.modules.toBytes() );
+
+		writer.writeByte(this.landerCount);
+
+		writer.writeBytes(this.minerals.toBytes() );
+
+		writer.writeString(this.flagshipName, 16);
+		writer.writeString(this.captainName, 16);
+		writer.writeString(this.nearestPlanet, 16);
+
+		// How do these work?
+		writer.writeByte(this.difficulty);
+		writer.writeByte(this.extended);
+		writer.writeByte(this.nomad);
+		writer.writeByte(this.customSeed);
+
+		writer.writeByte(this.status);
+		writer.writeByte(this.landerMods);
+		writer.writeBytes(this.date);
+		writer.writeInteger16Bit(this.credits);
+
+		writer.writeByte(this.escortShips.ships0);
+		writer.writeByte(this.devices.devices0);
+		writer.writeByte(this.escortShips.ships1);
+		writer.writeByte(this.devices.devices1);
+
+		writer.writeByte(this.resFactor);
+		writer.writeString(this.saveName, 32);
+
+		writer.writeBytes(this.bytesRemaining);
+
+		var saveStateAsBytes = writer.bytes;
+
+		return saveStateAsBytes;
 	}
 
 	// JSON.
@@ -327,25 +403,33 @@ class SaveState
 
 	toJson()
 	{
-		return JSON.stringify(this, null, 4);
+		var bytesRemaining = this.bytesRemaining;
+		var bytesRemainingAsHexadecimal =
+			bytesRemaining
+				.map(x => x.toString(16).padStart(2, "0") )
+				.join(" ");
+		this.bytesRemaining = bytesRemainingAsHexadecimal;
+		var returnValue = JSON.stringify(this, null, 4);
+		this.bytesRemaining = bytesRemaining;
+		return returnValue;
 	}
 }
 
 class SaveStateDevices
 {
-	constructor(a, b)
+	constructor(devices0, devices1)
 	{
-		this.a = a;
-		this.b = b;
+		this.devices0 = devices0;
+		this.devices1 = devices1;
 	}
 }
 
 class SaveStateEscortShips
 {
-	constructor(a, b)
+	constructor(ships0, ships1)
 	{
-		this.a = a;
-		this.b = b;
+		this.ships0 = ships0;
+		this.ships1 = ships1;
 	}
 }
 
@@ -355,6 +439,14 @@ class SaveStateHeader
 	{
 		this.magicString = magicString;
 		this.magicNumber = magicNumber;
+	}
+
+	static fromByteStream(reader)
+	{
+		var magicString = reader.readString(8);
+		var magicNumber = reader.readInteger32Bit();
+		var header = new SaveStateHeader(magicString, magicNumber);
+		return header;
 	}
 }
 
@@ -381,6 +473,31 @@ class SaveStateMinerals
 		this.radioactives   = radioactives;
 		this.exotics        = exotics;
 	}
+
+	static fromByteStream(reader)
+	{
+		var mineralCountCommonElements = reader.readInteger16Bit();
+		var mineralCountCorrosives = reader.readInteger16Bit();
+		var mineralCountBaseMetals = reader.readInteger16Bit();
+		var mineralCountNobleGases = reader.readInteger16Bit();
+		var mineralCountRareEarths = reader.readInteger16Bit();
+		var mineralCountPreciousMetals = reader.readInteger16Bit();
+		var mineralCountRadioactives = reader.readInteger16Bit();
+		var mineralCountExotics = reader.readInteger16Bit();
+		var minerals = new SaveStateMinerals
+		(
+			mineralCountCommonElements,
+			mineralCountCorrosives,
+			mineralCountBaseMetals,
+			mineralCountNobleGases,
+			mineralCountRareEarths,
+			mineralCountPreciousMetals,
+			mineralCountRadioactives,
+			mineralCountExotics
+		);
+
+		return minerals;
+	}
 }
 
 class SaveStateModules
@@ -390,6 +507,21 @@ class SaveStateModules
 		this.moduleSlots = moduleSlots;
 		this.driveSlots = driveSlots;
 		this.turningJetSlots = turningJetSlots;
+	}
+
+	static fromByteStream(reader)
+	{
+		var moduleSlots = reader.readBytes(16);
+		var driveSlots = reader.readBytes(11);
+		var turningJetSlots = reader.readBytes(8);
+		var modules = new SaveStateModules
+		(
+			moduleSlots,
+			driveSlots,
+			turningJetSlots
+		);
+
+		return modules;
 	}
 }
 
