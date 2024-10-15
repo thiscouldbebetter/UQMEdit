@@ -119,6 +119,18 @@ class ByteStream
 		return integerRead;
 	}
 
+	readInteger24Bit()
+	{
+		var bytesRead = this.readBytes(3);
+
+		var integerRead =
+			(bytesRead[0] << 0)
+			| (bytesRead[1] << 8)
+			| (bytesRead[2] << 16);
+
+		return integerRead;
+	}
+
 	readInteger32Bit()
 	{
 		var bytesRead = this.readBytes(4);
@@ -134,20 +146,28 @@ class ByteStream
 
 	readString(charactersToRead)
 	{
-		var bytesRead = this.readBytes(charactersToRead).filter(x => x > 0);
+		var bytesRead = this.readBytes(charactersToRead);
+		bytesRead = bytesRead.filter(x => x > 0);
 		var stringRead =
 			bytesRead.map(x => String.fromCharCode(x) ).join("");
 		stringRead = stringRead.trim();
 		return stringRead;
 	}
 
-	readStringToEnd()
+	readStringUntilNullEncountered()
 	{
-		var bytesRead = this.readBytesToEnd();
-		var stringRead = bytesRead.map(x => String.fromCharCode(x) ).join("");
+		var bytesRead = [];
+		var byteRead = this.readByte();
+		while (byteRead != 0)
+		{
+			bytesRead.push(byteRead);
+			byteRead = this.readByte();
+		}
+		var stringRead =
+			bytesRead.map(x => String.fromCharCode(x) ).join("");
+
 		return stringRead;
 	}
-
 
 	writeByte(byteToWrite)
 	{
@@ -184,6 +204,7 @@ class Coords
 	{
 		var posX = reader.readInteger32Bit();
 		var posY = reader.readInteger32Bit();
+
 		var pos = new Coords(posX, posY);
 		return pos;
 	}
@@ -205,17 +226,12 @@ class SaveState
 		flagshipName,
 		captainName,
 		nearestPlanet,
-		difficulty,
-		extended,
-		nomad,
-		customSeed,
 		status, 
 		landerMods,
 		date,
 		credits,
 		escortShips,
 		devices,
-		resFactor,
 		saveName,
 		bytesRemaining
 	)
@@ -232,17 +248,12 @@ class SaveState
 		this.flagshipName   = flagshipName;
 		this.captainName    = captainName;
 		this.nearestPlanet  = nearestPlanet;
-		this.difficulty     = difficulty;
-		this.extended       = extended;
-		this.nomad          = nomad;
-		this.customSeed     = customSeed;
-		this.status         = status;
+		this.status         = status; // starsystem = 4, planet orbit = 7
 		this.landerMods     = landerMods;
 		this.date           = date;
 		this.credits        = credits;
 		this.escortShips    = escortShips;
 		this.devices        = devices;
-		this.resFactor      = resFactor;
 		this.saveName       = saveName;
 		this.bytesRemaining = bytesRemaining;
 	}
@@ -274,34 +285,30 @@ class SaveState
 		var captainName = reader.readString(16);
 		var nearestPlanet = reader.readString(16);
 
-		// How do these work?
-		var difficulty = reader.readByte(); // ?
-		var extended = reader.readByte(); // ?
-		var nomad = reader.readByte(); // ?
-		var customSeed = reader.readInteger32Bit(); // ?
-
 		var status = reader.readByte();
 		var landerMods = reader.readByte();
-		var date = reader.readBytes(4);
+		var day = reader.readByte();
+		var month = reader.readByte();
+		var year = reader.readInteger16Bit();
+		var date = new Date(year, month - 1, day);
 		var credits = reader.readInteger16Bit();
 
-		var escortShips0 = reader.readByte(); // 149
-		var devices0 = reader.readByte(); // 150
-		var escortShips1 = reader.readBytes(12); // 151-162
-		var devices1 = reader.readBytes(8); // 163
+		var escortShipsCount = reader.readByte(); // 149
+		var devicesCount = reader.readByte(); // 150
+		var escortShipsAsBytes = reader.readBytes(12); // 151-162
+		var devicesAsBytes = reader.readBytes(16); // 163
 
 		var escortShips = new SaveStateEscortShips
 		(
-			escortShips0, escortShips1
+			escortShipsCount, escortShipsAsBytes
 		);
 
 		var devices = new SaveStateDevices
 		(
-			devices0, devices1
+			devicesCount, devicesAsBytes
 		);
 
-		var resFactor = reader.readByte(); // ? - 179
-		var saveName = reader.readString(32);
+		var saveName = reader.readStringUntilNullEncountered();
 
 		var bytesRemaining = reader.readBytesToEnd();
 
@@ -319,17 +326,12 @@ class SaveState
 			flagshipName,
 			captainName,
 			nearestPlanet,
-			difficulty,
-			extended,
-			nomad,
-			customSeed,
 			status, 
 			landerMods,
 			date,
 			credits,
 			escortShips,
 			devices,
-			resFactor,
 			saveName,
 			bytesRemaining
 		);
@@ -339,51 +341,7 @@ class SaveState
 
 	toBytes()
 	{
-		var writer = new ByteStream([]);
-
-		writer.writeBytes(this.header.toBytes() );
-
-		writer.writeBytes(this.pos.toBytes() );
-
-		writer.writeInteger32Bits(this.resourceUnits);
-		writer.writeInteger32Bit(this.fuel);
-		writer.writeInteger16Bit(this.flagshipCrew);
-		writer.writeInteger16Bit(this.biodataCount);
-
-		writer.writeBytes(this.modules.toBytes() );
-
-		writer.writeByte(this.landerCount);
-
-		writer.writeBytes(this.minerals.toBytes() );
-
-		writer.writeString(this.flagshipName, 16);
-		writer.writeString(this.captainName, 16);
-		writer.writeString(this.nearestPlanet, 16);
-
-		// How do these work?
-		writer.writeByte(this.difficulty);
-		writer.writeByte(this.extended);
-		writer.writeByte(this.nomad);
-		writer.writeByte(this.customSeed);
-
-		writer.writeByte(this.status);
-		writer.writeByte(this.landerMods);
-		writer.writeBytes(this.date);
-		writer.writeInteger16Bit(this.credits);
-
-		writer.writeByte(this.escortShips.ships0);
-		writer.writeByte(this.devices.devices0);
-		writer.writeByte(this.escortShips.ships1);
-		writer.writeByte(this.devices.devices1);
-
-		writer.writeByte(this.resFactor);
-		writer.writeString(this.saveName, 32);
-
-		writer.writeBytes(this.bytesRemaining);
-
-		var saveStateAsBytes = writer.bytes;
-
-		return saveStateAsBytes;
+		throw new Error("todo");
 	}
 
 	// JSON.
@@ -417,19 +375,19 @@ class SaveState
 
 class SaveStateDevices
 {
-	constructor(devices0, devices1)
+	constructor(devicesCount, devicesAsBytes)
 	{
-		this.devices0 = devices0;
-		this.devices1 = devices1;
+		this.devicesCount = devicesCount;
+		this.devicesAsBytes = devicesAsBytes;
 	}
 }
 
 class SaveStateEscortShips
 {
-	constructor(ships0, ships1)
+	constructor(shipsCount, shipsAsBytes)
 	{
-		this.ships0 = ships0;
-		this.ships1 = ships1;
+		this.shipsCount = shipsCount;
+		this.shipsAsBytes = shipsAsBytes;
 	}
 }
 
