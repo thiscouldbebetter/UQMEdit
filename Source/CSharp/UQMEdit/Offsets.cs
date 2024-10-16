@@ -217,29 +217,29 @@ namespace UQMEdit
 		public byte SaveChecker { get => _offsetsInner.SaveChecker; }
 		public byte SaveNameMagic { get => _offsetsInner.SaveNameMagic; }
 		public byte SaveName { get; } = 172;
-		public byte LogX { get => (byte)(_offsetsInner.LogX); }
-		public byte LogY { get => (byte)(_offsetsInner.LogY); }
-		public byte ResUnits { get => (byte)(_offsetsInner.ResUnits); }
-		public byte Fuel { get => (byte)(_offsetsInner.Fuel); }
-		public byte SiSCrew { get => (byte)(_offsetsInner.SiSCrew); }
-		public byte TotalMinerals { get => (byte)(_offsetsInner.TotalMinerals); }
-		public byte BioData { get => (byte)(_offsetsInner.BioData); }
-		public byte ModuleSlots { get => (byte)(_offsetsInner.ModuleSlots); }
-		public byte[] ThrusterSlots { get => _offsetsInner.ThrusterSlots.Select(x => (byte)(x - 48) ).ToArray(); }
-		public byte[] TurningJetSlots { get => _offsetsInner.TurningJetSlots.Select(x => (byte)(x - 48)).ToArray(); }
-		public byte Landers { get => (byte)(_offsetsInner.Landers); }
-		public byte Minerals_CommonElements { get => (byte)(_offsetsInner.Minerals_CommonElements); }
-		public byte Minerals_Corrosives { get => (byte)(_offsetsInner.Minerals_Corrosives); }
-		public byte Minerals_BaseMetals { get => (byte)(_offsetsInner.Minerals_BaseMetals); }
-		public byte Minerals_NobleGases { get => (byte)(_offsetsInner.Minerals_NobleGases); }
-		public byte Minerals_RareEarths { get => (byte)(_offsetsInner.Minerals_RareEarths); }
-		public byte Minerals_PreciousMetals { get => (byte)(_offsetsInner.Minerals_PreciousMetals); }
-		public byte Minerals_Radioactives { get => (byte)(_offsetsInner.Minerals_Radioactives); }
-		public byte Minerals_Exotics { get => (byte)(_offsetsInner.Minerals_Exotics); }
-		public byte[] Minerals { get => _offsetsInner.Minerals.Select(x => (byte)(x - 48)).ToArray(); }
-		public byte ShipName { get => (byte)(_offsetsInner.ShipName); }
-		public byte CaptainName { get => (byte)(_offsetsInner.CaptainName); }
-		public byte NearestPlanet { get => (byte)(_offsetsInner.NearestPlanet); }
+		public byte LogX { get => _offsetsInner.LogX; }
+		public byte LogY { get => _offsetsInner.LogY; }
+		public byte ResUnits { get => _offsetsInner.ResUnits; }
+		public byte Fuel { get => _offsetsInner.Fuel; }
+		public byte SiSCrew { get => _offsetsInner.SiSCrew; }
+		public byte TotalMinerals { get => _offsetsInner.TotalMinerals; }
+		public byte BioData { get => _offsetsInner.BioData; }
+		public byte ModuleSlots { get => _offsetsInner.ModuleSlots; }
+		public byte[] ThrusterSlots { get => _offsetsInner.ThrusterSlots; }
+		public byte[] TurningJetSlots { get => _offsetsInner.TurningJetSlots; }
+		public byte Landers { get => _offsetsInner.Landers; }
+		public byte Minerals_CommonElements { get => _offsetsInner.Minerals_CommonElements; }
+		public byte Minerals_Corrosives { get => _offsetsInner.Minerals_Corrosives; }
+		public byte Minerals_BaseMetals { get => _offsetsInner.Minerals_BaseMetals; }
+		public byte Minerals_NobleGases { get => _offsetsInner.Minerals_NobleGases; }
+		public byte Minerals_RareEarths { get => _offsetsInner.Minerals_RareEarths; }
+		public byte Minerals_PreciousMetals { get => _offsetsInner.Minerals_PreciousMetals; }
+		public byte Minerals_Radioactives { get => _offsetsInner.Minerals_Radioactives; }
+		public byte Minerals_Exotics { get => _offsetsInner.Minerals_Exotics; }
+		public byte[] Minerals { get => _offsetsInner.Minerals; }
+		public byte ShipName { get => _offsetsInner.ShipName; }
+		public byte CaptainName { get => _offsetsInner.CaptainName; }
+		public byte NearestPlanet { get => _offsetsInner.NearestPlanet; }
 		public byte Status { get; } = 134;
 
 		public byte LanderModifications { get; } = 135;
@@ -252,7 +252,7 @@ namespace UQMEdit
 
 		public byte[] Devices { get; } = { 143, 156 };
 
-		public byte ResFactor { get => (byte)(_offsetsInner.ResFactor); }
+		public byte ResFactor { get => _offsetsInner.ResFactor; }
 
 		public byte Difficulty => throw new NotImplementedException();
 

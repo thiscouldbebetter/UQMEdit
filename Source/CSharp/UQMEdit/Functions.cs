@@ -20,7 +20,9 @@ namespace UQMEdit
 			return bytes;
 		}
 
-		public byte[] ReadBytesFromOffsetToLength(int offsetInBytes, int lengthInBytes, bool isReversed = false)
+		public byte[] ReadBytesFromOffsetToLength(
+			int offsetInBytes, int lengthInBytes, bool isReversed = false
+		)
 		{
 			Read.Stream.Seek(offsetInBytes, !isReversed ? SeekOrigin.Begin : SeekOrigin.End);
 			Read.Stream.Read(Read.FileBuffer, 0, lengthInBytes);

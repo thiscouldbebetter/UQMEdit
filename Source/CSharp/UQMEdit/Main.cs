@@ -57,7 +57,7 @@ namespace UQMEdit
 		private void Open_Click(object sender, EventArgs e) {
 			OpenFileDialog openFileDialog = new OpenFileDialog();
 			openFileDialog.Title = "Open UQM Save File";
-			openFileDialog.Filter = "UQM Save Files | starcon2.*; uqmsave.*";
+			openFileDialog.Filter = "UQM Save Files | starcon2.*; *.uqmsave.*";
 			openFileDialog.InitialDirectory = CurrentDir;
 
 			if (openFileDialog.ShowDialog() == DialogResult.OK) {
