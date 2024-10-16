@@ -4,18 +4,16 @@
 	{
 		public static void Coordinates() {
 
-            var f = Functions.Instance;
+			var f = Functions.Instance;
 
-            int snum;
+			int snum;
 
 			// UniverseX
 			decimal UniverseX = Window.UniverseX.Value * 10;
+			var offsets = f.ByteOffsetsPick();
 			snum = f.UniverseToLogX(decimal.ToInt32(UniverseX) );
 			f.WriteOffset(
-				f.ByteOffsetsPick(
-					Offsets.HighDefinitionRemaster.LogX,
-					Offsets.MegaModFieldOffsets.LogX
-				),
+				offsets.LogX,
 				valueFromControl: snum,
 				lengthInBytes: 4,
 				valueMax: 159735
@@ -25,10 +23,7 @@
 			decimal UniverseY = Window.UniverseY.Value * 10;
 			snum = f.UniverseToLogY(decimal.ToInt32(UniverseY));
 			f.WriteOffset(
-				f.ByteOffsetsPick(
-					Offsets.HighDefinitionRemaster.LogY,
-					Offsets.MegaModFieldOffsets.LogY
-				),
+				offsets.LogY,
 				valueFromControl: snum,
 				lengthInBytes: 4,
 				valueMax: 191990

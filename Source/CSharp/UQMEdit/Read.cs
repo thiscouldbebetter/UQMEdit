@@ -25,8 +25,10 @@ namespace UQMEdit
 					FileBuffer = new byte[fileSize];    // create buffer
 					Window = window;
 
+					var f = Functions.Instance;
+					var offsets = f.ByteOffsetsPick();
 					// Save Checker			
-					var loadChecker = Functions.Instance.ReadOffsetToInt(Offsets.SaveChecker, 4);
+					var loadChecker = f.ReadOffsetToInt(offsets.SaveChecker, 4);
 					if (loadChecker == Constants.SaveFileTag)
 						SaveVersion = 3;
 					else if (loadChecker == Constants.MegaModTag)

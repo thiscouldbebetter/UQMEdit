@@ -75,18 +75,18 @@ namespace UQMEdit
 			Write.Stream.Write(Write.FileBuffer, 0, lengthInBytes);
 		}
 
-		public int ByteOffsetsPick(int highDefinitionRemaster, int megaMod, int core = 0) {
+		public IOffsets ByteOffsetsPick() {
 			switch (Read.SaveVersion) {
 				case 0:
-					return (highDefinitionRemaster - 48);
+					return OffsetsHighDefinitionRemasterMinus48.Instance;
 				case 1:
-					return highDefinitionRemaster;
+					return OffsetsHighDefinitionRemaster.Instance;
 				case 2:
-					return megaMod;
+					return OffsetsMegaMod.Instance;
 				case 3:
-					return (core > 0 ? core : megaMod);
+					return OffsetsCore.Instance;
 				default:
-					return (highDefinitionRemaster - 48);
+					return OffsetsHighDefinitionRemasterMinus48.Instance;
 			}
 		}
 

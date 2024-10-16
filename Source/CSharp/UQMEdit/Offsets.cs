@@ -1,137 +1,265 @@
-﻿namespace UQMEdit
+﻿using System;
+using System.Linq;
+
+namespace UQMEdit
 {
-	class Offsets
+	public interface IOffsets
 	{
-		public const byte SaveChecker = 0;
-		public const byte SaveNameMagic = 8;
+		byte SaveChecker { get; }
+		byte SaveNameMagic { get;}
+		byte SaveName { get; }
+		byte LogX { get; }
+		byte LogY { get; }
+		byte ResUnits { get; }
+		byte Fuel { get; }
+		byte SiSCrew { get; }
+		byte TotalMinerals { get; }
+		byte BioData { get; }
+		byte ModuleSlots { get; }
+		byte[] ThrusterSlots { get; }
+		byte[] TurningJetSlots { get; }
+		byte Landers { get; }
+		byte Minerals_CommonElements { get; }
+		byte Minerals_Corrosives { get; }
+		byte Minerals_BaseMetals { get; }
+		byte Minerals_NobleGases { get; }
+		byte Minerals_RareEarths { get; }
+		byte Minerals_PreciousMetals { get; }
+		byte Minerals_Radioactives { get; }
+		byte Minerals_Exotics { get; }
+		byte[] Minerals { get; }
+		byte ShipName { get; }
+		byte CaptainName { get; }
+		byte NearestPlanet { get; }
+		byte Difficulty { get; }
+		byte Extended { get; }
+		byte Nomad { get; }
+		byte CustomSeed { get; }
+		byte Status { get; }
+		byte LanderModifications { get; }
+		byte[] Date { get; }
+		byte Credits { get; }
+		byte[] Escorts { get; }
+		byte[] Devices { get; }
+		byte ResFactor { get; }
+	}
 
-		public class HighDefinitionRemaster
+	class OffsetsHighDefinitionRemasterMinus48 : IOffsets
+	{
+		private const byte _48 = 48;
+
+		public static OffsetsHighDefinitionRemasterMinus48 Instance
+			= new OffsetsHighDefinitionRemasterMinus48(OffsetsHighDefinitionRemaster.Instance);
+
+		private OffsetsHighDefinitionRemaster _offsetsInner;
+
+
+		public OffsetsHighDefinitionRemasterMinus48(OffsetsHighDefinitionRemaster offsetsInner)
 		{
-			public const byte
-				SaveName = 16,
-
-				LogX = 48,
-				LogY = 52,
-
-				ResUnits = 56,
-				Fuel = 60,
-				SiSCrew = 64,
-
-				TotalMinerals = 66,
-
-				BioData = 68,
-
-				ModuleSlots = 70;
-
-			public static byte[]
-				DriveSlots = { 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96 },
-				JetSlots = { 97, 98, 99, 100, 101, 102, 103, 104 };
-
-			public const byte
-				Landers = 105,
-
-				Minerals_CommonElements = 106,
-				Minerals_Corrosives = 108,
-				Minerals_BaseMetal = 110,
-				Minerals_NobleGases = 112,
-				Minerals_RareEarths = 114,
-				Minerals_PreciousMetals = 116,
-				Radioactives = 118,
-				Exotic = 120;
-			public static byte[] Minerals = { 106, 108, 110, 112, 114, 116, 118, 120 };
-
-			public const byte
-				ShipName = 122,
-				CaptainName = 138,
-
-				NearestPlanet = 154,
-				Status = 172,
-
-				LanderModifications = 173;
-
-			public static byte[] Date = { 174, 175, 176 };
-
-			public const byte Credits = 178;
-
-			public static byte[] Escorts = { 180, 182 };
-
-			public static byte[] Devices = { 181, 194 };
-
-			public const byte ResFactor = 210;
+			_offsetsInner = offsetsInner;
 		}
 
-		public class MegaModFieldOffsets
+        public byte SaveChecker { get; } = 0; // todo
+        public byte SaveNameMagic { get; } = 8;
+		public byte SaveName { get; } = 16;
+		public byte LogX { get => (byte)(_offsetsInner.LogX - _48); }
+		public byte LogY { get => (byte)(_offsetsInner.LogY - _48); }
+		public byte ResUnits { get => (byte)(_offsetsInner.ResUnits - _48); }
+		public byte Fuel { get => (byte)(_offsetsInner.Fuel - _48); }
+		public byte SiSCrew { get => (byte)(_offsetsInner.SiSCrew - _48); }
+		public byte TotalMinerals { get => (byte)(_offsetsInner.TotalMinerals - _48); }
+		public byte BioData { get => (byte)(_offsetsInner.BioData - _48); }
+		public byte ModuleSlots { get => (byte)(_offsetsInner.ModuleSlots - _48); }
+		public byte[] ThrusterSlots { get => _offsetsInner.ThrusterSlots.Select(x => (byte)(x - 48) ).ToArray(); }
+		public byte[] TurningJetSlots { get => _offsetsInner.TurningJetSlots.Select(x => (byte)(x - 48)).ToArray(); }
+		public byte Landers { get => (byte)(_offsetsInner.Landers - _48); }
+		public byte Minerals_CommonElements { get => (byte)(_offsetsInner.Minerals_CommonElements - _48); }
+		public byte Minerals_Corrosives { get => (byte)(_offsetsInner.Minerals_Corrosives - _48); }
+		public byte Minerals_BaseMetals { get => (byte)(_offsetsInner.Minerals_BaseMetals - _48); }
+		public byte Minerals_NobleGases { get => (byte)(_offsetsInner.Minerals_NobleGases - _48); }
+		public byte Minerals_RareEarths { get => (byte)(_offsetsInner.Minerals_RareEarths - _48); }
+		public byte Minerals_PreciousMetals { get => (byte)(_offsetsInner.Minerals_PreciousMetals - _48); }
+		public byte Minerals_Radioactives { get => (byte)(_offsetsInner.Minerals_Radioactives - _48); }
+		public byte Minerals_Exotics { get => (byte)(_offsetsInner.Minerals_Exotics - _48); }
+		public byte[] Minerals { get => _offsetsInner.Minerals.Select(x => (byte)(x - 48)).ToArray(); }
+		public byte ShipName { get => (byte)(_offsetsInner.ShipName - _48); }
+		public byte CaptainName { get => (byte)(_offsetsInner.CaptainName - _48); }
+		public byte NearestPlanet { get => (byte)(_offsetsInner.NearestPlanet - _48); }
+		public byte Status { get => (byte)(_offsetsInner.Status - _48); }
+		public byte LanderModifications { get => (byte)(_offsetsInner.LanderModifications - _48); }
+
+		public byte[] Date { get => _offsetsInner.Date.Select(x => (byte)(x - 48)).ToArray(); }
+
+		public byte Credits { get => (byte)(_offsetsInner.Credits - _48); }
+
+		public byte[] Escorts { get => _offsetsInner.Escorts.Select(x => (byte)(x - 48)).ToArray(); }
+
+		public byte[] Devices { get => _offsetsInner.Devices.Select(x => (byte)(x - 48)).ToArray(); }
+
+		public byte ResFactor { get => (byte)(_offsetsInner.ResFactor - _48); }
+
+		public byte Difficulty => throw new NotImplementedException();
+
+		public byte Extended => throw new NotImplementedException();
+
+		public byte Nomad => throw new NotImplementedException();
+
+		public byte CustomSeed => throw new NotImplementedException();
+	}
+
+	class OffsetsHighDefinitionRemaster : IOffsets
+	{
+		public static OffsetsHighDefinitionRemaster Instance = new OffsetsHighDefinitionRemaster();
+
+		public byte SaveChecker { get; } = 0;
+		public byte SaveNameMagic { get; } = 8;
+		public byte SaveName { get; } = 16;
+		public byte LogX { get; } = 48;
+		public byte LogY { get; } =52;
+		public byte ResUnits { get; } = 56;
+		public byte Fuel { get; } = 60;
+		public byte SiSCrew { get; } = 64;
+		public byte TotalMinerals { get; } = 66;
+		public byte BioData { get; } = 68;
+		public byte ModuleSlots { get; } = 70;
+		public byte[] ThrusterSlots { get; } = { 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96 };
+		public byte[] TurningJetSlots { get; } = { 97, 98, 99, 100, 101, 102, 103, 104 };
+		public byte Landers { get; } = 105;
+		public byte Minerals_CommonElements { get; } = 106;
+		public byte Minerals_Corrosives { get; } = 108;
+		public byte Minerals_BaseMetals { get; } = 110;
+		public byte Minerals_NobleGases { get; } = 112;
+		public byte Minerals_RareEarths { get; } = 114;
+		public byte Minerals_PreciousMetals { get; } = 116;
+		public byte Minerals_Radioactives { get; } = 118;
+		public byte Minerals_Exotics { get; } =120;
+		public byte[] Minerals { get; } = { 106, 108, 110, 112, 114, 116, 118, 120 };
+		public byte ShipName { get; } = 122;
+		public byte CaptainName { get; } = 138;
+		public byte NearestPlanet { get; } = 154;
+		public byte Status { get; } = 172;
+		public byte LanderModifications { get; } = 173;
+
+		public byte[] Date { get; } = { 174, 175, 176 };
+
+		public byte Credits { get; } = 178;
+
+		public byte[] Escorts { get; } = { 180, 182 };
+
+		public byte[] Devices { get; } = { 181, 194 };
+
+		public byte ResFactor { get; } = 210;
+
+		public byte Difficulty => throw new NotImplementedException();
+
+		public byte Extended => throw new NotImplementedException();
+
+		public byte Nomad => throw new NotImplementedException();
+
+		public byte CustomSeed => throw new NotImplementedException();
+	}
+
+	class OffsetsMegaMod : IOffsets
+	{
+		public static OffsetsMegaMod Instance = new OffsetsMegaMod();
+
+		public byte SaveChecker { get; } = 0;
+		public byte SaveNameMagic { get; } = 8;
+		public byte LogX { get; } = 12;
+		public byte LogY { get; } = 16;
+		public byte ResUnits { get; } = 20;
+		public byte Fuel { get; } = 24;
+		public byte SiSCrew { get; } = 28;
+		public byte TotalMinerals { get; } = 30;
+		public byte BioData { get; } = 32;
+		public byte ModuleSlots { get; } = 34;
+		public byte[] ThrusterSlots { get; } = { 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 };
+		public byte[] TurningJetSlots { get; } = { 61, 62, 63, 64, 65, 66, 67, 68 };
+		public byte Landers { get; } = 69;
+		public byte Minerals_CommonElements { get; } = 70;
+		public byte Minerals_Corrosives { get; } = 72;
+		public byte Minerals_BaseMetals { get; } = 74;
+		public byte Minerals_NobleGases { get; } = 76;
+		public byte Minerals_RareEarths { get; } = 78;
+		public byte Minerals_PreciousMetals { get; } = 80;
+		public byte Minerals_Radioactives { get; } = 82;
+		public byte Minerals_Exotics { get; } = 84;
+		public byte[] Minerals { get; } = { 70, 72, 74, 76, 78, 80, 82, 84 };
+		public byte ShipName { get; } = 86;
+		public byte CaptainName { get; } = 102;
+		public byte NearestPlanet { get; } = 118;
+		public byte Difficulty { get; } = 134;
+		public byte Extended { get; } = 135;
+		public byte Nomad { get; } = 136;
+		public byte CustomSeed { get; } = 137;
+		public byte Status { get; } = 141;
+		public byte LanderModifications { get; } = 142;
+		public byte[] Date { get; } = { 143, 144, 145 };
+		public byte Credits { get; } = 147;
+		public byte[] Escorts { get; } = { 149, 151 };
+		public byte[] Devices { get; } = { 150, 163 };
+		public byte ResFactor { get; } = 179;
+		public byte SaveName { get; } = 180;
+	}
+
+	class OffsetsCore : IOffsets
+	{
+		public static OffsetsCore Instance = new OffsetsCore(OffsetsMegaMod.Instance);
+
+		private OffsetsMegaMod _offsetsInner;
+
+
+		public OffsetsCore(OffsetsMegaMod offsetsInner)
 		{
-			public const byte
-				LogX = 12,
-				LogY = 16,
-
-				ResUnits = 20,
-				Fuel = 24,
-				SiSCrew = 28,
-
-				TotalMinerals = 30,
-				BioData = 32,
-
-				ModuleSlots = 34;
-			public static byte[] DriveSlots = { 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 };
-			public static byte[] JetSlots = { 61, 62, 63, 64, 65, 66, 67, 68 };
-
-			public const byte
-				Landers = 69,
-
-				Minerals_CommonElements = 70,
-				Minerals_Corrosives = 72,
-				Minerals_BaseMetal = 74,
-				Minerals_NobleGases = 76,
-				Minerals_RareEarths = 78,
-				Minerals_PreciousMetals = 80,
-				Radioactives = 82,
-				Exotic = 84;
-			public static byte[] Minerals = { 70, 72, 74, 76, 78, 80, 82, 84 };
-
-			public const byte
-				ShipName = 86,
-				CaptainName = 102,
-				NearestPlanet = 118,
-
-				Difficulty = 134,
-				Extended = 135,
-				Nomad = 136,
-				CustomSeed = 137,
-
-				Status = 141,
-
-				LanderModificiations = 142;
-
-			public static byte[] Date = { 143, 144, 145 };
-
-			public const byte Credits = 147;
-
-			public static byte[] Escorts = { 149, 151 };
-
-			public static byte[] Devices = { 150, 163 };
-
-			public const byte
-				ResFactor = 179,
-				SaveName = 180;
+			_offsetsInner = offsetsInner;
 		}
 
-		public class Core
-		{
-			public const byte Status = 134;
+		public byte SaveChecker { get => _offsetsInner.SaveChecker; }
+		public byte SaveNameMagic { get => _offsetsInner.SaveNameMagic; }
+		public byte SaveName { get; } = 172;
+		public byte LogX { get => (byte)(_offsetsInner.LogX); }
+		public byte LogY { get => (byte)(_offsetsInner.LogY); }
+		public byte ResUnits { get => (byte)(_offsetsInner.ResUnits); }
+		public byte Fuel { get => (byte)(_offsetsInner.Fuel); }
+		public byte SiSCrew { get => (byte)(_offsetsInner.SiSCrew); }
+		public byte TotalMinerals { get => (byte)(_offsetsInner.TotalMinerals); }
+		public byte BioData { get => (byte)(_offsetsInner.BioData); }
+		public byte ModuleSlots { get => (byte)(_offsetsInner.ModuleSlots); }
+		public byte[] ThrusterSlots { get => _offsetsInner.ThrusterSlots.Select(x => (byte)(x - 48) ).ToArray(); }
+		public byte[] TurningJetSlots { get => _offsetsInner.TurningJetSlots.Select(x => (byte)(x - 48)).ToArray(); }
+		public byte Landers { get => (byte)(_offsetsInner.Landers); }
+		public byte Minerals_CommonElements { get => (byte)(_offsetsInner.Minerals_CommonElements); }
+		public byte Minerals_Corrosives { get => (byte)(_offsetsInner.Minerals_Corrosives); }
+		public byte Minerals_BaseMetals { get => (byte)(_offsetsInner.Minerals_BaseMetals); }
+		public byte Minerals_NobleGases { get => (byte)(_offsetsInner.Minerals_NobleGases); }
+		public byte Minerals_RareEarths { get => (byte)(_offsetsInner.Minerals_RareEarths); }
+		public byte Minerals_PreciousMetals { get => (byte)(_offsetsInner.Minerals_PreciousMetals); }
+		public byte Minerals_Radioactives { get => (byte)(_offsetsInner.Minerals_Radioactives); }
+		public byte Minerals_Exotics { get => (byte)(_offsetsInner.Minerals_Exotics); }
+		public byte[] Minerals { get => _offsetsInner.Minerals.Select(x => (byte)(x - 48)).ToArray(); }
+		public byte ShipName { get => (byte)(_offsetsInner.ShipName); }
+		public byte CaptainName { get => (byte)(_offsetsInner.CaptainName); }
+		public byte NearestPlanet { get => (byte)(_offsetsInner.NearestPlanet); }
+		public byte Status { get; } = 134;
 
-			public const byte LanderModifications = 135;
+		public byte LanderModifications { get; } = 135;
 
-			public static byte[] Date = { 136, 137, 138 };
+		public byte[] Date { get; } = { 136, 137, 138 };
 
-			public const byte Credits = 140;
+		public byte Credits { get; } = 140;
 
-			public static byte[] Escorts = { 142, 144 };
+		public byte[] Escorts { get; } = { 142, 144 };
 
-			public static byte[] Devices = { 143, 156 };
+		public byte[] Devices { get; } = { 143, 156 };
 
-			public static byte SaveName = 172;
-		}
+		public byte ResFactor { get => (byte)(_offsetsInner.ResFactor); }
+
+		public byte Difficulty => throw new NotImplementedException();
+
+		public byte Extended => throw new NotImplementedException();
+
+		public byte Nomad => throw new NotImplementedException();
+
+		public byte CustomSeed => throw new NotImplementedException();
 	}
 }

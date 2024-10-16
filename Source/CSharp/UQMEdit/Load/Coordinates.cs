@@ -8,13 +8,12 @@ namespace UQMEdit
 		{
 			var f = Functions.Instance;
 
+			var offsets = f.ByteOffsetsPick();
+
 			// X Coordinates
 			decimal LogX = f.LogXToUniverse(
 				f.ReadOffsetToInt(
-					f.ByteOffsetsPick(
-						Offsets.HighDefinitionRemaster.LogX,
-						Offsets.MegaModFieldOffsets.LogX
-					),
+					offsets.LogX,
 					lengthInBytes: 4
 				)
 			);
@@ -23,10 +22,7 @@ namespace UQMEdit
 			// Y Coordinates
 			decimal LogY = f.LogYToUniverse(
 				f.ReadOffsetToInt(
-					f.ByteOffsetsPick(
-						Offsets.HighDefinitionRemaster.LogY,
-						Offsets.MegaModFieldOffsets.LogY
-					),
+					offsets.LogY,
 					lengthInBytes: 4
 				)
 			);
@@ -34,11 +30,7 @@ namespace UQMEdit
 
 			// Status
 			var statusAsByte = f.ReadBytesFromOffsetToLength(
-				f.ByteOffsetsPick(
-					Offsets.HighDefinitionRemaster.Status,
-					Offsets.MegaModFieldOffsets.Status,
-					Offsets.Core.Status
-				),
+				offsets.Status,
 				lengthInBytes: 1
 			)[0];
 
@@ -56,10 +48,7 @@ namespace UQMEdit
 			{
 				var planet = Encoding.Default.GetString(
 					f.ReadBytesFromOffsetToLength(
-						f.ByteOffsetsPick(
-							Offsets.HighDefinitionRemaster.NearestPlanet,
-							Offsets.MegaModFieldOffsets.NearestPlanet
-						),
+						offsets.NearestPlanet,
 						16
 					)
 				);
