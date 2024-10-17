@@ -8,24 +8,23 @@ namespace UQMEdit
 {
 	public partial class Main : Form
 	{
-		private string CurrentDir;
-		private string CurrentFile = "";
-		public static string FileName = "";
-		public static object[] ShipModules;
+		private string _currentDir;
+		private string _currentFile = "";
+		private object[] _shipModules;
 
 		public Main() {
 			InitializeComponent();
 			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-			ShipModules = Modules.CreateModules();
+			_shipModules = Modules.CreateModules();
 
-			foreach (object ships in ShipsBox.Controls) {
-				if (ships is ComboBox) {
-					(ships as ComboBox).Items.AddRange(Constants.ShipNames);
+			foreach (var shipsControl in ShipsBox.Controls) {
+				if (shipsControl is ComboBox) {
+					(shipsControl as ComboBox).Items.AddRange(Constants.ShipNames);
 				}
 			}
-			foreach (object current in ModulesBox.Controls) {
-				if (current is ComboBox) {
-					(current as ComboBox).Items.AddRange(ShipModules);
+			foreach (var modulesControl in ModulesBox.Controls) {
+				if (modulesControl is ComboBox) {
+					(modulesControl as ComboBox).Items.AddRange(_shipModules);
 				}
 			}
 			CurrentStatus.Items.AddRange(Constants.StatusNames);
@@ -33,83 +32,99 @@ namespace UQMEdit
 			Spoilers.Checked = false;
 
 			string PathVanilla, PathHD, PathMegaMod, PathRemix, PathDesired;
-			string PathAppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+			var PathAppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 			PathVanilla = PathAppData + "\\uqm\\save";
 			PathHD = PathAppData + "\\uqmhd\\save";
 			PathRemix = PathAppData + "\\uqmhdremix\\save";
 			PathMegaMod = PathAppData + "\\UQM-MegaMod\\save";
 
 			if (Directory.Exists(PathMegaMod))
+			{
 				PathDesired = PathMegaMod;
+			}
 			else if (Directory.Exists(PathRemix))
+			{
 				PathDesired = PathRemix;
+			}
 			else if (Directory.Exists(PathHD))
+			{
 				PathDesired = PathHD;
+			}
 			else if (Directory.Exists(PathVanilla))
+			{
 				PathDesired = PathVanilla;
+			}
 			else
+			{
 				PathDesired = Directory.GetCurrentDirectory();
+			}
 
-			CurrentDir = PathDesired;
+			_currentDir = PathDesired;
 			StarList.Items.AddRange(ParseStars.LoadStars(false));
 		}
 
-		private void Open_Click(object sender, EventArgs e) {
-			OpenFileDialog openFileDialog = new OpenFileDialog();
-			openFileDialog.Title = "Open UQM Save File";
-			openFileDialog.Filter = "UQM Save Files | starcon2.*; *.uqmsave.*";
-			openFileDialog.InitialDirectory = CurrentDir;
+		private void Open_Click(object sender, EventArgs e)
+		{
+			OpenFileDialog openFileDialog = new OpenFileDialog()
+			{
+				Title = "Open UQM Save File",
+				Filter = "UQM Save Files | starcon2.*; *.uqmsave.*",
+				InitialDirectory = _currentDir
+			};
 
 			if (openFileDialog.ShowDialog() == DialogResult.OK) {
-				CurrentFile = openFileDialog.FileName;
-				FileName = Path.GetFileName(CurrentFile);
+				_currentFile = openFileDialog.FileName;
 				Reload.Enabled = true;
 				Save.Enabled = true;
 				Tabs.Enabled = true;
 
-				Read.Open(CurrentFile, this);
+				var saveFile = UrQuanMastersSaveFile.Instance;
 
-				string TitleText = "The UQM Save Editor";
+				saveFile.Open(_currentFile, this);
+
+				var TitleText = "The Ur-Quan Masters Save Editor";
 				SeedBox.Visible = false;
 				megaModModes.Visible = false;
-				switch (Read.SaveVersion) {
-                    case 0:
-                        TitleText += ": Core v0.7.0 - ";
-                        break;
-                    case 1:
-                        TitleText += ": HD-mod v0.7.0 - ";
-                        break;
-                    case 2:
-                        TitleText += ": MegaMod v0.8.0.85 - ";
-                        SeedBox.Visible = true;
-                        megaModModes.Visible = true;
-                        break;
-                    case 3:
-						TitleText += ": Core v0.8.0 - ";
-						break;
-					default:
-						break;
-				}
-				Text = TitleText + (Read.SaveVersion > 0 ? (Read.Date + ": " + Read.SaveName) : (Read.SaveName + Read.Date));
+				TitleText += UrQuanMastersSaveFile.Instance.GetTitleText();
 
-				CurrentDir = CurrentFile;
+				if (TitleText.Contains("MegaMod") )
+				{
+					SeedBox.Visible = true;
+					megaModModes.Visible = true;
+				}
+
+				Text =
+					TitleText
+					+
+					(
+						saveFile.SaveVersion > 0
+						? (saveFile.Date + ": " + saveFile.SaveName)
+						: (saveFile.SaveName + saveFile.Date)
+					);
+
+				_currentDir = _currentFile;
 			}
 		}
 
 		private void Reload_Click(object sender, EventArgs e) {
-			Read.Open(CurrentFile, this);
+			UrQuanMastersSaveFile.Instance.Open(_currentFile, this);
 		}
 
 		private void MineralsValueChanged(object sender, EventArgs e) {
 			TotalMinerals.Value = 0;
-			TotalMinerals.Value = Minerals_CommonElements.Value + Minerals_Corrosives.Value +
-										Minerals_BaseMetals.Value + Minerals_NobleGases.Value +
-										Minerals_RareEarths.Value + Minerals_PreciousMetals.Value +
-										Minerals_Radioactives.Value + Minerals_Exotics.Value;
+			TotalMinerals.Value =
+				Minerals_CommonElements.Value
+				+ Minerals_Corrosives.Value
+				+ Minerals_BaseMetals.Value
+				+ Minerals_NobleGases.Value
+				+ Minerals_RareEarths.Value
+				+ Minerals_PreciousMetals.Value
+				+ Minerals_Radioactives.Value
+				+ Minerals_Exotics.Value;
 		}
 
 		private void Save_Click(object sender, EventArgs e) {
-			Write.Save(CurrentFile, this);
+			UrQuanMastersSaveFile.Instance.Save(_currentFile, this);
 		}
 
 		private void Main_Shown(object sender, EventArgs e) {
@@ -119,11 +134,12 @@ namespace UQMEdit
 		}
 
 		private void Spoilers_CheckedChanged(object sender, EventArgs e) {
-			int selectedIndex = StarList.SelectedIndex;
-			StarList.Items.Clear();
-			StarList.Items.AddRange(ParseStars.LoadStars(Spoilers.Checked));
-			if (StarList.Items.Count >= selectedIndex) {
-				if (StarList.Items.Count >= selectedIndex + 23) {
+			var selectedIndex = StarList.SelectedIndex;
+			var starListItems = StarList.Items;
+			starListItems.Clear();
+			starListItems.AddRange(ParseStars.LoadStars(Spoilers.Checked));
+			if (starListItems.Count >= selectedIndex) {
+				if (starListItems.Count >= selectedIndex + 23) {
 					StarList.SelectedIndex = selectedIndex + 23;
 				}
 				StarList.SelectedIndex = selectedIndex;
@@ -132,8 +148,15 @@ namespace UQMEdit
 
 		private void Universe_TextChanged(object sender, EventArgs e) {
 			double num, num2;
-			if (double.TryParse(UniverseX.Text.Replace(',', '.'), out num) && double.TryParse(UniverseY.Text.Replace(',', '.'), out num2)) {
-				if (num <= 1500.0 && num2 <= 1500.0 && num >= -1500.0 && num2 >= -1500.0) {
+			var couldNumBeParsed =
+				double.TryParse(UniverseX.Text.Replace(',', '.'), out num);
+			var couldNum2BeParsed =
+				double.TryParse(UniverseY.Text.Replace(',', '.'), out num2);
+
+			if (couldNumBeParsed && couldNum2BeParsed)
+			{
+				if (num <= 1500.0 && num2 <= 1500.0 && num >= -1500.0 && num2 >= -1500.0)
+				{
 					NearestStar.Text = Stars.NearestStar(num, num2);
 					return;
 				}
@@ -157,46 +180,47 @@ namespace UQMEdit
 		}
 
 		private void UpgradeToMax_Click(object sender, EventArgs e) {
-			byte[] ModulesArray = { 4, 1, 1, 2, 11, 10, 10, 10, 5, 5, 5, 6, 6, 6, 9, 9 };
-			byte[] ModulesArrayBomb = { 16, 17, 15, 13, 12, 13, 15, 16, 17, 14, 4, 1, 11, 10, 9, 10 };
+			byte[] modulesArray = { 4, 1, 1, 2, 11, 10, 10, 10, 5, 5, 5, 6, 6, 6, 9, 9 };
+			byte[] modulesArrayBomb = { 16, 17, 15, 13, 12, 13, 15, 16, 17, 14, 4, 1, 11, 10, 9, 10 };
 			byte i = 0;
-			foreach (object Modules in ModulesBox.Controls) {
-				if (Modules is ComboBox) {
-					(Modules as ComboBox).SelectedIndex = LanderModifications_DisplacedByBomb.Checked ? ModulesArrayBomb[i] : ModulesArray[i];
+			foreach (object moduleControl in ModulesBox.Controls) {
+				if (moduleControl is ComboBox) {
+					(moduleControl as ComboBox).SelectedIndex =
+						LanderModifications_DisplacedByBomb.Checked ? modulesArrayBomb[i] : modulesArray[i];
 					i++;
 				}
 			}
 		}
 
 		private void MaxThrusters_Click(object sender, EventArgs e) {
-			foreach (object Thruster in ThrusterBox.Controls) {
-				if (Thruster is CheckBox) {
-					(Thruster as CheckBox).Checked = true;
+			foreach (var thrusterControl in ThrusterBox.Controls) {
+				if (thrusterControl is CheckBox) {
+					(thrusterControl as CheckBox).Checked = true;
 				}
 			}
 		}
 
 		private void MaxJets_Click(object sender, EventArgs e) {
-			foreach (object Jets in JetsBox.Controls) {
-				if (Jets is CheckBox) {
-					(Jets as CheckBox).Checked = true;
+			foreach (var turningJetsControl in JetsBox.Controls) {
+				if (turningJetsControl is CheckBox) {
+					(turningJetsControl as CheckBox).Checked = true;
 				}
 			}
 		}
 
 		private void Module_SelectedIndexChanged(object sender, EventArgs e) {
-			int MaxStorage = 0, MaxFuel = 10, MaxCrew = 0;
-			foreach (object Module in ModulesBox.Controls) {
-				if (Module is ComboBox) {
-					int Index = (Module as ComboBox).SelectedIndex;
-					MaxCrew += Index == 1 ? 50 : 0;
-					MaxStorage += Index == 2 ? 500 : 0;
-					MaxFuel += Index == 3 ? 50 : (Index == 4 ? 100 : 0);
+			int maxStorage = 0, maxFuel = 10, maxCrew = 0;
+			foreach (var moduleControl in ModulesBox.Controls) {
+				if (moduleControl is ComboBox) {
+					int index = (moduleControl as ComboBox).SelectedIndex;
+					maxCrew += index == 1 ? 50 : 0;
+					maxStorage += index == 2 ? 500 : 0;
+					maxFuel += index == 3 ? 50 : (index == 4 ? 100 : 0);
 				}
 			}
-			CrewLabel.Text = "Crew " + ("[" + MaxCrew + "]");
-			FuelLabel.Text = "Fuel  " + ("[" + MaxFuel + "]");
-			TotalLabel.Text = "Total  " + ("[" + MaxStorage + "]");
+			CrewLabel.Text = "Crew " + ("[" + maxCrew + "]");
+			FuelLabel.Text = "Fuel  " + ("[" + maxFuel + "]");
+			TotalLabel.Text = "Total  " + ("[" + maxStorage + "]");
 			MaxLimits.SetToolTip(CrewLabel, "Please fill only to max value as shown.");
 			MaxLimits.SetToolTip(FuelLabel, "Please fill only to max value as shown.");
 			MaxLimits.SetToolTip(TotalLabel, "Please fill only to max value as shown.");

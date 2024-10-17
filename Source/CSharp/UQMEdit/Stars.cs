@@ -7,16 +7,18 @@ namespace UQMEdit
 {
 	public class Stars
 	{
-		public static List<Star> StarList = new List<Star>(510);
+		public static List<Star> StarsList = new List<Star>(510);
 		public static bool HasBeenLoaded = false;
 
 		public static string NearestStar(double x, double y) {
-			double num = 2147483647.0;
-			string text = "";
-			foreach (var star in StarList) {
+			var num = 2147483647.0;
+			var text = "";
+			foreach (var star in StarsList)
+			{
 				var num2 =
 					Math.Sqrt((x - star.X) * (x - star.X) + (y - star.Y) * (y - star.Y));
-				if (num2 < num) {
+				if (num2 < num)
+				{
 					num = num2;
 					text = star.Name;
 				}
@@ -43,7 +45,7 @@ namespace UQMEdit
 	public static class ParseStars
 	{
 		public static object[] LoadStars(bool spoilers) {
-			List<object> list = new List<object>();
+			var list = new List<object>();
 			var fileStreamStarsAsTxt =
 				// Assembly.GetExecutingAssembly().GetManifestResourceStream("UQMEdit.Resources.stars.txt");
 				new FileStream("Resources/stars.txt", FileMode.Open);
@@ -51,83 +53,75 @@ namespace UQMEdit
 			using (var streamReader = new StreamReader(fileStreamStarsAsTxt, Encoding.Default))
 			{
 				streamReader.ReadLine(); // Ignored?
-				var text = streamReader.ReadLine();
-				var array = text.Split(
-					new char[] { '\t' }
-				);
+				var line = streamReader.ReadLine();
+				const string tab = "\t";
+				var tabAsCharArray = new char[] { '\t' };
+				var lineFields = line.Split(tabAsCharArray);
 
 				list.Add(
 					string.Concat(
 						new string[]
 						{
-							array[0],
-							"\t",
-							array[1],
-							"\t",
-							array[2],
-							"\t",
-							array[3].PadRight(20),
-							"\t",
-							array[4],
-							"\t",
-							array[5]
+							lineFields[0],
+							tab,
+							lineFields[1],
+							tab,
+							lineFields[2],
+							tab,
+							lineFields[3].PadRight(20),
+							tab,
+							lineFields[4],
+							tab,
+							lineFields[5]
 						}
 					)
 				);
 
-				while ((text = streamReader.ReadLine()) != null)
+				while ((line = streamReader.ReadLine()) != null)
 				{
-					array = text.Split(new char[]
+					var colonAsCharArray = new char[] { ':' };
+					lineFields = line.Split(tabAsCharArray);
+					if
+					(
+						lineFields.Length >= 6
+						&& lineFields[4] != "-"
+						&& lineFields[4].Split(colonAsCharArray).Length == 2
+					)
 					{
-						'\t'
-					});
-					if (array.Length >= 6 && array[4] != "-" && array[4].Split(new char[]
-					{
-						':'
-					}).Length == 2)
-					{
-						string text2 = string.Concat(new string[]
-						{
-							array[0].PadRight(20),
-							"\t",
-							array[1],
-							"\t",
-							array[2],
-							"\t",
-							array[3].PadRight(20),
-							"\t[ ",
-							array[4].Split(new char[]
+						string text2 = string.Concat(
+							new string[]
 							{
-								':'
-							})[0],
-							" : ",
-							array[4].Split(new char[]
-							{
-								':'
-							})[1],
-							" ]"
-						});
+								lineFields[0].PadRight(20),
+								tab,
+								lineFields[1],
+								tab,
+								lineFields[2],
+								tab,
+								lineFields[3].PadRight(20),
+								"\t[ ",
+								lineFields[4].Split(colonAsCharArray)[0],
+								" : ",
+								lineFields[4].Split(colonAsCharArray)[1],
+								" ]"
+							}
+						);
 						if (spoilers)
 						{
-							text2 = text2 + "\t" + array[5];
+							text2 = text2 + "\t" + lineFields[5];
 						}
 						list.Add(text2);
 
 						if (!Stars.HasBeenLoaded)
 						{
-							Stars.StarList.Add(
+							Stars.StarsList.Add(
 								new Star(
 									double.Parse(
-										array[4].Split(
-											new char[] { ':' }
-										)[0]
+										lineFields[4].Split(colonAsCharArray)[0]
 									),
 									double.Parse(
-										array[4].Split(
-											new char[] { ':' }
-										)[1]
+										lineFields[4].Split(colonAsCharArray)[1]
 									),
-									array[1] + " " + array[0]
+									lineFields[1] + " " + lineFields[0]
 								)
 							);
 						}

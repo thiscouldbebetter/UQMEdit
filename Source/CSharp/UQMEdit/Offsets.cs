@@ -10,9 +10,9 @@ namespace UQMEdit
 		byte SaveName { get; }
 		byte LogX { get; }
 		byte LogY { get; }
-		byte ResUnits { get; }
+		byte ResourceUnits { get; }
 		byte Fuel { get; }
-		byte SiSCrew { get; }
+		byte FlagshipCrew { get; }
 		byte TotalMinerals { get; }
 		byte BioData { get; }
 		byte ModuleSlots { get; }
@@ -64,9 +64,9 @@ namespace UQMEdit
 		public byte SaveName { get; } = 16;
 		public byte LogX { get => (byte)(_offsetsInner.LogX - _48); }
 		public byte LogY { get => (byte)(_offsetsInner.LogY - _48); }
-		public byte ResUnits { get => (byte)(_offsetsInner.ResUnits - _48); }
+		public byte ResourceUnits { get => (byte)(_offsetsInner.ResourceUnits - _48); }
 		public byte Fuel { get => (byte)(_offsetsInner.Fuel - _48); }
-		public byte SiSCrew { get => (byte)(_offsetsInner.SiSCrew - _48); }
+		public byte FlagshipCrew { get => (byte)(_offsetsInner.FlagshipCrew - _48); }
 		public byte TotalMinerals { get => (byte)(_offsetsInner.TotalMinerals - _48); }
 		public byte BioData { get => (byte)(_offsetsInner.BioData - _48); }
 		public byte ModuleSlots { get => (byte)(_offsetsInner.ModuleSlots - _48); }
@@ -116,9 +116,9 @@ namespace UQMEdit
 		public byte SaveName { get; } = 16;
 		public byte LogX { get; } = 48;
 		public byte LogY { get; } =52;
-		public byte ResUnits { get; } = 56;
+		public byte ResourceUnits { get; } = 56;
 		public byte Fuel { get; } = 60;
-		public byte SiSCrew { get; } = 64;
+		public byte FlagshipCrew { get; } = 64;
 		public byte TotalMinerals { get; } = 66;
 		public byte BioData { get; } = 68;
 		public byte ModuleSlots { get; } = 70;
@@ -167,9 +167,9 @@ namespace UQMEdit
 		public byte SaveNameMagic { get; } = 8;
 		public byte LogX { get; } = 12;
 		public byte LogY { get; } = 16;
-		public byte ResUnits { get; } = 20;
+		public byte ResourceUnits { get; } = 20;
 		public byte Fuel { get; } = 24;
-		public byte SiSCrew { get; } = 28;
+		public byte FlagshipCrew { get; } = 28;
 		public byte TotalMinerals { get; } = 30;
 		public byte BioData { get; } = 32;
 		public byte ModuleSlots { get; } = 34;
@@ -219,9 +219,9 @@ namespace UQMEdit
 		public byte SaveName { get; } = 172;
 		public byte LogX { get => _offsetsInner.LogX; }
 		public byte LogY { get => _offsetsInner.LogY; }
-		public byte ResUnits { get => _offsetsInner.ResUnits; }
+		public byte ResourceUnits { get => _offsetsInner.ResourceUnits; }
 		public byte Fuel { get => _offsetsInner.Fuel; }
-		public byte SiSCrew { get => _offsetsInner.SiSCrew; }
+		public byte FlagshipCrew { get => _offsetsInner.FlagshipCrew; }
 		public byte TotalMinerals { get => _offsetsInner.TotalMinerals; }
 		public byte BioData { get => _offsetsInner.BioData; }
 		public byte ModuleSlots { get => _offsetsInner.ModuleSlots; }

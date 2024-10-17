@@ -150,9 +150,9 @@ namespace UQMEdit
             this.CrewLabel = new Label();
             this.Landers = new NumericUpDown();
             this.BioData = new NumericUpDown();
-            this.ResUnits = new NumericUpDown();
+            this.ResourceUnits = new NumericUpDown();
             this.ShipFuel = new NumericUpDown();
-            this.ShipCrew = new NumericUpDown();
+            this.FlagshipCrew = new NumericUpDown();
             this.CargoBox = new GroupBox();
             this.TotalLabel = new Label();
             this.ExoticsLabel = new Label();
@@ -208,9 +208,9 @@ namespace UQMEdit
             this.LanderUpgradesBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Landers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BioData)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ResUnits)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ResourceUnits)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ShipFuel)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ShipCrew)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FlagshipCrew)).BeginInit();
             this.CargoBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Minerals_Exotics)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Minerals_Radioactives)).BeginInit();
@@ -1365,9 +1365,9 @@ namespace UQMEdit
             this.ShipStatusBox.Controls.Add(this.CrewLabel);
             this.ShipStatusBox.Controls.Add(this.Landers);
             this.ShipStatusBox.Controls.Add(this.BioData);
-            this.ShipStatusBox.Controls.Add(this.ResUnits);
+            this.ShipStatusBox.Controls.Add(this.ResourceUnits);
             this.ShipStatusBox.Controls.Add(this.ShipFuel);
-            this.ShipStatusBox.Controls.Add(this.ShipCrew);
+            this.ShipStatusBox.Controls.Add(this.FlagshipCrew);
             this.ShipStatusBox.Location = new System.Drawing.Point(184, 113);
             this.ShipStatusBox.Name = "ShipStatusBox";
             this.ShipStatusBox.Size = new System.Drawing.Size(164, 355);
@@ -1586,21 +1586,21 @@ namespace UQMEdit
             // 
             // ResUnits
             // 
-            this.ResUnits.Increment = new decimal(new int[] {
+            this.ResourceUnits.Increment = new decimal(new int[] {
             50,
             0,
             0,
             0});
-            this.ResUnits.Location = new System.Drawing.Point(70, 71);
-            this.ResUnits.Maximum = new decimal(new int[] {
+            this.ResourceUnits.Location = new System.Drawing.Point(70, 71);
+            this.ResourceUnits.Maximum = new decimal(new int[] {
             42949672,
             0,
             0,
             0});
-            this.ResUnits.Name = "ResUnits";
-            this.ResUnits.Size = new System.Drawing.Size(88, 20);
-            this.ResUnits.TabIndex = 4;
-            this.ResUnits.TextAlign = HorizontalAlignment.Center;
+            this.ResourceUnits.Name = "ResUnits";
+            this.ResourceUnits.Size = new System.Drawing.Size(88, 20);
+            this.ResourceUnits.TabIndex = 4;
+            this.ResourceUnits.TextAlign = HorizontalAlignment.Center;
             // 
             // ShipFuel
             // 
@@ -1623,16 +1623,16 @@ namespace UQMEdit
             // 
             // ShipCrew
             // 
-            this.ShipCrew.Location = new System.Drawing.Point(70, 19);
-            this.ShipCrew.Maximum = new decimal(new int[] {
+            this.FlagshipCrew.Location = new System.Drawing.Point(70, 19);
+            this.FlagshipCrew.Maximum = new decimal(new int[] {
             65535,
             0,
             0,
             0});
-            this.ShipCrew.Name = "ShipCrew";
-            this.ShipCrew.Size = new System.Drawing.Size(88, 20);
-            this.ShipCrew.TabIndex = 2;
-            this.ShipCrew.TextAlign = HorizontalAlignment.Center;
+            this.FlagshipCrew.Name = "ShipCrew";
+            this.FlagshipCrew.Size = new System.Drawing.Size(88, 20);
+            this.FlagshipCrew.TabIndex = 2;
+            this.FlagshipCrew.TextAlign = HorizontalAlignment.Center;
             // 
             // CargoBox
             // 
@@ -2167,9 +2167,9 @@ namespace UQMEdit
             this.LanderUpgradesBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Landers)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BioData)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ResUnits)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ResourceUnits)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ShipFuel)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ShipCrew)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FlagshipCrew)).EndInit();
             this.CargoBox.ResumeLayout(false);
             this.CargoBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Minerals_Exotics)).EndInit();
@@ -2263,9 +2263,9 @@ namespace UQMEdit
 		private Label CrewLabel;
 		public NumericUpDown Landers;
 		public NumericUpDown BioData;
-		public NumericUpDown ResUnits;
+		public NumericUpDown ResourceUnits;
 		public NumericUpDown ShipFuel;
-		public NumericUpDown ShipCrew;
+		public NumericUpDown FlagshipCrew;
 		public TextBox ShipName;
 		public GroupBox CargoBox;
 		private Label ExoticsLabel;
