@@ -78,14 +78,14 @@ namespace UQMEdit
 				Save.Enabled = true;
 				Tabs.Enabled = true;
 
-				var saveFile = UrQuanMastersSaveFile.Instance;
+				var saveFile = UrQuanMastersGameState.Instance;
 
 				saveFile.Open(_currentFile, this);
 
 				var TitleText = "The Ur-Quan Masters Save Editor";
 				SeedBox.Visible = false;
 				megaModModes.Visible = false;
-				TitleText += UrQuanMastersSaveFile.Instance.GetTitleText();
+				TitleText += UrQuanMastersGameState.Instance.GetTitleText();
 
 				if (TitleText.Contains("MegaMod") )
 				{
@@ -107,7 +107,7 @@ namespace UQMEdit
 		}
 
 		private void Reload_Click(object sender, EventArgs e) {
-			UrQuanMastersSaveFile.Instance.Open(_currentFile, this);
+			UrQuanMastersGameState.Instance.Open(_currentFile, this);
 		}
 
 		private void MineralsValueChanged(object sender, EventArgs e) {
@@ -124,7 +124,7 @@ namespace UQMEdit
 		}
 
 		private void Save_Click(object sender, EventArgs e) {
-			UrQuanMastersSaveFile.Instance.Save(_currentFile, this);
+			UrQuanMastersGameState.Instance.Save(_currentFile, this);
 		}
 
 		private void Main_Shown(object sender, EventArgs e) {
