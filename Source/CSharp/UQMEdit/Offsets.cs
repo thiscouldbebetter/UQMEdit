@@ -18,7 +18,7 @@ namespace UQMEdit
 		byte ModuleSlots { get; }
 		byte[] ThrusterSlots { get; }
 		byte[] TurningJetSlots { get; }
-		byte Landers { get; }
+		byte LandersCount { get; }
 		byte Minerals_CommonElements { get; }
 		byte Minerals_Corrosives { get; }
 		byte Minerals_BaseMetals { get; }
@@ -72,7 +72,7 @@ namespace UQMEdit
 		public byte ModuleSlots { get => (byte)(_offsetsInner.ModuleSlots - _48); }
 		public byte[] ThrusterSlots { get => _offsetsInner.ThrusterSlots.Select(x => (byte)(x - 48) ).ToArray(); }
 		public byte[] TurningJetSlots { get => _offsetsInner.TurningJetSlots.Select(x => (byte)(x - 48)).ToArray(); }
-		public byte Landers { get => (byte)(_offsetsInner.Landers - _48); }
+		public byte LandersCount { get => (byte)(_offsetsInner.LandersCount - _48); }
 		public byte Minerals_CommonElements { get => (byte)(_offsetsInner.Minerals_CommonElements - _48); }
 		public byte Minerals_Corrosives { get => (byte)(_offsetsInner.Minerals_Corrosives - _48); }
 		public byte Minerals_BaseMetals { get => (byte)(_offsetsInner.Minerals_BaseMetals - _48); }
@@ -124,7 +124,7 @@ namespace UQMEdit
 		public byte ModuleSlots { get; } = 70;
 		public byte[] ThrusterSlots { get; } = { 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96 };
 		public byte[] TurningJetSlots { get; } = { 97, 98, 99, 100, 101, 102, 103, 104 };
-		public byte Landers { get; } = 105;
+		public byte LandersCount { get; } = 105;
 		public byte Minerals_CommonElements { get; } = 106;
 		public byte Minerals_Corrosives { get; } = 108;
 		public byte Minerals_BaseMetals { get; } = 110;
@@ -175,7 +175,7 @@ namespace UQMEdit
 		public byte ModuleSlots { get; } = 34;
 		public byte[] ThrusterSlots { get; } = { 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 };
 		public byte[] TurningJetSlots { get; } = { 61, 62, 63, 64, 65, 66, 67, 68 };
-		public byte Landers { get; } = 69;
+		public byte LandersCount { get; } = 69;
 		public byte Minerals_CommonElements { get; } = 70;
 		public byte Minerals_Corrosives { get; } = 72;
 		public byte Minerals_BaseMetals { get; } = 74;
@@ -227,7 +227,7 @@ namespace UQMEdit
 		public byte ModuleSlots { get => _offsetsInner.ModuleSlots; }
 		public byte[] ThrusterSlots { get => _offsetsInner.ThrusterSlots; }
 		public byte[] TurningJetSlots { get => _offsetsInner.TurningJetSlots; }
-		public byte Landers { get => _offsetsInner.Landers; }
+		public byte LandersCount { get => _offsetsInner.LandersCount; }
 		public byte Minerals_CommonElements { get => _offsetsInner.Minerals_CommonElements; }
 		public byte Minerals_Corrosives { get => _offsetsInner.Minerals_Corrosives; }
 		public byte Minerals_BaseMetals { get => _offsetsInner.Minerals_BaseMetals; }

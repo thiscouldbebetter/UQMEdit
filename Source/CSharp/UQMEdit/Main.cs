@@ -111,8 +111,8 @@ namespace UQMEdit
 		}
 
 		private void MineralsValueChanged(object sender, EventArgs e) {
-			TotalMinerals.Value = 0;
-			TotalMinerals.Value =
+			Minerals_Total.Value = 0;
+			Minerals_Total.Value =
 				Minerals_CommonElements.Value
 				+ Minerals_Corrosives.Value
 				+ Minerals_BaseMetals.Value
@@ -201,7 +201,7 @@ namespace UQMEdit
 		}
 
 		private void MaxJets_Click(object sender, EventArgs e) {
-			foreach (var turningJetsControl in JetsBox.Controls) {
+			foreach (var turningJetsControl in TurningJetsBox.Controls) {
 				if (turningJetsControl is CheckBox) {
 					(turningJetsControl as CheckBox).Checked = true;
 				}

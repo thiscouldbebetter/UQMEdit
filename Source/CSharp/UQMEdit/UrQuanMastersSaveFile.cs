@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -28,8 +30,8 @@ namespace UQMEdit
 
 				using (_fileStream = new FileStream(fileToLoadName, FileMode.Open))
 				{
-					var fileSize = (int)_fileStream.Length;  // get file length
-					_fileBuffer = new byte[fileSize];    // create buffer
+					var fileSize = (int)_fileStream.Length;
+					_fileBuffer = new byte[fileSize];
 					_window = window;
 
 					var offsets = ByteOffsetsPick(SaveVersion);
@@ -44,8 +46,9 @@ namespace UQMEdit
 					else
 						SaveVersion = 0;
 
-					CoordinatesRead();
-					SummaryRead();
+					ReadCoordinates();
+					ReadSummary();
+					PopulateControlFromFields(_window);
 				}
 			}
 		}
@@ -58,8 +61,9 @@ namespace UQMEdit
 				_fileBuffer = new byte[fileSize];    // create buffer
 				_window = window;
 
-				SummaryWrite();
-				CoordinatesWrite();
+				PopulateFieldsFromControl(_window);
+				SaveSummary();
+				SaveCoordinates();
 			}
 		}
 
@@ -82,33 +86,29 @@ namespace UQMEdit
 			}
 		}
 
-		private void CoordinatesRead()
+		private void ReadCoordinates()
 		{
 			var offsets = ByteOffsetsPick(SaveVersion);
 
 			decimal LogX = LogXToUniverse(
-				ReadIntegerFromOffset32BitSigned(
-					offsets.LogX
-				)
+				ReadIntegerFromOffset32BitSigned(offsets.LogX)
 			);
-			_window.UniverseX.Value = LogX / 10;
+			UniverseX = LogX / 10;
 
 			decimal LogY = LogYToUniverse(
-				ReadIntegerFromOffset32BitSigned(
-					offsets.LogY
-				)
+				ReadIntegerFromOffset32BitSigned(offsets.LogY)
 			);
-			_window.UniverseY.Value = LogY / 10;
+			UniverseY = LogY / 10;
 
 			var statusAsByte = ReadByteFromOffset(offsets.Status);
 
 			if (statusAsByte < 0 || statusAsByte >= Constants.StatusNames.Length)
 			{
-				_window.CurrentStatus.SelectedIndex = 9;
+				CurrentStatus = 9;
 			}
 			else
 			{
-				_window.CurrentStatus.SelectedIndex = statusAsByte;
+				CurrentStatus = statusAsByte;
 			}
 
 			// Planet Orbit
@@ -120,17 +120,17 @@ namespace UQMEdit
 						16
 					)
 				);
-				_window.NearestPlanet.Text = planet;
+				NearestPlanet = planet;
 			}
 			else
 			{
-				_window.NearestPlanet.Text = "Not In Orbit";
+				NearestPlanet = "Not In Orbit";
 			}
 		}
 
-		private void CoordinatesWrite()
+		private void SaveCoordinates()
 		{
-			var universeX = _window.UniverseX.Value * 10;
+			var universeX = UniverseX * 10;
 			var offsets = ByteOffsetsPick(SaveVersion);
 			var xOrY = UniverseToLogX(decimal.ToInt32(universeX));
 			WriteDecimalToOffsetWithLengthAndMaxSigned32Bit(
@@ -139,7 +139,7 @@ namespace UQMEdit
 				valueMax: 159735
 			);
 
-			var universeY = _window.UniverseY.Value * 10;
+			var universeY = UniverseY * 10;
 			xOrY = UniverseToLogY(decimal.ToInt32(universeY));
 			WriteDecimalToOffsetWithLengthAndMaxSigned32Bit(
 				valueToWrite: xOrY,
@@ -173,7 +173,7 @@ namespace UQMEdit
 			return returnValue;
 		}
 
-	private byte[] StringToByteArray(string stringToConvert, int maxLength)
+		private byte[] StringToByteArray(string stringToConvert, int maxLength)
 		{
 			var charArr = stringToConvert.ToCharArray();
 			var bytes = new byte[maxLength];
@@ -232,9 +232,13 @@ namespace UQMEdit
 			int offsetInBytes, int lengthInBytes
 		)
 		{
+			var bytesRead = new byte[lengthInBytes];
 			_fileStream.Seek(offsetInBytes, SeekOrigin.Begin);
-			_fileStream.Read(_fileBuffer, 0, lengthInBytes);
-			return _fileBuffer;
+			for (var i = 0; i < lengthInBytes; i++)
+			{
+				bytesRead[i] = (byte)(_fileStream.ReadByte());
+			}
+			return bytesRead;
 		}
 
 		private int ReadIntegerFromOffsetWithLength(
@@ -275,7 +279,38 @@ namespace UQMEdit
 			return (integerToRound >> 1);
 		}
 
-		private void SummaryRead()
+		public decimal UniverseX, UniverseY;
+		public byte CurrentStatus;
+		public string NearestPlanet;
+		public int ResourceUnits;
+		public decimal ShipFuel, FlagshipCrew, BioData;
+		public FlagshipModule[] FlagshipModulesAtPositions;
+		public bool[] ThrustersArePresentAtPositions;
+		public byte LandersCount;
+		public int
+			Minerals_CommonElements,
+			Minerals_Corrosives,
+			Minerals_BaseMetals,
+			Minerals_NobleGases,
+			Minerals_RareEarths,
+			Minerals_PreciousMetals,
+			Minerals_Radioactives,
+			Minerals_Exotics,
+			Minerals_Total;
+		public string
+			ShipName,
+			CommanderName;
+		public LanderModifications _LanderModifications;
+		public int Credits;
+		public byte[] EscortShipsAsBytes;
+		public object[] DevicesAsObjects;
+		public bool[] TurningJetsArePresentAtPositions;
+		public byte Difficulty;
+		public bool Extended;
+		public bool Nomad;
+		public int CustomSeed;
+
+		private void ReadSummary()
 		{
 			var offsets = ByteOffsetsPick(SaveVersion);
 
@@ -305,46 +340,31 @@ namespace UQMEdit
 				SaveName = "Saved Game - Date: ";
 			}
 
-			_window.ResourceUnits.Value = ReadIntegerFromOffset32BitSigned(offsets.ResourceUnits);
+			ResourceUnits = ReadIntegerFromOffset32BitSigned(offsets.ResourceUnits);
 
 			var fuel = ReadIntegerFromOffset32BitSigned(offsets.Fuel);
 			const int fuelMax = 160100;
 			fuel = fuel > fuelMax ? fuelMax : fuel;
-			_window.ShipFuel.Value = fuel / 100;
+			ShipFuel = fuel / 100;
 
-			_window.FlagshipCrew.Value = ReadIntegerFromOffsetWithLength16BitUnsigned(
+			FlagshipCrew = ReadIntegerFromOffsetWithLength16BitUnsigned(
 				offsets.FlagshipCrew,
 				lengthInBytes: 4
 			);
 
-			_window.BioData.Value = ReadIntegerFromOffsetWithLength16BitUnsigned(
+			BioData = ReadIntegerFromOffsetWithLength16BitUnsigned(
 				offsets.BioData,
 				lengthInBytes: 2
 			);
 
-			// Modules
-			var modules =
+			var flagshipModulesAsBytes =
 				ReadBytesFromOffsetWithLength(
 					offsets.ModuleSlots,
 					lengthInBytes: 16
 				);
-			var moduleCount = 0;
-			foreach (var modulesControl in _window.ModulesBox.Controls)
-			{
-				if (modulesControl is ComboBox)
-				{
-					var modulesComboBox = modulesControl as ComboBox;
-					if (modules[moduleCount] < 20)
-					{
-						modulesComboBox.SelectedIndex = modules[moduleCount] - 2;
-					}
-					else
-					{
-						modulesComboBox.SelectedIndex = 0;
-					}
-					moduleCount++;
-				}
-			}
+
+			FlagshipModulesAtPositions =
+				flagshipModulesAsBytes.Select(x => FlagshipModule.ByCode(x)).ToArray();
 
 			var thrustersAsBytes =
 				ReadBytesFromOffsetWithLength(
@@ -352,16 +372,8 @@ namespace UQMEdit
 					lengthInBytes: 11
 				);
 
-			var thrustersCount = 0;
-			foreach (var thrustersControl in _window.ThrusterBox.Controls)
-			{
-				if (thrustersControl is CheckBox)
-				{
-					(thrustersControl as CheckBox).Checked =
-						(thrustersAsBytes[thrustersCount] == 1);
-					thrustersCount++;
-				}
-			}
+			ThrustersArePresentAtPositions =
+				thrustersAsBytes.Select(x => x == 1).ToArray();
 
 			var turningJetsAsBytes =
 				ReadBytesFromOffsetWithLength(
@@ -369,69 +381,61 @@ namespace UQMEdit
 					lengthInBytes: 8
 				);
 
-			var turningJetsCount = 0;
-			foreach (var turningJetsControl in _window.JetsBox.Controls)
-			{
-				if (turningJetsControl is CheckBox)
-				{
-					(turningJetsControl as CheckBox).Checked =
-						(turningJetsAsBytes[turningJetsCount] == 2);
-					turningJetsCount++;
-				}
-			}
+			TurningJetsArePresentAtPositions =
+				turningJetsAsBytes.Select(x => x == 2).ToArray();
 
-			_window.Landers.Value = ReadByteFromOffset(offsets.Landers);
+			LandersCount = ReadByteFromOffset(offsets.LandersCount);
 
 			// Cargo.
-			_window.Minerals_CommonElements.Value =
+			Minerals_CommonElements =
 				ReadIntegerFromOffsetWithLength16BitUnsigned(
 					offsets.Minerals_CommonElements,
 					lengthInBytes: 2
 				);
 
-			_window.Minerals_Corrosives.Value =
+			Minerals_Corrosives =
 				ReadIntegerFromOffsetWithLength16BitUnsigned(
 					offsets.Minerals_Corrosives,
 					lengthInBytes: 2
 				);
 
-			_window.Minerals_BaseMetals.Value =
+			Minerals_BaseMetals =
 				ReadIntegerFromOffsetWithLength16BitUnsigned(
 					offsets.Minerals_BaseMetals,
 					lengthInBytes: 2
 				);
 
-			_window.Minerals_NobleGases.Value =
+			Minerals_NobleGases =
 				ReadIntegerFromOffsetWithLength16BitUnsigned(
 					offsets.Minerals_NobleGases,
 					lengthInBytes: 2
 				);
 
-			_window.Minerals_RareEarths.Value =
+			Minerals_RareEarths =
 				ReadIntegerFromOffsetWithLength16BitUnsigned(
 					offsets.Minerals_RareEarths,
 					lengthInBytes: 2
 				);
 
-			_window.Minerals_PreciousMetals.Value =
+			Minerals_PreciousMetals =
 				ReadIntegerFromOffsetWithLength16BitUnsigned(
 					offsets.Minerals_PreciousMetals,
 					lengthInBytes: 2
 				);
 
-			_window.Minerals_Radioactives.Value =
+			Minerals_Radioactives =
 				ReadIntegerFromOffsetWithLength16BitUnsigned(
 					offsets.Minerals_Radioactives,
 					lengthInBytes: 2
 				);
 
-			_window.Minerals_Exotics.Value =
+			Minerals_Exotics =
 				ReadIntegerFromOffsetWithLength16BitUnsigned(
 					offsets.Minerals_Exotics,
 					lengthInBytes: 2
 				);
 
-			_window.ShipName.Text =
+			ShipName =
 				Encoding.Default.GetString(
 					ReadBytesFromOffsetWithLength(
 						offsets.ShipName,
@@ -439,7 +443,7 @@ namespace UQMEdit
 					)
 				);
 
-			_window.CommanderName.Text =
+			CommanderName =
 				Encoding.Default.GetString(
 					ReadBytesFromOffsetWithLength(
 						offsets.CaptainName,
@@ -452,14 +456,7 @@ namespace UQMEdit
 				ReadByteFromOffset(offsets.LanderModifications);
 			var landerModifications = LanderModifications.fromByte(landerModificationsAsByte);
 
-			_window.LanderModifications_BioShield.Checked = landerModifications.BioShield;
-			_window.LanderModifications_QuakeShield.Checked = landerModifications.QuakeShield;
-			_window.LanderModifications_LightningShield.Checked = landerModifications.LightningShield;
-			_window.LanderModifications_HeatShield.Checked = landerModifications.HeatShield;
-			_window.LanderModifications_DoubleSpeed.Checked = landerModifications.DoubleSpeed;
-			_window.LanderModifications_DoubleCargo.Checked = landerModifications.DoubleCargo;
-			_window.LanderModifications_RapidFire.Checked = landerModifications.RapidFire;
-			_window.LanderModifications_DisplacedByBomb.Checked = landerModifications.DisplacedByBomb;
+			_LanderModifications = landerModifications;
 
 			// Time & Date
 			var day = ReadByteFromOffset(offsets.Date[0]);
@@ -474,10 +471,10 @@ namespace UQMEdit
 				+ " " + day
 				+ "·" + year;
 
-			_window.Credits.Text = ReadIntegerFromOffsetWithLength16BitUnsigned(
+			Credits = ReadIntegerFromOffsetWithLength16BitUnsigned(
 				offsets.Credits,
 				lengthInBytes: 2
-			).ToString();
+			);
 
 			var escortShipsCountAsRead = ReadByteFromOffset(offsets.Escorts[0]);
 			var escortShipsAsBytes =
@@ -486,36 +483,7 @@ namespace UQMEdit
 					escortShipsCountAsRead
 				);
 
-			var escortShipsCountAsCounted = 0;
-			foreach (var shipsControl in _window.ShipsBox.Controls)
-			{
-				if (shipsControl is ComboBox)
-				{
-					var shipsComboBox = shipsControl as ComboBox;
-
-					if (escortShipsCountAsCounted < escortShipsCountAsRead)
-					{
-						if
-						(
-							escortShipsAsBytes[escortShipsCountAsCounted] < Constants.ShipNames.Length
-							&& escortShipsAsBytes[escortShipsCountAsCounted] >= 0
-						)
-						{
-							shipsComboBox.SelectedIndex =
-								escortShipsAsBytes[escortShipsCountAsCounted];
-						}
-						else
-						{
-							shipsComboBox.SelectedIndex = 24;
-						}
-						escortShipsCountAsCounted++;
-					}
-					else
-					{
-						shipsComboBox.SelectedIndex = 24;
-					}
-				}
-			}
+			EscortShipsAsBytes = escortShipsAsBytes;
 
 			var devicesCount = ReadByteFromOffset(offsets.Devices[0]);
 
@@ -537,190 +505,193 @@ namespace UQMEdit
 					devicesAsObjects[i] = Constants.DeviceNames[devicesAsBytes[i]];
 				}
 			}
-			_window.Devices.Items.Clear();
-			_window.Devices.Items.AddRange(devicesAsObjects);
+			DevicesAsObjects = devicesAsObjects;
 
 			// Custom Seed
 			if (SaveVersion == 2)
 			{
-				_window.difficultyBox.SelectedIndex =
+				Difficulty =
 					ReadByteFromOffset(offsets.Difficulty);
 
-				_window.extendedCheckBox.Checked =
-					Convert.ToBoolean(
-						ReadByteFromOffset(offsets.Extended)
-					);
+				Extended =
+					Convert.ToBoolean(ReadByteFromOffset(offsets.Extended) );
 
-				_window.nomadCheckBox.Checked =
-					Convert.ToBoolean(
-						ReadByteFromOffset(offsets.Nomad)
-					);
+				Nomad =
+					Convert.ToBoolean(ReadByteFromOffset(offsets.Nomad) );
 
-				_window.CustomSeed.Text = ReadIntegerFromOffset32BitSigned(
-					offsets.CustomSeed
-				).ToString();
+				CustomSeed =
+					ReadIntegerFromOffset32BitSigned(offsets.CustomSeed);
 			}
 		}
 
-		private void SummaryWrite()
+		private void PopulateFieldsFromControl(Main _window)
+		{
+			ResourceUnits = (int)_window.ResourceUnits.Value;
+			ShipFuel = _window.ShipFuel.Value; // */ 100
+			FlagshipCrew = _window.FlagshipCrew.Value;
+			Minerals_Total = (int)(_window.Minerals_Total.Value);
+			BioData = _window.BioData.Value;
+
+			var modulesPresent = new List<FlagshipModule>();
+			foreach (var modulesControl in _window.ModulesBox.Controls)
+			{
+				if (modulesControl is ComboBox)
+				{
+					var moduleAsComboBox = modulesControl as ComboBox;
+					var modulePresent =
+						moduleAsComboBox.SelectedItem as FlagshipModule;
+					modulesPresent.Add(modulePresent);
+				}
+			}
+
+			var thrusterControls = _window.ThrusterBox.Controls;
+			var i = 0;
+			foreach (var thrusterControl in thrusterControls)
+			{
+				if (thrusterControl is CheckBox)
+				{
+					var thrusterIsPresent = (thrusterControl as CheckBox).Checked;
+					ThrustersArePresentAtPositions[i] = thrusterIsPresent;
+					i++;
+				}
+			}
+
+			var turningJetControls = _window.TurningJetsBox.Controls;
+			i = 0;
+			foreach (var turningJetControl in turningJetControls)
+			{
+				if (turningJetControl is CheckBox)
+				{
+					var turningJetIsPresent = (turningJetControl as CheckBox).Checked;
+					TurningJetsArePresentAtPositions[i] = turningJetIsPresent;
+					i++;
+				}
+			}
+
+			LandersCount = (byte)(_window.LanderCount.Value);
+
+			Minerals_CommonElements = (int)_window.Minerals_CommonElements.Value;
+			Minerals_Corrosives = (int)_window.Minerals_Corrosives.Value;
+			Minerals_BaseMetals = (int)_window.Minerals_BaseMetals.Value;
+			Minerals_NobleGases = (int)_window.Minerals_NobleGases.Value;
+			Minerals_PreciousMetals = (int)_window.Minerals_PreciousMetals.Value;
+			Minerals_Radioactives = (int)_window.Minerals_Radioactives.Value;
+			Minerals_Total = (int)_window.Minerals_Total.Value;
+
+			ShipName = _window.ShipName.Text;
+
+			CommanderName = _window.CommanderName.Text;
+		}
+
+		private void SaveSummary()
 		{
 			var offsets = ByteOffsetsPick(SaveVersion);
 
 			WriteDecimalToOffsetWithLengthAndMaxUnsigned32Bit(
-				valueToWrite: _window.ResourceUnits.Value,
+				valueToWrite: ResourceUnits,
 				offsets.ResourceUnits,
 				valueMax: 0xFFFFFFFF
 			);
 
-			var fuel = _window.ShipFuel.Value * 100;
 			WriteDecimalToOffsetWithLengthAndMaxUnsigned32Bit(
-				valueToWrite: decimal.ToUInt32(fuel),
+				valueToWrite: ShipFuel,
 				offsets.Fuel,
 				valueMax: 161000
 			);
 
 			WriteDecimalToOffsetWithLengthAndMaxUnsigned16Bit(
-				valueToWrite: _window.FlagshipCrew.Value,
+				valueToWrite: FlagshipCrew,
 				offsets.FlagshipCrew,
 				valueMax: 800
 			);
 
 			WriteDecimalToOffsetWithLengthAndMaxUnsigned16Bit(
-				valueToWrite: _window.TotalMinerals.Value,
+				valueToWrite: Minerals_Total,
 				offsets.TotalMinerals,
 				valueMax: 8000
 			);
 
 			WriteDecimalToOffsetWithLengthAndMaxUnsigned16Bit(
-				valueToWrite: _window.BioData.Value,
+				valueToWrite: BioData,
 				offsets.BioData,
 				valueMax: 0xFFFF
 			);
 
-			// Modules
-			byte moduleAsByte, i = 0;
-			foreach (var modulesControl in _window.ModulesBox.Controls)
-			{
-				if (modulesControl is ComboBox)
-				{
-					int modulePresentCode = (modulesControl as ComboBox).SelectedIndex;
-					if (modulePresentCode > 0)
-					{
-						moduleAsByte = (byte)(modulePresentCode + 2);
-					}
-					else
-					{
-						moduleAsByte = 22;
-					}
-					WriteDecimalToOffsetWithLengthAndMaxUnsigned(
-						valueToWrite: moduleAsByte,
-						offsets.ModuleSlots + i,
-						lengthInBytes: 1,
-						valueMax: 22
-					);
-					i++;
-				}
-			}
+			var modulesAsBytes = FlagshipModulesAtPositions.Select(x => x.Code).ToArray();
+			WriteBytesToOffset(modulesAsBytes, offsets.ModuleSlots);
 
-			// Thrusters
-			byte thrustersAsByte, j = 0;
-			foreach (var thrusterControl in _window.ThrusterBox.Controls)
-			{
-				if (thrusterControl is CheckBox)
-				{
-					var thrusterIsPresent = (thrusterControl as CheckBox).Checked;
-					thrustersAsByte = (byte)(thrusterIsPresent ? 1 : 20);
-					WriteDecimalToOffsetWithLengthAndMaxUnsigned(
-						offsets.ThrusterSlots[j],
-						thrustersAsByte,
-						lengthInBytes: 1,
-						valueMax: 20
-					);
-					j++;
-				}
-			}
+			var thrustersAsBytes =
+				ThrustersArePresentAtPositions.Select(x => x ? (byte)1 : (byte)20).ToArray();
+			WriteBytesToOffset(thrustersAsBytes, offsets.ThrusterSlots[0]);
 
-			byte turningJetAsByte, k = 0;
-			foreach (var turningJetControl in _window.JetsBox.Controls)
-			{
-				if (turningJetControl is CheckBox)
-				{
-					var turningJetIsPresent = (turningJetControl as CheckBox).Checked;
-					turningJetAsByte = (byte)(turningJetIsPresent ? 2 : 21);
-					WriteDecimalToOffsetWithLengthAndMaxUnsigned(
-						offsets.TurningJetSlots[k],
-						turningJetAsByte,
-						lengthInBytes: 1,
-						valueMax: 21
-					);
-					k++;
-				}
-			}
+			var turningJetsAsBytes =
+				TurningJetsArePresentAtPositions.Select(x => x ? (byte)2 : (byte)21).ToArray();
+			WriteBytesToOffset(turningJetsAsBytes, offsets.TurningJetSlots[0]);
 
 			WriteDecimalToOffsetWithLengthAndMaxSigned(
-				_window.Landers.Value,
-				offsets.Landers,
+				LandersCount,
+				offsets.LandersCount,
 				lengthInBytes: 1,
 				valueMax: 10
 			);
 
 			// Cargo.
 			WriteDecimalToOffsetWithLengthAndMaxSigned16Bit(
-				_window.Minerals_CommonElements.Value,
+				Minerals_CommonElements,
 				offsets.Minerals_CommonElements,
 				valueMax: 0xFFFF
 			);
 
 			WriteDecimalToOffsetWithLengthAndMaxSigned16Bit(
-				_window.Minerals_Corrosives.Value,
+				Minerals_Corrosives,
 				offsets.Minerals_Corrosives,
 				valueMax: 0xFFFF
 			);
 
 			WriteDecimalToOffsetWithLengthAndMaxSigned16Bit(
-				_window.Minerals_BaseMetals.Value,
+				Minerals_BaseMetals,
 				offsets.Minerals_BaseMetals,
 				valueMax: 0xFFFF
 			);
 
 			WriteDecimalToOffsetWithLengthAndMaxSigned16Bit(
-				_window.Minerals_NobleGases.Value,
+				Minerals_NobleGases,
 				offsets.Minerals_NobleGases,
 				valueMax: 0xFFFF
 			);
 
 			WriteDecimalToOffsetWithLengthAndMaxSigned16Bit(
-				_window.Minerals_RareEarths.Value,
+				Minerals_RareEarths,
 				offsets.Minerals_RareEarths,
 				valueMax: 0xFFFF
 			);
 
 			WriteDecimalToOffsetWithLengthAndMaxSigned16Bit(
-				_window.Minerals_PreciousMetals.Value,
+				Minerals_PreciousMetals,
 				offsets.Minerals_PreciousMetals,
 				valueMax: 0xFFFF
 			);
 
 			WriteDecimalToOffsetWithLengthAndMaxSigned16Bit(
-				_window.Minerals_Radioactives.Value,
+				Minerals_Radioactives,
 				offsets.Minerals_Radioactives,
 				valueMax: 0xFFFF
 			);
 
 			WriteDecimalToOffsetWithLengthAndMaxSigned16Bit(
-				_window.Minerals_Exotics.Value,
+				Minerals_Exotics,
 				offsets.Minerals_Exotics,
 				valueMax: 0xFFFF
 			);
 
 			WriteStringToOffsetWithLength(
-				_window.ShipName.Text,
+				ShipName,
 				offsets.ShipName,
 				lengthInBytes: 16
 			);
 
 			WriteStringToOffsetWithLength(
-				_window.CommanderName.Text,
+				CommanderName,
 				offsets.CaptainName,
 				lengthInBytes: 16
 			);
@@ -750,6 +721,18 @@ namespace UQMEdit
 				)
 				/ Constants.UniverseUnits;
 			return returnValue;
+		}
+
+		private void WriteBytesToOffset(
+			byte[] bytesToWrite,
+			int offsetToWriteToInBytes
+		)
+		{
+			_fileStream.Seek(offsetToWriteToInBytes, SeekOrigin.Begin);
+			foreach (var byteToWrite in bytesToWrite)
+			{
+				_fileStream.WriteByte(byteToWrite);
+			}
 		}
 
 		private void WriteDecimalToOffsetWithLengthAndMax(
@@ -850,7 +833,6 @@ namespace UQMEdit
 			);
 		}
 
-
 		public void WriteStringToOffsetWithLength(
 			string stringToWrite, int offset, int lengthInBytes
 		)
@@ -859,46 +841,238 @@ namespace UQMEdit
 			_fileBuffer = StringToByteArray(stringToWrite, lengthInBytes);
 			_fileStream.Write(_fileBuffer, 0, lengthInBytes);
 		}
-	}
 
-	class LanderModifications
-	{
-		public bool
-			BioShield,
-			QuakeShield,
-			LightningShield,
-			HeatShield,
-			DoubleSpeed, 
-			DoubleCargo,
-			RapidFire,
-			DisplacedByBomb;
+		// Controls.
 
-		public static LanderModifications fromByte(byte landerModificationsAsByte)
+		private void PopulateControlFromFields(Main _window)
 		{
-			return new LanderModifications()
+			_window.UniverseX.Value = UniverseX;
+			_window.UniverseY.Value = UniverseY;
+			_window.CurrentStatus.SelectedIndex = CurrentStatus;
+			_window.NearestPlanet.Text = NearestPlanet;
+			_window.ResourceUnits.Value = ResourceUnits;
+			_window.ShipFuel.Value = ShipFuel;
+			_window.FlagshipCrew.Value = FlagshipCrew;
+			_window.BioData.Value = BioData;
+
+			var flagshipModuleCount = 0;
+			var flagshipModulesAtPositions = FlagshipModulesAtPositions;
+			foreach (var modulesControl in _window.ModulesBox.Controls)
 			{
-				BioShield = ParseModificationFlag(landerModificationsAsByte, 0),
-				QuakeShield = ParseModificationFlag(landerModificationsAsByte, 1),
-				LightningShield = ParseModificationFlag(landerModificationsAsByte, 2),
-				HeatShield = ParseModificationFlag(landerModificationsAsByte, 3),
-				DoubleSpeed = ParseModificationFlag(landerModificationsAsByte, 4),
-				DoubleCargo = ParseModificationFlag(landerModificationsAsByte, 5),
-				RapidFire = ParseModificationFlag(landerModificationsAsByte, 6),
-				DisplacedByBomb = ParseModificationFlag(landerModificationsAsByte, 7, isBomb: true)
-			};
+				if (modulesControl is ComboBox)
+				{
+					var modulesComboBox = modulesControl as ComboBox;
+					if (flagshipModulesAtPositions[flagshipModuleCount] != FlagshipModule.Instances.Empty)
+					{
+						modulesComboBox.SelectedIndex =
+							flagshipModulesAtPositions[flagshipModuleCount].Code - 2;
+					}
+					else
+					{
+						modulesComboBox.SelectedIndex = 0;
+					}
+					flagshipModuleCount++;
+				}
+			}
+
+			var thrustersCount = 0;
+			foreach (var thrustersControl in _window.ThrusterBox.Controls)
+			{
+				if (thrustersControl is CheckBox)
+				{
+					(thrustersControl as CheckBox).Checked =
+						(ThrustersArePresentAtPositions[thrustersCount]);
+					thrustersCount++;
+				}
+			}
+
+			var turningJetsCount = 0;
+			foreach (var turningJetControl in _window.TurningJetsBox.Controls)
+			{
+				if (turningJetControl is CheckBox)
+				{
+					(turningJetControl as CheckBox).Checked =
+						(TurningJetsArePresentAtPositions[turningJetsCount]);
+					turningJetsCount++;
+				}
+			}
+
+			_window.LanderCount.Value = LandersCount;
+
+			_window.Minerals_CommonElements.Value = Minerals_CommonElements;
+			_window.Minerals_Corrosives.Value = Minerals_Corrosives;
+			_window.Minerals_BaseMetals.Value = Minerals_BaseMetals;
+			_window.Minerals_NobleGases.Value = Minerals_NobleGases;
+			_window.Minerals_RareEarths.Value = Minerals_RareEarths;
+			_window.Minerals_PreciousMetals.Value = Minerals_PreciousMetals;
+			_window.Minerals_Radioactives.Value = Minerals_Radioactives;
+			_window.Minerals_Exotics.Value = Minerals_Exotics;
+			_window.ShipName.Text = ShipName;
+			_window.CommanderName.Text = CommanderName;
+
+			var landerModifications = _LanderModifications;
+
+			_window.LanderModifications_BioShield.Checked = landerModifications.BioShield;
+			_window.LanderModifications_QuakeShield.Checked = landerModifications.QuakeShield;
+			_window.LanderModifications_LightningShield.Checked = landerModifications.LightningShield;
+			_window.LanderModifications_HeatShield.Checked = landerModifications.HeatShield;
+			_window.LanderModifications_DoubleSpeed.Checked = landerModifications.DoubleSpeed;
+			_window.LanderModifications_DoubleCargo.Checked = landerModifications.DoubleCargo;
+			_window.LanderModifications_RapidFire.Checked = landerModifications.RapidFire;
+			_window.LanderModifications_DisplacedByBomb.Checked = landerModifications.DisplacedByBomb;
+
+			_window.Credits.Text = Credits.ToString();
+
+			var escortShipsAsBytes = EscortShipsAsBytes;
+			var escortShipsCountAsRead = escortShipsAsBytes.Length; // todo
+
+			var escortShipsCountAsCounted = 0;
+			foreach (var shipsControl in _window.ShipsBox.Controls)
+			{
+				if (shipsControl is ComboBox)
+				{
+					var shipsComboBox = shipsControl as ComboBox;
+
+					if (escortShipsCountAsCounted < escortShipsCountAsRead)
+					{
+						if
+						(
+							escortShipsAsBytes[escortShipsCountAsCounted] < Constants.ShipNames.Length
+							&& escortShipsAsBytes[escortShipsCountAsCounted] >= 0
+						)
+						{
+							shipsComboBox.SelectedIndex =
+								escortShipsAsBytes[escortShipsCountAsCounted];
+						}
+						else
+						{
+							shipsComboBox.SelectedIndex = 24;
+						}
+						escortShipsCountAsCounted++;
+					}
+					else
+					{
+						shipsComboBox.SelectedIndex = 24;
+					}
+				}
+			}
+
+			_window.Devices.Items.Clear();
+			_window.Devices.Items.AddRange(DevicesAsObjects);
+
+			_window.difficultyBox.SelectedIndex = Difficulty;
+			_window.extendedCheckBox.Checked = Extended;
+			_window.nomadCheckBox.Checked = Nomad;
+			_window.CustomSeed.Text = CustomSeed.ToString();
+
 		}
 
-		private static bool ParseModificationFlag(
-			byte landerModificationsAsByte, int flagOffsetInBits, bool isBomb = false
-		)
+		// Inner classes.
+
+		public class FlagshipModule
 		{
-			var bitAsMask = (int)Math.Pow(2, flagOffsetInBits);
-			return
-				isBomb == false
-				? ((landerModificationsAsByte | 128) & bitAsMask) != 0
-				: (landerModificationsAsByte & bitAsMask) != 0;
+			public byte Code;
+			public string Name;
+
+			public FlagshipModule(byte code, string name)
+			{
+				Code = code;
+				Name = name;
+			}
+
+			public static class Instances
+			{
+				public static FlagshipModule
+					Empty						= new FlagshipModule(22, "Empty"),
+					CrewPod						= new FlagshipModule(3, "Crew Pod"),
+					StorageBay					= new FlagshipModule(4, "Storage Bay"),
+					FuelTank					= new FlagshipModule(5, "Fuel Tank"),
+					HighEfficiencyFuelSystem	= new FlagshipModule(6, "High-Eff FuelSys"),
+					DynamoUnit					= new FlagshipModule(7, "Dynamo Unit"),
+					ShivaFurnace				= new FlagshipModule(8, "Shiva Furnace"),
+					IonBoltGun					= new FlagshipModule(9, "Ion-Bolt Gun"),
+					FusionBlaster				= new FlagshipModule(10, "Fusion Blaster"),
+					HellboreCannon				= new FlagshipModule(11, "Hellbore Cannon"),
+					TrackingSystem				= new FlagshipModule(12, "Tracking System"),
+					PointDefense				= new FlagshipModule(13, "Point Defense"),
+
+					BombPart1					= new FlagshipModule(14, "Bomb Part 1"),
+					BombPart2					= new FlagshipModule(15, "Bomb Part 2"),
+					CrystalPart1				= new FlagshipModule(16, "Crystal Part 1"),
+					CrystalPart2				= new FlagshipModule(17, "Crystal Part 2"),
+					CrystalPart3				= new FlagshipModule(18, "Crystal Part 3"),
+					CrystalPart4				= new FlagshipModule(19, "Crystal Part 4");
+
+
+				public static FlagshipModule[] _All = new FlagshipModule[]
+				{
+					Empty,
+					CrewPod,
+					StorageBay,
+					FuelTank,
+					HighEfficiencyFuelSystem,
+					DynamoUnit,
+					ShivaFurnace,
+					IonBoltGun,
+					FusionBlaster,
+					HellboreCannon,
+					TrackingSystem,
+					PointDefense,
+
+					BombPart1,
+					BombPart2,
+					CrystalPart1,
+					CrystalPart2,
+					CrystalPart3,
+					CrystalPart4,
+				};
+
+			}
+
+			public static FlagshipModule ByCode(byte code)
+			{
+				return Instances._All.Single(x => x.Code == code);
+			}
 		}
 
+		public class LanderModifications
+		{
+			public bool
+				BioShield,
+				QuakeShield,
+				LightningShield,
+				HeatShield,
+				DoubleSpeed,
+				DoubleCargo,
+				RapidFire,
+				DisplacedByBomb;
+
+			public static LanderModifications fromByte(byte landerModificationsAsByte)
+			{
+				return new LanderModifications()
+				{
+					BioShield = ParseModificationFlag(landerModificationsAsByte, 0),
+					QuakeShield = ParseModificationFlag(landerModificationsAsByte, 1),
+					LightningShield = ParseModificationFlag(landerModificationsAsByte, 2),
+					HeatShield = ParseModificationFlag(landerModificationsAsByte, 3),
+					DoubleSpeed = ParseModificationFlag(landerModificationsAsByte, 4),
+					DoubleCargo = ParseModificationFlag(landerModificationsAsByte, 5),
+					RapidFire = ParseModificationFlag(landerModificationsAsByte, 6),
+					DisplacedByBomb = ParseModificationFlag(landerModificationsAsByte, 7, isBomb: true)
+				};
+			}
+
+			private static bool ParseModificationFlag(
+				byte landerModificationsAsByte, int flagOffsetInBits, bool isBomb = false
+			)
+			{
+				var bitAsMask = (int)Math.Pow(2, flagOffsetInBits);
+				return
+					isBomb == false
+					? ((landerModificationsAsByte | 128) & bitAsMask) != 0
+					: (landerModificationsAsByte & bitAsMask) != 0;
+			}
+		}
 
 	}
 }

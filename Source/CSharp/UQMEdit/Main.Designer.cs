@@ -39,7 +39,7 @@ namespace UQMEdit
             this.Summary = new TabPage();
             this.DevicesBox = new GroupBox();
             this.Devices = new ListBox();
-            this.TotalMinerals = new NumericUpDown();
+            this.Minerals_Total = new NumericUpDown();
             this.ThrusterBox = new GroupBox();
             this.MaxThrustLabel = new Label();
             this.MaxThrusters = new Button();
@@ -54,7 +54,7 @@ namespace UQMEdit
             this.Thruster2 = new CheckBox();
             this.Thruster1 = new CheckBox();
             this.Thruster0 = new CheckBox();
-            this.JetsBox = new GroupBox();
+            this.TurningJetsBox = new GroupBox();
             this.MaxJetsLabel = new Label();
             this.Jets7 = new CheckBox();
             this.MaxJets = new Button();
@@ -148,7 +148,7 @@ namespace UQMEdit
             this.LanderModifications_LightningShield = new CheckBox();
             this.LanderModifications_HeatShield = new CheckBox();
             this.CrewLabel = new Label();
-            this.Landers = new NumericUpDown();
+            this.LanderCount = new NumericUpDown();
             this.BioData = new NumericUpDown();
             this.ResourceUnits = new NumericUpDown();
             this.ShipFuel = new NumericUpDown();
@@ -196,9 +196,9 @@ namespace UQMEdit
             this.Tabs.SuspendLayout();
             this.Summary.SuspendLayout();
             this.DevicesBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.TotalMinerals)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Minerals_Total)).BeginInit();
             this.ThrusterBox.SuspendLayout();
-            this.JetsBox.SuspendLayout();
+            this.TurningJetsBox.SuspendLayout();
             this.SeedBox.SuspendLayout();
             this.ShipNameBox.SuspendLayout();
             this.CaptainBox.SuspendLayout();
@@ -206,7 +206,7 @@ namespace UQMEdit
             this.ModulesBox.SuspendLayout();
             this.ShipStatusBox.SuspendLayout();
             this.LanderUpgradesBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Landers)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LanderCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BioData)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ResourceUnits)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ShipFuel)).BeginInit();
@@ -297,9 +297,9 @@ namespace UQMEdit
             // 
             this.Summary.Controls.Add(this.megaModModes);
             this.Summary.Controls.Add(this.DevicesBox);
-            this.Summary.Controls.Add(this.TotalMinerals);
+            this.Summary.Controls.Add(this.Minerals_Total);
             this.Summary.Controls.Add(this.ThrusterBox);
-            this.Summary.Controls.Add(this.JetsBox);
+            this.Summary.Controls.Add(this.TurningJetsBox);
             this.Summary.Controls.Add(this.SeedBox);
             this.Summary.Controls.Add(this.ShipNameBox);
             this.Summary.Controls.Add(this.CaptainBox);
@@ -336,17 +336,17 @@ namespace UQMEdit
             // 
             // TotalMinerals
             // 
-            this.TotalMinerals.Location = new System.Drawing.Point(96, 233);
-            this.TotalMinerals.Maximum = new decimal(new int[] {
+            this.Minerals_Total.Location = new System.Drawing.Point(96, 233);
+            this.Minerals_Total.Maximum = new decimal(new int[] {
             65535,
             0,
             0,
             0});
-            this.TotalMinerals.Name = "TotalMinerals";
-            this.TotalMinerals.ReadOnly = true;
-            this.TotalMinerals.Size = new System.Drawing.Size(76, 20);
-            this.TotalMinerals.TabIndex = 16;
-            this.TotalMinerals.TextAlign = HorizontalAlignment.Center;
+            this.Minerals_Total.Name = "TotalMinerals";
+            this.Minerals_Total.ReadOnly = true;
+            this.Minerals_Total.Size = new System.Drawing.Size(76, 20);
+            this.Minerals_Total.TabIndex = 16;
+            this.Minerals_Total.TextAlign = HorizontalAlignment.Center;
             // 
             // ThrusterBox
             // 
@@ -489,22 +489,22 @@ namespace UQMEdit
             // 
             // JetsBox
             // 
-            this.JetsBox.Controls.Add(this.MaxJetsLabel);
-            this.JetsBox.Controls.Add(this.Jets7);
-            this.JetsBox.Controls.Add(this.MaxJets);
-            this.JetsBox.Controls.Add(this.Jets6);
-            this.JetsBox.Controls.Add(this.Jets5);
-            this.JetsBox.Controls.Add(this.Jets4);
-            this.JetsBox.Controls.Add(this.Jets3);
-            this.JetsBox.Controls.Add(this.Jets2);
-            this.JetsBox.Controls.Add(this.Jets1);
-            this.JetsBox.Controls.Add(this.Jets0);
-            this.JetsBox.Location = new System.Drawing.Point(798, 6);
-            this.JetsBox.Name = "JetsBox";
-            this.JetsBox.Size = new System.Drawing.Size(57, 211);
-            this.JetsBox.TabIndex = 77;
-            this.JetsBox.TabStop = false;
-            this.JetsBox.Text = "Turning Jets";
+            this.TurningJetsBox.Controls.Add(this.MaxJetsLabel);
+            this.TurningJetsBox.Controls.Add(this.Jets7);
+            this.TurningJetsBox.Controls.Add(this.MaxJets);
+            this.TurningJetsBox.Controls.Add(this.Jets6);
+            this.TurningJetsBox.Controls.Add(this.Jets5);
+            this.TurningJetsBox.Controls.Add(this.Jets4);
+            this.TurningJetsBox.Controls.Add(this.Jets3);
+            this.TurningJetsBox.Controls.Add(this.Jets2);
+            this.TurningJetsBox.Controls.Add(this.Jets1);
+            this.TurningJetsBox.Controls.Add(this.Jets0);
+            this.TurningJetsBox.Location = new System.Drawing.Point(798, 6);
+            this.TurningJetsBox.Name = "JetsBox";
+            this.TurningJetsBox.Size = new System.Drawing.Size(57, 211);
+            this.TurningJetsBox.TabIndex = 77;
+            this.TurningJetsBox.TabStop = false;
+            this.TurningJetsBox.Text = "Turning Jets";
             // 
             // MaxJetsLabel
             // 
@@ -1363,7 +1363,7 @@ namespace UQMEdit
             this.ShipStatusBox.Controls.Add(this.FuelLabel);
             this.ShipStatusBox.Controls.Add(this.LanderUpgradesBox);
             this.ShipStatusBox.Controls.Add(this.CrewLabel);
-            this.ShipStatusBox.Controls.Add(this.Landers);
+            this.ShipStatusBox.Controls.Add(this.LanderCount);
             this.ShipStatusBox.Controls.Add(this.BioData);
             this.ShipStatusBox.Controls.Add(this.ResourceUnits);
             this.ShipStatusBox.Controls.Add(this.ShipFuel);
@@ -1555,16 +1555,16 @@ namespace UQMEdit
             // 
             // Landers
             // 
-            this.Landers.Location = new System.Drawing.Point(70, 123);
-            this.Landers.Maximum = new decimal(new int[] {
+            this.LanderCount.Location = new System.Drawing.Point(70, 123);
+            this.LanderCount.Maximum = new decimal(new int[] {
             999999999,
             0,
             0,
             0});
-            this.Landers.Name = "Landers";
-            this.Landers.Size = new System.Drawing.Size(88, 20);
-            this.Landers.TabIndex = 6;
-            this.Landers.TextAlign = HorizontalAlignment.Center;
+            this.LanderCount.Name = "Landers";
+            this.LanderCount.Size = new System.Drawing.Size(88, 20);
+            this.LanderCount.TabIndex = 6;
+            this.LanderCount.TextAlign = HorizontalAlignment.Center;
             // 
             // BioData
             // 
@@ -2146,11 +2146,11 @@ namespace UQMEdit
             this.Tabs.ResumeLayout(false);
             this.Summary.ResumeLayout(false);
             this.DevicesBox.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.TotalMinerals)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Minerals_Total)).EndInit();
             this.ThrusterBox.ResumeLayout(false);
             this.ThrusterBox.PerformLayout();
-            this.JetsBox.ResumeLayout(false);
-            this.JetsBox.PerformLayout();
+            this.TurningJetsBox.ResumeLayout(false);
+            this.TurningJetsBox.PerformLayout();
             this.SeedBox.ResumeLayout(false);
             this.SeedBox.PerformLayout();
             this.ShipNameBox.ResumeLayout(false);
@@ -2165,7 +2165,7 @@ namespace UQMEdit
             this.ShipStatusBox.PerformLayout();
             this.LanderUpgradesBox.ResumeLayout(false);
             this.LanderUpgradesBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Landers)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LanderCount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BioData)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ResourceUnits)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ShipFuel)).EndInit();
@@ -2261,7 +2261,7 @@ namespace UQMEdit
 		private Label RULabel;
 		private Label FuelLabel;
 		private Label CrewLabel;
-		public NumericUpDown Landers;
+		public NumericUpDown LanderCount;
 		public NumericUpDown BioData;
 		public NumericUpDown ResourceUnits;
 		public NumericUpDown ShipFuel;
@@ -2351,11 +2351,11 @@ namespace UQMEdit
 		private Label MaxJetsLabel;
 		private Label MaxModulesLabel;
 		public GroupBox ThrusterBox;
-		public GroupBox JetsBox;
+		public GroupBox TurningJetsBox;
 		private GroupBox DevicesBox;
 		private ToolTip ReadOnly;
 		private ToolTip MaxLimits;
-		public NumericUpDown TotalMinerals;
+		public NumericUpDown Minerals_Total;
         private ToolStripLabel version;
         private GroupBox megaModModes;
         public CheckBox nomadCheckBox;
