@@ -3,7 +3,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
 namespace UrQuanMastersSaveEditor
 {
@@ -15,33 +14,24 @@ namespace UrQuanMastersSaveEditor
 		public string SaveName;
 		public byte SaveVersion = 0;
 
-		public void Open(string fileToLoadName, Main window) {
+		public void Open(string fileToLoadName) {
 
-			if (!File.Exists(fileToLoadName))
+			using (var reader = new ByteStreamReader(fileToLoadName) )
 			{
-				MessageBox.Show("Could not find file at path: " + fileToLoadName);
-			}
-			else
-			{
-				using (var reader = new ByteStreamReader(fileToLoadName) )
-				{
-					var offsets = ByteOffsetsPick(SaveVersion);
-					// Save Checker			
-					var loadChecker = reader.ReadIntegerFromOffset32BitSigned(offsets.SaveChecker);
-					if (loadChecker == Constants.SaveFileTag)
-						SaveVersion = 3;
-					else if (loadChecker == Constants.MegaModTag)
-						SaveVersion = 2;
-					else if (loadChecker == Constants.SaveTagHD)
-						SaveVersion = 1;
-					else
-						SaveVersion = 0;
+				var offsets = ByteOffsetsPick(SaveVersion);
+				// Save Checker			
+				var loadChecker = reader.ReadIntegerFromOffset32BitSigned(offsets.SaveChecker);
+				if (loadChecker == Constants.SaveFileTag)
+					SaveVersion = 3;
+				else if (loadChecker == Constants.MegaModTag)
+					SaveVersion = 2;
+				else if (loadChecker == Constants.SaveTagHD)
+					SaveVersion = 1;
+				else
+					SaveVersion = 0;
 
-					ReadCoordinates(reader);
-					ReadSummary(reader);
-					var userInterface = new UserInterfaceController(window, this);
-					userInterface.PopulateControlFromGameState();
-				}
+				ReadCoordinates(reader);
+				ReadSummary(reader);
 			}
 		}
 

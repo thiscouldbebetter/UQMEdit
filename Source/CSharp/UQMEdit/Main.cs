@@ -80,7 +80,14 @@ namespace UrQuanMastersSaveEditor
 
 				var saveFile = UrQuanMastersGameState.Instance;
 
-				saveFile.Open(_currentFile, this);
+				if (!File.Exists(_currentFile))
+				{
+					MessageBox.Show("Could not find file at path: " + _currentFile);
+				}
+				else
+				{
+					GameStateLoad();
+				}
 
 				var TitleText = "The Ur-Quan Masters Save Editor";
 				SeedBox.Visible = false;
@@ -107,7 +114,15 @@ namespace UrQuanMastersSaveEditor
 		}
 
 		private void Reload_Click(object sender, EventArgs e) {
-			UrQuanMastersGameState.Instance.Open(_currentFile, this);
+			GameStateLoad();
+		}
+
+		private void GameStateLoad()
+		{
+			var gameState = UrQuanMastersGameState.Instance;
+			gameState.Open(_currentFile);
+			var userInterface = new UserInterfaceController(this, gameState);
+			userInterface.PopulateControlFromGameState();
 		}
 
 		private void MineralsValueChanged(object sender, EventArgs e) {
