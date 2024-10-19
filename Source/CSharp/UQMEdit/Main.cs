@@ -78,7 +78,7 @@ namespace UrQuanMastersSaveEditor
 				Save.Enabled = true;
 				Tabs.Enabled = true;
 
-				var saveFile = UrQuanMastersGameState.Instance;
+				var saveFile = GameState.Instance;
 
 				if (!File.Exists(_currentFile))
 				{
@@ -92,7 +92,7 @@ namespace UrQuanMastersSaveEditor
 				var TitleText = "The Ur-Quan Masters Save Editor";
 				SeedBox.Visible = false;
 				megaModModes.Visible = false;
-				TitleText += UrQuanMastersGameState.Instance.GetTitleText();
+				TitleText += GameState.Instance.GetTitleText();
 
 				if (TitleText.Contains("MegaMod") )
 				{
@@ -119,7 +119,7 @@ namespace UrQuanMastersSaveEditor
 
 		private void GameStateLoad()
 		{
-			var gameState = UrQuanMastersGameState.Instance;
+			var gameState = GameState.Instance;
 			gameState.Open(_currentFile);
 			var userInterface = new UserInterfaceController(this, gameState);
 			userInterface.PopulateControlFromGameState();
@@ -139,7 +139,7 @@ namespace UrQuanMastersSaveEditor
 		}
 
 		private void Save_Click(object sender, EventArgs e) {
-			UrQuanMastersGameState.Instance.Save(_currentFile, this);
+			GameState.Instance.Save(_currentFile, this);
 		}
 
 		private void Main_Shown(object sender, EventArgs e) {

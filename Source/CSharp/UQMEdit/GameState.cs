@@ -6,9 +6,9 @@ using System.Text;
 
 namespace UrQuanMastersSaveEditor
 {
-	partial class UrQuanMastersGameState
+	partial class GameState
 	{
-		public static UrQuanMastersGameState Instance = new UrQuanMastersGameState();
+		public static GameState Instance = new GameState();
 
 		public string Date = "";
 		public string SaveName;

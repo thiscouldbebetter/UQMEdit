@@ -6,27 +6,27 @@ namespace UrQuanMastersSaveEditor
 	class UserInterfaceController
 	{
 		private Main _window;
-		private GameState _uqmsf;
+		private GameState _gameState;
 
 		public UserInterfaceController(Main window, GameState uqmsf)
 		{
 			_window = window;
-			_uqmsf = uqmsf;
+			_gameState = uqmsf;
 		}
 
 		public void PopulateControlFromGameState()
 		{
-			_window.UniverseX.Value = _uqmsf.UniverseX;
-			_window.UniverseY.Value = _uqmsf.UniverseY;
-			_window.CurrentStatus.SelectedIndex = _uqmsf.CurrentStatus;
-			_window.NearestPlanet.Text = _uqmsf.NearestPlanet;
-			_window.ResourceUnits.Value = _uqmsf.ResourceUnits;
-			_window.ShipFuel.Value = _uqmsf.ShipFuel;
-			_window.FlagshipCrew.Value = _uqmsf.FlagshipCrew;
-			_window.BioData.Value = _uqmsf.BioData;
+			_window.UniverseX.Value = _gameState.UniverseX;
+			_window.UniverseY.Value = _gameState.UniverseY;
+			_window.CurrentStatus.SelectedIndex = _gameState.CurrentStatus;
+			_window.NearestPlanet.Text = _gameState.NearestPlanet;
+			_window.ResourceUnits.Value = _gameState.ResourceUnits;
+			_window.ShipFuel.Value = _gameState.ShipFuel;
+			_window.FlagshipCrew.Value = _gameState.FlagshipCrew;
+			_window.BioData.Value = _gameState.BioData;
 
 			var flagshipModuleCount = 0;
-			var flagshipModulesAtPositions = _uqmsf.FlagshipModulesAtPositions;
+			var flagshipModulesAtPositions = _gameState.FlagshipModulesAtPositions;
 			foreach (var modulesControl in _window.ModulesBox.Controls)
 			{
 				if (modulesControl is ComboBox)
@@ -53,7 +53,7 @@ namespace UrQuanMastersSaveEditor
 				if (thrustersControl is CheckBox)
 				{
 					(thrustersControl as CheckBox).Checked =
-						_uqmsf.ThrustersArePresentAtPositions[thrustersCount];
+						_gameState.ThrustersArePresentAtPositions[thrustersCount];
 					thrustersCount++;
 				}
 			}
@@ -64,25 +64,25 @@ namespace UrQuanMastersSaveEditor
 				if (turningJetControl is CheckBox)
 				{
 					(turningJetControl as CheckBox).Checked =
-						_uqmsf.TurningJetsArePresentAtPositions[turningJetsCount];
+						_gameState.TurningJetsArePresentAtPositions[turningJetsCount];
 					turningJetsCount++;
 				}
 			}
 
-			_window.LanderCount.Value = _uqmsf.LandersCount;
+			_window.LanderCount.Value = _gameState.LandersCount;
 
-			_window.Minerals_CommonElements.Value = _uqmsf.Minerals_CommonElements;
-			_window.Minerals_Corrosives.Value = _uqmsf.Minerals_Corrosives;
-			_window.Minerals_NobleGases.Value = _uqmsf.Minerals_NobleGases;
-			_window.Minerals_RareEarths.Value = _uqmsf.Minerals_RareEarths;
-			_window.Minerals_BaseMetals.Value = _uqmsf.Minerals_BaseMetals;
-			_window.Minerals_PreciousMetals.Value = _uqmsf.Minerals_PreciousMetals;
-			_window.Minerals_Radioactives.Value = _uqmsf.Minerals_Radioactives;
-			_window.Minerals_Exotics.Value = _uqmsf.Minerals_Exotics;
-			_window.ShipName.Text = _uqmsf.ShipName;
-			_window.CommanderName.Text = _uqmsf.CommanderName;
+			_window.Minerals_CommonElements.Value = _gameState.Minerals_CommonElements;
+			_window.Minerals_Corrosives.Value = _gameState.Minerals_Corrosives;
+			_window.Minerals_NobleGases.Value = _gameState.Minerals_NobleGases;
+			_window.Minerals_RareEarths.Value = _gameState.Minerals_RareEarths;
+			_window.Minerals_BaseMetals.Value = _gameState.Minerals_BaseMetals;
+			_window.Minerals_PreciousMetals.Value = _gameState.Minerals_PreciousMetals;
+			_window.Minerals_Radioactives.Value = _gameState.Minerals_Radioactives;
+			_window.Minerals_Exotics.Value = _gameState.Minerals_Exotics;
+			_window.ShipName.Text = _gameState.ShipName;
+			_window.CommanderName.Text = _gameState.CommanderName;
 
-			var landerModifications = _uqmsf._LanderModifications;
+			var landerModifications = _gameState._LanderModifications;
 
 			_window.LanderModifications_BioShield.Checked = landerModifications.BioShield;
 			_window.LanderModifications_QuakeShield.Checked = landerModifications.QuakeShield;
@@ -93,9 +93,9 @@ namespace UrQuanMastersSaveEditor
 			_window.LanderModifications_RapidFire.Checked = landerModifications.RapidFire;
 			_window.LanderModifications_DisplacedByBomb.Checked = landerModifications.DisplacedByBomb;
 
-			_window.Credits.Text = _uqmsf.Credits.ToString();
+			_window.Credits.Text = _gameState.Credits.ToString();
 
-			var escortShipsAsBytes = _uqmsf.EscortShipsAsBytes;
+			var escortShipsAsBytes = _gameState.EscortShipsAsBytes;
 			var escortShipsCountAsRead = escortShipsAsBytes.Length; // todo
 
 			var escortShipsCountAsCounted = 0;
@@ -130,22 +130,22 @@ namespace UrQuanMastersSaveEditor
 			}
 
 			_window.Devices.Items.Clear();
-			_window.Devices.Items.AddRange(_uqmsf.DevicesAsObjects);
+			_window.Devices.Items.AddRange(_gameState.DevicesAsObjects);
 
-			_window.difficultyBox.SelectedIndex = _uqmsf.Difficulty;
-			_window.extendedCheckBox.Checked = _uqmsf.Extended;
-			_window.nomadCheckBox.Checked = _uqmsf.Nomad;
-			_window.CustomSeed.Text = _uqmsf.CustomSeed.ToString();
+			_window.difficultyBox.SelectedIndex = _gameState.Difficulty;
+			_window.extendedCheckBox.Checked = _gameState.Extended;
+			_window.nomadCheckBox.Checked = _gameState.Nomad;
+			_window.CustomSeed.Text = _gameState.CustomSeed.ToString();
 
 		}
 
 		public void PopulateGameStateFromControl()
 		{
-			_uqmsf.ResourceUnits = (int)_window.ResourceUnits.Value;
-			_uqmsf.ShipFuel = _window.ShipFuel.Value; // */ 100
-			_uqmsf.FlagshipCrew = _window.FlagshipCrew.Value;
-			_uqmsf.Minerals_Total = (int)(_window.Minerals_Total.Value);
-			_uqmsf.BioData = _window.BioData.Value;
+			_gameState.ResourceUnits = (int)_window.ResourceUnits.Value;
+			_gameState.ShipFuel = _window.ShipFuel.Value; // */ 100
+			_gameState.FlagshipCrew = _window.FlagshipCrew.Value;
+			_gameState.Minerals_Total = (int)(_window.Minerals_Total.Value);
+			_gameState.BioData = _window.BioData.Value;
 
 			var modulesPresent = new List<GameState.FlagshipModule>();
 			foreach (var modulesControl in _window.ModulesBox.Controls)
@@ -158,7 +158,7 @@ namespace UrQuanMastersSaveEditor
 					modulesPresent.Add(modulePresent);
 				}
 			}
-			_uqmsf.FlagshipModulesAtPositions = modulesPresent.ToArray();
+			_gameState.FlagshipModulesAtPositions = modulesPresent.ToArray();
 
 			var thrusterControls = _window.ThrusterBox.Controls;
 			var i = 0;
@@ -167,7 +167,7 @@ namespace UrQuanMastersSaveEditor
 				if (thrusterControl is CheckBox)
 				{
 					var thrusterIsPresent = (thrusterControl as CheckBox).Checked;
-					_uqmsf.ThrustersArePresentAtPositions[i] = thrusterIsPresent;
+					_gameState.ThrustersArePresentAtPositions[i] = thrusterIsPresent;
 					i++;
 				}
 			}
@@ -179,24 +179,24 @@ namespace UrQuanMastersSaveEditor
 				if (turningJetControl is CheckBox)
 				{
 					var turningJetIsPresent = (turningJetControl as CheckBox).Checked;
-					_uqmsf.TurningJetsArePresentAtPositions[i] = turningJetIsPresent;
+					_gameState.TurningJetsArePresentAtPositions[i] = turningJetIsPresent;
 					i++;
 				}
 			}
 
-			_uqmsf.LandersCount = (byte)(_window.LanderCount.Value);
+			_gameState.LandersCount = (byte)(_window.LanderCount.Value);
 
-			_uqmsf.Minerals_CommonElements = (int)_window.Minerals_CommonElements.Value;
-			_uqmsf.Minerals_Corrosives = (int)_window.Minerals_Corrosives.Value;
-			_uqmsf.Minerals_BaseMetals = (int)_window.Minerals_BaseMetals.Value;
-			_uqmsf.Minerals_NobleGases = (int)_window.Minerals_NobleGases.Value;
-			_uqmsf.Minerals_PreciousMetals = (int)_window.Minerals_PreciousMetals.Value;
-			_uqmsf.Minerals_Radioactives = (int)_window.Minerals_Radioactives.Value;
-			_uqmsf.Minerals_Total = (int)_window.Minerals_Total.Value;
+			_gameState.Minerals_CommonElements = (int)_window.Minerals_CommonElements.Value;
+			_gameState.Minerals_Corrosives = (int)_window.Minerals_Corrosives.Value;
+			_gameState.Minerals_BaseMetals = (int)_window.Minerals_BaseMetals.Value;
+			_gameState.Minerals_NobleGases = (int)_window.Minerals_NobleGases.Value;
+			_gameState.Minerals_PreciousMetals = (int)_window.Minerals_PreciousMetals.Value;
+			_gameState.Minerals_Radioactives = (int)_window.Minerals_Radioactives.Value;
+			_gameState.Minerals_Total = (int)_window.Minerals_Total.Value;
 
-			_uqmsf.ShipName = _window.ShipName.Text;
+			_gameState.ShipName = _window.ShipName.Text;
 
-			_uqmsf.CommanderName = _window.CommanderName.Text;
+			_gameState.CommanderName = _window.CommanderName.Text;
 		}
 
 	}
