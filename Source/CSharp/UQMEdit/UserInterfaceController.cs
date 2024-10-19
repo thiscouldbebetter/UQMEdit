@@ -6,9 +6,9 @@ namespace UrQuanMastersSaveEditor
 	class UserInterfaceController
 	{
 		private Main _window;
-		private UrQuanMastersGameState _uqmsf;
+		private GameState _uqmsf;
 
-		public UserInterfaceController(Main window, UrQuanMastersGameState uqmsf)
+		public UserInterfaceController(Main window, GameState uqmsf)
 		{
 			_window = window;
 			_uqmsf = uqmsf;
@@ -33,7 +33,7 @@ namespace UrQuanMastersSaveEditor
 				{
 					var modulesComboBox = modulesControl as ComboBox;
 					var isNotEmpty =
-						flagshipModulesAtPositions[flagshipModuleCount] != UrQuanMastersGameState.FlagshipModule.Instances.Empty;
+						flagshipModulesAtPositions[flagshipModuleCount] != GameState.FlagshipModule.Instances.Empty;
 					if (isNotEmpty)
 					{
 						modulesComboBox.SelectedIndex =
@@ -147,14 +147,14 @@ namespace UrQuanMastersSaveEditor
 			_uqmsf.Minerals_Total = (int)(_window.Minerals_Total.Value);
 			_uqmsf.BioData = _window.BioData.Value;
 
-			var modulesPresent = new List<UrQuanMastersGameState.FlagshipModule>();
+			var modulesPresent = new List<GameState.FlagshipModule>();
 			foreach (var modulesControl in _window.ModulesBox.Controls)
 			{
 				if (modulesControl is ComboBox)
 				{
 					var moduleAsComboBox = modulesControl as ComboBox;
 					var modulePresent =
-						moduleAsComboBox.SelectedItem as UrQuanMastersGameState.FlagshipModule;
+						moduleAsComboBox.SelectedItem as GameState.FlagshipModule;
 					modulesPresent.Add(modulePresent);
 				}
 			}
