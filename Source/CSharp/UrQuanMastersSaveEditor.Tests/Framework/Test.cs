@@ -1,6 +1,5 @@
-﻿using System;
-
-namespace UrQuanMastersSaveGameEditor.Tests
+﻿
+namespace UrQuanMastersSaveEditor.Tests.Framework
 {
 	internal class Test
 	{
@@ -17,21 +16,21 @@ namespace UrQuanMastersSaveGameEditor.Tests
 		{
 			bool wasSuccessful;
 
-			Console.WriteLine("Test '" + Name + "' begins at " + DateTime.Now.ToString("o") + ".");
+			Logger.Info($"Test '{Name}' begins.");
 
 			try
 			{
 				_run();
 				wasSuccessful = true;
-				Console.WriteLine("Test passed.");
+				Console.WriteLine("Test passes.");
 			}
 			catch (Exception ex)
 			{
 				wasSuccessful = false;
-				Console.WriteLine("Test failed with exception: " + ex.Message);
+				Logger.Error("Test fails with exception: " + ex.Message);
 			}
 
-			Console.WriteLine("Test '" + Name + "' ends at " + DateTime.Now.ToString("o") + ".");
+			Logger.Info($"Test '{Name}' ends.");
 
 			return wasSuccessful;
 		}

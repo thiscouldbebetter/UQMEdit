@@ -1,6 +1,5 @@
-﻿using System;
-
-namespace UrQuanMastersSaveGameEditor.Tests
+﻿
+namespace UrQuanMastersSaveEditor.Tests.Framework
 {
 	internal class Assert
 	{

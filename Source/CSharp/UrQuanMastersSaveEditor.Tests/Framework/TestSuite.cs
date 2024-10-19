@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace UrQuanMastersSaveGameEditor.Tests
+﻿
+namespace UrQuanMastersSaveEditor.Tests.Framework
 {
 	internal class TestSuite
 	{
@@ -16,12 +14,14 @@ namespace UrQuanMastersSaveGameEditor.Tests
 
 		public void RunTestFixtures()
 		{
-			Console.WriteLine("Test suite '" + Name + "' begins at " + DateTime.Now.ToString("o") + ".");
+			Logger.Info($"Test suite '{Name}', containing {Fixtures.Count} fixtures, begins.");
+
 			foreach (var fixture in Fixtures)
 			{
 				fixture.RunTests();
 			}
-			Console.WriteLine("Test suite '" + Name + "' ends at " + DateTime.Now.ToString("o") + ".");
+
+			Logger.Info($"Test suite '{Name}' ends.");
 		}
 	}
 }

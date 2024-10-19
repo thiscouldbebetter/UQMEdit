@@ -1,8 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.IO;
-using System.Threading;
-using System.Windows.Forms;
+﻿using System.Globalization;
 
 namespace UrQuanMastersSaveEditor
 {
@@ -136,13 +132,16 @@ namespace UrQuanMastersSaveEditor
 				+ Minerals_PreciousMetals.Value
 				+ Minerals_Radioactives.Value
 				+ Minerals_Exotics.Value;
-		}
+        }
 
 		private void Save_Click(object sender, EventArgs e) {
-			GameState.Instance.Save(_currentFile, this);
-		}
+			var gameState = GameState.Instance;
+            var controller = new UserInterfaceController(this, gameState);
+            controller.PopulateGameStateFromControl();
+            gameState.Save(_currentFile);
+        }
 
-		private void Main_Shown(object sender, EventArgs e) {
+        private void Main_Shown(object sender, EventArgs e) {
 			UniverseY.Text = "";
 			UniverseX.Text = "";
 			NearestStar.Text = "";

@@ -1,7 +1,7 @@
 ﻿
 namespace UrQuanMastersSaveEditor
 {
-	class Constants
+	public class Constants
 	{
 		public const int
 			SaveTagHD = 0x65707573,	// "supe"

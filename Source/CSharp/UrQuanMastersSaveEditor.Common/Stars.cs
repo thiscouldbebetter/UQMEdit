@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using System.Collections.Generic;
+﻿using System.Text;
 
 namespace UrQuanMastersSaveEditor
 {
@@ -60,8 +57,7 @@ namespace UrQuanMastersSaveEditor
 
 				list.Add(
 					string.Concat(
-						new string[]
-						{
+						[
 							lineFields[0],
 							tab,
 							lineFields[1],
@@ -73,7 +69,7 @@ namespace UrQuanMastersSaveEditor
 							lineFields[4],
 							tab,
 							lineFields[5]
-						}
+						]
 					)
 				);
 
@@ -89,8 +85,7 @@ namespace UrQuanMastersSaveEditor
 					)
 					{
 						string text2 = string.Concat(
-							new string[]
-							{
+							[
 								lineFields[0].PadRight(20),
 								tab,
 								lineFields[1],
@@ -103,7 +98,7 @@ namespace UrQuanMastersSaveEditor
 								" : ",
 								lineFields[4].Split(colonAsCharArray)[1],
 								" ]"
-							}
+							]
 						);
 						if (spoilers)
 						{

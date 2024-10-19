@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-
+﻿
 namespace UrQuanMastersSaveEditor
 {
 	class ByteStreamWriter : IDisposable

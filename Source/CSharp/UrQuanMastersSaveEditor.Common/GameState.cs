@@ -1,12 +1,9 @@
-﻿using System;
-using System.Globalization;
-using System.IO;
-using System.Linq;
+﻿using System.Globalization;
 using System.Text;
 
 namespace UrQuanMastersSaveEditor
 {
-	partial class GameState
+	public class GameState
 	{
 		public static GameState Instance = new GameState();
 
@@ -35,12 +32,10 @@ namespace UrQuanMastersSaveEditor
 			}
 		}
 
-		public void Save(string fileToWriteToName, Main window)
+		public void Save(string fileToWriteToName)
 		{
 			using (var writer = new ByteStreamWriter(fileToWriteToName) )
 			{
-				var controller = new UserInterfaceController(window, this);
-				controller.PopulateGameStateFromControl();
 				SaveSummary(writer);
 				SaveCoordinates(writer);
 			}
