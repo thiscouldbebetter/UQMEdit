@@ -15,9 +15,29 @@ namespace UrQuanMastersSaveEditor.Tests.Framework
 		public static void AreStringsEqual(string expected, string actual)
 		{
 			var areValuesEqual = expected.Equals(actual);
-			if (areValuesEqual)
+			if (areValuesEqual == false)
 			{
-				throw new Exception("Expected '" + expected + "', but was '" + actual + "'.");
+				if (expected == null || actual == null)
+				{
+					throw new Exception("Exactly one of the strings was null.");
+                }
+				else
+				{
+					int i;
+					for (i = 0; i < expected.Length; i++)
+					{
+						var charExpected = expected[i];
+						var charActual = actual[i];
+						if (charActual != charExpected)
+						{
+							break;
+						}
+					}
+
+					throw new Exception(
+						$"Expected equal, but only matched until character {i}."
+					);
+				} 
 			}
 		}
 

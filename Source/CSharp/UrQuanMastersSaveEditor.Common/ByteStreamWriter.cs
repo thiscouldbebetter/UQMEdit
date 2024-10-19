@@ -1,5 +1,5 @@
 ﻿
-namespace UrQuanMastersSaveEditor
+namespace UrQuanMastersSaveEditor.Common
 {
 	class ByteStreamWriter : IDisposable
 	{
@@ -149,7 +149,7 @@ namespace UrQuanMastersSaveEditor
 
 		public void Dispose()
 		{
-			throw new NotImplementedException();
+			_fileStream.Dispose();
 		}
 	}
 }

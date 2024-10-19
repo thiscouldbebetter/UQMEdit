@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using UrQuanMastersSaveEditor.Common;
 
 namespace UrQuanMastersSaveEditor
 {
@@ -171,7 +172,7 @@ namespace UrQuanMastersSaveEditor
 			{
 				if (num <= 1500.0 && num2 <= 1500.0 && num >= -1500.0 && num2 >= -1500.0)
 				{
-					NearestStar.Text = Stars.NearestStar(num, num2);
+					NearestStar.Text = Stars.NearestStarToPosXY(num, num2);
 					return;
 				}
 				NearestStar.Text = "";

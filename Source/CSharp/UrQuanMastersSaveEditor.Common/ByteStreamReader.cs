@@ -1,5 +1,5 @@
 ﻿
-namespace UrQuanMastersSaveEditor
+namespace UrQuanMastersSaveEditor.Common
 {
 	class ByteStreamReader : IDisposable
 	{

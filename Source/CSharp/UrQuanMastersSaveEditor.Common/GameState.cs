@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Text;
 
-namespace UrQuanMastersSaveEditor
+namespace UrQuanMastersSaveEditor.Common
 {
 	public class GameState
 	{

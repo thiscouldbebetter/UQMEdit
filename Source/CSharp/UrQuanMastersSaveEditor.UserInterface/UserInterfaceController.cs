@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Windows.Forms;
+﻿using UrQuanMastersSaveEditor.Common;
 
 namespace UrQuanMastersSaveEditor
 {

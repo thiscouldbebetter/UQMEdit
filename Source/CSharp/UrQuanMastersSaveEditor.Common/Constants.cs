@@ -1,5 +1,5 @@
 ﻿
-namespace UrQuanMastersSaveEditor
+namespace UrQuanMastersSaveEditor.Common
 {
 	public class Constants
 	{

@@ -1,28 +1,33 @@
 ﻿using System.Text;
 
-namespace UrQuanMastersSaveEditor
+namespace UrQuanMastersSaveEditor.Common
 {
 	public class Stars
 	{
 		public static List<Star> StarsList = new List<Star>(510);
 		public static bool HasBeenLoaded = false;
 
-		public static string NearestStar(double x, double y) {
-			var num = 2147483647.0;
+		public static string NearestStarToPosXY(double x, double y) {
+			var distanceMinSoFar = 2147483647.0;
 			var text = "";
 			foreach (var star in StarsList)
 			{
-				var num2 =
-					Math.Sqrt((x - star.X) * (x - star.X) + (y - star.Y) * (y - star.Y));
-				if (num2 < num)
+				var distance = Math.Sqrt(
+					(x - star.X) * (x - star.X)
+					+ (y - star.Y) * (y - star.Y)
+				);
+				if (distance < distanceMinSoFar)
 				{
-					num = num2;
+					distanceMinSoFar = distance;
 					text = star.Name;
 				}
 			}
-			if (text.IndexOf('-') != -1) {
+
+			if (text.IndexOf('-') != -1)
+			{
 				text = text.Replace("-", "").Substring(1);
 			}
+
 			return text;
 		}
 	}

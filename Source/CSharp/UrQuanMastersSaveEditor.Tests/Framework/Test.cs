@@ -22,7 +22,7 @@ namespace UrQuanMastersSaveEditor.Tests.Framework
 			{
 				_run();
 				wasSuccessful = true;
-				Console.WriteLine("Test passes.");
+				Logger.Info("Test passes.");
 			}
 			catch (Exception ex)
 			{
