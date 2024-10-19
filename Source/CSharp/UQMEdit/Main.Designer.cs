@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace UQMEdit
+namespace UrQuanMastersSaveEditor
 {
 	partial class Main
 	{

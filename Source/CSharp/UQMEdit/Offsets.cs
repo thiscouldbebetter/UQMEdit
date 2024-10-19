@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace UQMEdit
+namespace UrQuanMastersSaveEditor
 {
 	public interface IOffsets
 	{

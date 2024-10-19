@@ -1,5 +1,5 @@
 ﻿
-namespace UQMEdit
+namespace UrQuanMastersSaveEditor
 {
 	class Constants
 	{

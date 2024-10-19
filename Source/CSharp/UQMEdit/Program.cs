@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace UQMEdit
+namespace UrQuanMastersSaveEditor
 {
 	static class Program
 	{

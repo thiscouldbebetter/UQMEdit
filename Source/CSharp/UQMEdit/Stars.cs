@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using System.Collections.Generic;
 
-namespace UQMEdit
+namespace UrQuanMastersSaveEditor
 {
 	public class Stars
 	{
