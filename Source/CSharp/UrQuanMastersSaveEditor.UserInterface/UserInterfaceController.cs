@@ -20,7 +20,7 @@ namespace UrQuanMastersSaveEditor
 			_window.CurrentStatus.SelectedIndex = _gameState.CurrentStatus;
 			_window.NearestPlanet.Text = _gameState.NearestPlanet;
 			_window.ResourceUnits.Value = _gameState.ResourceUnits;
-			_window.ShipFuel.Value = _gameState.ShipFuel;
+			_window.ShipFuel.Value = Math.Round(_gameState.ShipFuelnCentiunits / 100M, 1);
 			_window.FlagshipCrew.Value = _gameState.FlagshipCrew;
 			_window.BioData.Value = _gameState.BioData;
 
@@ -142,7 +142,7 @@ namespace UrQuanMastersSaveEditor
 		public void PopulateGameStateFromControl()
 		{
 			_gameState.ResourceUnits = (int)_window.ResourceUnits.Value;
-			_gameState.ShipFuel = _window.ShipFuel.Value; // */ 100
+			_gameState.ShipFuelnCentiunits = _window.ShipFuel.Value * 100;
 			_gameState.FlagshipCrew = _window.FlagshipCrew.Value;
 			_gameState.Minerals_Total = (int)(_window.Minerals_Total.Value);
 			_gameState.BioData = _window.BioData.Value;

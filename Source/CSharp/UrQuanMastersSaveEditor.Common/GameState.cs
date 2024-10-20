@@ -168,7 +168,7 @@ namespace UrQuanMastersSaveEditor.Common
 		public byte CurrentStatus;
 		public string NearestPlanet;
 		public int ResourceUnits;
-		public decimal ShipFuel, FlagshipCrew, BioData;
+		public decimal ShipFuelnCentiunits, FlagshipCrew, BioData;
 		public FlagshipModule[] FlagshipModulesAtPositions;
 		public bool[] ThrustersArePresentAtPositions;
 		public byte LandersCount;
@@ -230,7 +230,7 @@ namespace UrQuanMastersSaveEditor.Common
 			var fuel = reader.ReadIntegerFromOffset32BitSigned(offsets.Fuel);
 			const int fuelMax = 160100;
 			fuel = fuel > fuelMax ? fuelMax : fuel;
-			ShipFuel = fuel / 100;
+			ShipFuelnCentiunits = fuel;
 
 			FlagshipCrew = reader.ReadIntegerFromOffsetWithLength16BitUnsigned(
 				offsets.FlagshipCrew,
@@ -420,7 +420,7 @@ namespace UrQuanMastersSaveEditor.Common
 			);
 
 			writer.WriteDecimalToOffsetWithLengthAndMaxUnsigned32Bit(
-				valueToWrite: ShipFuel,
+				valueToWrite: ShipFuelnCentiunits,
 				offsets.Fuel,
 				valueMax: 161000
 			);
