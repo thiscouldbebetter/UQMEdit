@@ -15,8 +15,8 @@ namespace UrQuanMastersSaveEditor
 
 		public void PopulateControlFromGameState()
 		{
-			_window.UniverseX.Value = _gameState.UniverseX;
-			_window.UniverseY.Value = _gameState.UniverseY;
+			_window.UniverseX.Value = Math.Round(_gameState.UniverseX, 1);
+			_window.UniverseY.Value = Math.Round(_gameState.UniverseY, 1);
 			_window.CurrentStatus.SelectedIndex = _gameState.CurrentStatus;
 			_window.NearestPlanet.Text = _gameState.NearestPlanet;
 			_window.ResourceUnits.Value = _gameState.ResourceUnits;

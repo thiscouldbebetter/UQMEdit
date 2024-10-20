@@ -56,14 +56,14 @@
 				);
 			var logUnitsHalved = HalveIntegerWithRightShift(logUnits);
 
-			var workingValue = logY;
+			double workingValue = logY;
 			workingValue *= universeUnits;
 			workingValue += logUnitsHalved;
 			workingValue /= logUnits;
 			workingValue = Constants.MaxUniverse - workingValue;
 			workingValue /= 10;
 
-			var returnValue = workingValue;
+			var returnValue = (decimal)workingValue;
 
 			return returnValue;
 		}

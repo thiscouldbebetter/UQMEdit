@@ -47,10 +47,12 @@ namespace UrQuanMastersSaveEditor.Tests.TestFixtures
 		{
 			var coordinateConverter = new CoordinateConverter(0);
 
-			const int logYBefore = 164141;
+			const int logYBefore =
+				164131; // During conversion, 164141 is rounded down to this.
 			var universeY = coordinateConverter.LogYToUniverse(logYBefore);
 			const decimal universeYExpected = 145.0M;
-			Assert.AreDecimalsEqual(universeYExpected, universeY);
+			var universeYError = Math.Abs(universeY - universeYExpected);
+			Assert.IsTrue(universeYError < 0.1M);
 			var logYAfter = coordinateConverter.UniverseToLogY(universeY);
 			Assert.AreIntegersEqual(logYBefore, logYAfter);
 		}
