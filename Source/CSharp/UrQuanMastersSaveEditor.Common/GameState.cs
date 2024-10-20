@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics.Tracing;
+using System.Globalization;
 using System.Text;
 
 namespace UrQuanMastersSaveEditor.Common
@@ -7,9 +8,24 @@ namespace UrQuanMastersSaveEditor.Common
 	{
 		public static GameState Instance = new GameState();
 
-		public string Date = "";
+		public string Date;
 		public string SaveName;
-		public byte SaveVersion = 0;
+		public byte SaveVersion;
+
+		public GameState()
+		{
+			CommanderName = "";
+			Date = "";
+			DevicesAsObjects = [];
+			EscortShipsAsBytes = [];
+			FlagshipModulesAtPositions = [];
+			_LanderModifications = LanderModifications.None();
+			SaveName = "";
+			ShipName = "";
+			NearestPlanet = "";
+			ThrustersArePresentAtPositions = [];
+			TurningJetsArePresentAtPositions = [];
+		}
 
 		public void Open(string fileToLoadName) {
 
@@ -38,6 +54,8 @@ namespace UrQuanMastersSaveEditor.Common
 			{
 				SaveSummary(writer);
 				SaveCoordinates(writer);
+				var saveFileAsBytes = writer.BytesAll();
+				File.WriteAllBytes(fileToWriteToName, saveFileAsBytes);
 			}
 		}
 
@@ -364,7 +382,7 @@ namespace UrQuanMastersSaveEditor.Common
 			//  Lander Mods
 			byte landerModificationsAsByte =
 				reader.ReadByteFromOffset(offsets.LanderModifications);
-			var landerModifications = LanderModifications.fromByte(landerModificationsAsByte);
+			var landerModifications = LanderModifications.FromByte(landerModificationsAsByte);
 
 			_LanderModifications = landerModifications;
 
@@ -590,6 +608,11 @@ namespace UrQuanMastersSaveEditor.Common
 				Name = name;
 			}
 
+			public static FlagshipModule Empty()
+			{
+				return Instances.Empty;
+			}
+
 			public static class Instances
 			{
 				public static FlagshipModule
@@ -657,7 +680,7 @@ namespace UrQuanMastersSaveEditor.Common
 				RapidFire,
 				DisplacedByBomb;
 
-			public static LanderModifications fromByte(byte landerModificationsAsByte)
+			public static LanderModifications FromByte(byte landerModificationsAsByte)
 			{
 				return new LanderModifications()
 				{
@@ -670,6 +693,11 @@ namespace UrQuanMastersSaveEditor.Common
 					RapidFire = ParseModificationFlag(landerModificationsAsByte, 6),
 					DisplacedByBomb = ParseModificationFlag(landerModificationsAsByte, 7, isBomb: true)
 				};
+			}
+
+			public static LanderModifications None()
+			{
+				return FromByte(0);
 			}
 
 			private static bool ParseModificationFlag(

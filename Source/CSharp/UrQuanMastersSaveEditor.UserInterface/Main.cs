@@ -15,13 +15,18 @@ namespace UrQuanMastersSaveEditor
 			_shipModules = Modules.CreateModules();
 
 			foreach (var shipsControl in ShipsBox.Controls) {
-				if (shipsControl is ComboBox) {
-					(shipsControl as ComboBox).Items.AddRange(Constants.ShipNames);
+				var shipsComboBox = shipsControl as ComboBox;
+				if (shipsComboBox != null)
+				{
+					shipsComboBox.Items.AddRange(Constants.ShipNames);
 				}
 			}
-			foreach (var modulesControl in ModulesBox.Controls) {
-				if (modulesControl is ComboBox) {
-					(modulesControl as ComboBox).Items.AddRange(_shipModules);
+			foreach (var modulesControl in ModulesBox.Controls)
+			{
+				var modulesComboBox = modulesControl as ComboBox;
+				if (modulesComboBox != null)
+				{
+					modulesComboBox.Items.AddRange(_shipModules);
 				}
 			}
 			CurrentStatus.Items.AddRange(Constants.StatusNames);
@@ -64,8 +69,8 @@ namespace UrQuanMastersSaveEditor
 		{
 			OpenFileDialog openFileDialog = new OpenFileDialog()
 			{
-				Title = "Open UQM Save File",
-				Filter = "UQM Save Files | starcon2.*; *.uqmsave.*",
+				Title = "Open Ur-Quan Masters Save File",
+				Filter = "UQM Save Files | *starcon2.*; *uqmsave.*",
 				InitialDirectory = _currentDir
 			};
 
@@ -179,55 +184,73 @@ namespace UrQuanMastersSaveEditor
 			}
 		}
 
-		private void StarList_SelectedIndexChanged(object sender, EventArgs e) {
-			if (StarList.SelectedItem == null || StarList.SelectedIndex == 0) {
-				return;
+		private void StarList_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			var selectedItem = StarList.SelectedItem;
+			if (StarList.SelectedIndex > 0)
+			{
+				if (selectedItem != null)
+				{
+					var selectedItemAsString = selectedItem.ToString() ?? "";
+					var array = selectedItemAsString
+						.Split(['\t'])[4]
+						.Replace(" ", "")
+						.Replace("[", "")
+						.Replace("]", "")
+						.Split([':']);
+					UniverseX.Text = array[0];
+					UniverseY.Text = array[1];
+				}
 			}
-			string[] array = StarList.SelectedItem.ToString().Split(new char[]
-			{
-				'\t'
-			})[4].Replace(" ", "").Replace("[", "").Replace("]", "").Split(new char[]
-			{
-				':'
-			});
-			UniverseX.Text = array[0];
-			UniverseY.Text = array[1];
 		}
 
 		private void UpgradeToMax_Click(object sender, EventArgs e) {
 			byte[] modulesArray = { 4, 1, 1, 2, 11, 10, 10, 10, 5, 5, 5, 6, 6, 6, 9, 9 };
 			byte[] modulesArrayBomb = { 16, 17, 15, 13, 12, 13, 15, 16, 17, 14, 4, 1, 11, 10, 9, 10 };
 			byte i = 0;
-			foreach (object moduleControl in ModulesBox.Controls) {
-				if (moduleControl is ComboBox) {
-					(moduleControl as ComboBox).SelectedIndex =
+			foreach (object moduleControl in ModulesBox.Controls)
+			{
+				var moduleComboBox = moduleControl as ComboBox;
+				if (moduleComboBox != null) {
+					moduleComboBox.SelectedIndex =
 						LanderModifications_DisplacedByBomb.Checked ? modulesArrayBomb[i] : modulesArray[i];
 					i++;
 				}
 			}
 		}
 
-		private void MaxThrusters_Click(object sender, EventArgs e) {
-			foreach (var thrusterControl in ThrusterBox.Controls) {
-				if (thrusterControl is CheckBox) {
-					(thrusterControl as CheckBox).Checked = true;
+		private void MaxThrusters_Click(object sender, EventArgs e)
+		{
+			foreach (var thrusterControl in ThrusterBox.Controls)
+			{
+				var thrusterCheckBox = thrusterControl as CheckBox;
+				if (thrusterCheckBox != null)
+				{
+					thrusterCheckBox.Checked = true;
 				}
 			}
 		}
 
-		private void MaxJets_Click(object sender, EventArgs e) {
-			foreach (var turningJetsControl in TurningJetsBox.Controls) {
-				if (turningJetsControl is CheckBox) {
-					(turningJetsControl as CheckBox).Checked = true;
+		private void MaxJets_Click(object sender, EventArgs e)
+		{
+			foreach (var turningJetsControl in TurningJetsBox.Controls)
+			{
+				var turningJetsCheckBox = turningJetsControl as CheckBox;
+				if (turningJetsCheckBox != null)
+				{
+					turningJetsCheckBox.Checked = true;
 				}
 			}
 		}
 
 		private void Module_SelectedIndexChanged(object sender, EventArgs e) {
 			int maxStorage = 0, maxFuel = 10, maxCrew = 0;
-			foreach (var moduleControl in ModulesBox.Controls) {
-				if (moduleControl is ComboBox) {
-					int index = (moduleControl as ComboBox).SelectedIndex;
+			foreach (var moduleControl in ModulesBox.Controls)
+			{
+				var moduleComboBox = moduleControl as ComboBox;
+				if (moduleComboBox != null)
+				{
+					int index = moduleComboBox.SelectedIndex;
 					maxCrew += index == 1 ? 50 : 0;
 					maxStorage += index == 2 ? 500 : 0;
 					maxFuel += index == 3 ? 50 : (index == 4 ? 100 : 0);

@@ -58,7 +58,8 @@ namespace UrQuanMastersSaveEditor.Common
 				var line = streamReader.ReadLine();
 				const string tab = "\t";
 				var tabAsCharArray = new char[] { '\t' };
-				var lineFields = line.Split(tabAsCharArray);
+				var lineFields =
+					line == null ? [] : line.Split(tabAsCharArray);
 
 				list.Add(
 					string.Concat(

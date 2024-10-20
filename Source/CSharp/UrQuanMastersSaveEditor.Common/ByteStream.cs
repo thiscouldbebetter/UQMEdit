@@ -21,6 +21,11 @@ namespace UrQuanMastersSaveEditor.Common
 			return byteRead;
 		}
 
+		public byte[] ReadBytesAll()
+		{
+			return _bytes;
+		}
+
 		public void Seek(long offsetToSeekTo)
 		{
 			_byteCurrentIndex = offsetToSeekTo;

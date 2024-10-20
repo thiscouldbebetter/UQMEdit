@@ -28,9 +28,9 @@ namespace UrQuanMastersSaveEditor
 			var flagshipModulesAtPositions = _gameState.FlagshipModulesAtPositions;
 			foreach (var modulesControl in _window.ModulesBox.Controls)
 			{
-				if (modulesControl is ComboBox)
+				var modulesComboBox = modulesControl as ComboBox;
+				if (modulesComboBox != null)
 				{
-					var modulesComboBox = modulesControl as ComboBox;
 					var isNotEmpty =
 						flagshipModulesAtPositions[flagshipModuleCount] != GameState.FlagshipModule.Instances.Empty;
 					if (isNotEmpty)
@@ -49,9 +49,10 @@ namespace UrQuanMastersSaveEditor
 			var thrustersCount = 0;
 			foreach (var thrustersControl in _window.ThrusterBox.Controls)
 			{
-				if (thrustersControl is CheckBox)
+				var thrusterCheckBox = thrustersControl as CheckBox;
+				if (thrusterCheckBox != null)
 				{
-					(thrustersControl as CheckBox).Checked =
+					thrusterCheckBox.Checked =
 						_gameState.ThrustersArePresentAtPositions[thrustersCount];
 					thrustersCount++;
 				}
@@ -60,9 +61,10 @@ namespace UrQuanMastersSaveEditor
 			var turningJetsCount = 0;
 			foreach (var turningJetControl in _window.TurningJetsBox.Controls)
 			{
-				if (turningJetControl is CheckBox)
+				var turningJetCheckBox = turningJetControl as CheckBox;
+				if (turningJetCheckBox != null)
 				{
-					(turningJetControl as CheckBox).Checked =
+					turningJetCheckBox.Checked =
 						_gameState.TurningJetsArePresentAtPositions[turningJetsCount];
 					turningJetsCount++;
 				}
@@ -100,10 +102,9 @@ namespace UrQuanMastersSaveEditor
 			var escortShipsCountAsCounted = 0;
 			foreach (var shipsControl in _window.ShipsBox.Controls)
 			{
-				if (shipsControl is ComboBox)
+				var shipsComboBox = shipsControl as ComboBox;
+				if (shipsComboBox != null)
 				{
-					var shipsComboBox = shipsControl as ComboBox;
-
 					if (escortShipsCountAsCounted < escortShipsCountAsRead)
 					{
 						if
@@ -147,13 +148,13 @@ namespace UrQuanMastersSaveEditor
 			_gameState.BioData = _window.BioData.Value;
 
 			var modulesPresent = new List<GameState.FlagshipModule>();
-			foreach (var modulesControl in _window.ModulesBox.Controls)
+			foreach (var moduleControl in _window.ModulesBox.Controls)
 			{
-				if (modulesControl is ComboBox)
+				var moduleComboBox = moduleControl as ComboBox;
+				if (moduleComboBox != null)
 				{
-					var moduleAsComboBox = modulesControl as ComboBox;
 					var modulePresent =
-						moduleAsComboBox.SelectedItem as GameState.FlagshipModule;
+						(moduleComboBox.SelectedItem as GameState.FlagshipModule) ?? GameState.FlagshipModule.Empty();
 					modulesPresent.Add(modulePresent);
 				}
 			}
@@ -163,9 +164,10 @@ namespace UrQuanMastersSaveEditor
 			var i = 0;
 			foreach (var thrusterControl in thrusterControls)
 			{
-				if (thrusterControl is CheckBox)
+				var thrusterCheckBox = thrusterControl as CheckBox;
+				if (thrusterCheckBox != null)
 				{
-					var thrusterIsPresent = (thrusterControl as CheckBox).Checked;
+					var thrusterIsPresent = thrusterCheckBox.Checked;
 					_gameState.ThrustersArePresentAtPositions[i] = thrusterIsPresent;
 					i++;
 				}
@@ -175,9 +177,10 @@ namespace UrQuanMastersSaveEditor
 			i = 0;
 			foreach (var turningJetControl in turningJetControls)
 			{
-				if (turningJetControl is CheckBox)
+				var turningJetCheckBox = turningJetControl as CheckBox;
+				if (turningJetCheckBox != null)
 				{
-					var turningJetIsPresent = (turningJetControl as CheckBox).Checked;
+					var turningJetIsPresent = turningJetCheckBox.Checked;
 					_gameState.TurningJetsArePresentAtPositions[i] = turningJetIsPresent;
 					i++;
 				}

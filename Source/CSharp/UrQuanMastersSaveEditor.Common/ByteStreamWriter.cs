@@ -16,6 +16,11 @@ namespace UrQuanMastersSaveEditor.Common
 			_fileBuffer = new byte[fileSize];
 		}
 
+		public byte[] BytesAll()
+		{
+			return _fileStream.ReadBytesAll();
+		}
+
 		private byte[] StringToByteArray(string stringToConvert, int maxLength)
 		{
 			var charArr = stringToConvert.ToCharArray();
