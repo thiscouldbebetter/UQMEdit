@@ -15,8 +15,12 @@ namespace UrQuanMastersSaveEditor.Tests.TestFixtures
 			return new List<Test>()
 			{
 				new Test(
-					"CoordinatesConvertFromLogToUniverseAndBack",
-					() => CoordinatesConvertFromLogToUniverseAndBack()
+					"CoordinatesConvertFromLogToUniverseAndBack_X",
+					() => CoordinatesConvertFromLogToUniverseAndBack_X()
+				),
+				new Test(
+					"CoordinatesConvertFromLogToUniverseAndBack_Y",
+					() => CoordinatesConvertFromLogToUniverseAndBack_Y()
 				),
 				new Test(
 					"LoadAndSaveGameThenCompareFiles_Initial",
@@ -27,15 +31,28 @@ namespace UrQuanMastersSaveEditor.Tests.TestFixtures
 
 		// Tests.
 
-		private void CoordinatesConvertFromLogToUniverseAndBack()
+		private void CoordinatesConvertFromLogToUniverseAndBack_X()
 		{
 			var coordinateConverter = new CoordinateConverter(0);
+
 			const int logXBefore = 27987;
 			var universeX = coordinateConverter.LogXToUniverse(logXBefore);
 			const decimal universeXExpected = 175.2M;
 			Assert.AreDecimalsEqual(universeXExpected, universeX);
 			var logXAfter = coordinateConverter.UniverseToLogX(universeX);
-			Assert.AreDecimalsEqual(logXBefore, logXAfter);
+			Assert.AreIntegersEqual(logXBefore, logXAfter);
+		}
+
+		private void CoordinatesConvertFromLogToUniverseAndBack_Y()
+		{
+			var coordinateConverter = new CoordinateConverter(0);
+
+			const int logYBefore = 164141;
+			var universeY = coordinateConverter.LogYToUniverse(logYBefore);
+			const decimal universeYExpected = 145.0M;
+			Assert.AreDecimalsEqual(universeYExpected, universeY);
+			var logYAfter = coordinateConverter.UniverseToLogY(universeY);
+			Assert.AreIntegersEqual(logYBefore, logYAfter);
 		}
 
 		private void LoadAndSaveGameThenCompareFiles_Initial()

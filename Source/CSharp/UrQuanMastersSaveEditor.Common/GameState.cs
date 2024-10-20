@@ -85,7 +85,10 @@ namespace UrQuanMastersSaveEditor.Common
 			var logX = reader.ReadIntegerFromOffset32BitSigned(offsets.LogX);
 			UniverseX = coordinateConverter.LogXToUniverse(logX);
 
-			var logY = reader.ReadIntegerFromOffset32BitSigned(offsets.LogY);
+			var logY =
+				reader.ReadIntegerFromOffset32BitSigned(offsets.LogY);
+				//reader.ReadIntegerFromOffsetWithLength16BitUnsigned(offsets.LogY, 4);
+
 			UniverseY = coordinateConverter.LogYToUniverse(logY);
 
 			var statusAsByte = reader.ReadByteFromOffset(offsets.Status);
@@ -639,113 +642,5 @@ namespace UrQuanMastersSaveEditor.Common
 					: (landerModificationsAsByte & bitAsMask) != 0;
 			}
 		}
-	}
-
-	public class CoordinateConverter
-	{
-		private int GameStateSaveVersion;
-		public CoordinateConverter(int gameStateSaveVersion)
-		{
-			GameStateSaveVersion = gameStateSaveVersion;
-		}
-
-		private int ChooseBewtweenValuesBasedOnSaveVersion(int valueOld, int valueNew)
-		{
-			return
-				(GameStateSaveVersion == 0 || GameStateSaveVersion == 3)
-				? valueOld
-				: valueNew;
-		}
-
-		private int HalveIntegerWithRightShift(int integerToRound)
-		{
-			return (integerToRound >> 1);
-		}
-
-		public decimal LogXToUniverse(int logX)
-		{
-			var universeUnits = ChooseBewtweenValuesBasedOnSaveVersion(
-				Constants.UniverseUnitsOld, Constants.UniverseUnits
-			);
-
-			var logUnits = ChooseBewtweenValuesBasedOnSaveVersion(
-				Constants.LogUnitsXOld, Constants.LogUnits
-			);
-
-			var logUnitsHalved = HalveIntegerWithRightShift(logUnits);
-
-			var workingValue = logX;
-			workingValue *= universeUnits;
-			workingValue += logUnitsHalved;
-			workingValue /= logUnits;
-			decimal workingValue2 = workingValue / 10.0M;
-
-			var returnValue = workingValue2;
-
-			return returnValue;
-		}
-
-		public decimal LogYToUniverse(int logY)
-		{
-			var universeUnits =
-				Constants.UniverseUnits;
-				//ChooseBewtweenValuesBasedOnSaveVersion(Constants.UniverseUnitsOld, Constants.UniverseUnits);
-
-			int logUnits =
-				ChooseBewtweenValuesBasedOnSaveVersion(
-					Constants.LogUnitsYOld, Constants.LogUnits
-				);
-
-			var returnValueTimesTen =
-				Constants.MaxUniverse
-				-
-				(
-					(logY * universeUnits + HalveIntegerWithRightShift(logUnits))
-					/ logUnits
-				);
-
-			var returnValue = returnValueTimesTen / 10;
-
-			return returnValue;
-		}
-
-		public int UniverseToLogX(decimal universeX)
-		{
-			var universeUnits = ChooseBewtweenValuesBasedOnSaveVersion(
-				Constants.UniverseUnitsOld, Constants.UniverseUnits
-			);
-
-			var logUnits = ChooseBewtweenValuesBasedOnSaveVersion(
-				Constants.LogUnitsXOld, Constants.LogUnits
-			);
-
-			var logUnitsHalved = HalveIntegerWithRightShift(logUnits);
-
-			decimal workingValue = universeX;
-			workingValue *= 10;
-			workingValue *= logUnits;
-			workingValue -= logUnitsHalved;
-			workingValue /= universeUnits;
-
-			var returnValue = (int)workingValue;
-
-			return returnValue;
-		}
-
-		public int UniverseToLogY(decimal universeY)
-		{
-			int logUnits = ChooseBewtweenValuesBasedOnSaveVersion(
-				Constants.LogUnitsYOld, Constants.LogUnits
-			);
-			var returnValue =
-				(
-					(Constants.MaxUniverse - universeY)
-					* logUnits
-					+ HalveIntegerWithRightShift(Constants.UniverseUnits)
-				)
-				/ Constants.UniverseUnits;
-			return (int)returnValue;
-		}
-
 	}
 }
