@@ -25,17 +25,26 @@ namespace UrQuanMastersSaveEditor.Tests.TestFixtures
 
 		private void LoadAndSaveGameThenCompareFiles_Initial()
 		{
-			const string fileToLoadPath =
+			// Copy the sample file to the working directory.
+			const string fileToCopyPath =
 				"../../../../../../Samples/Named/01-Start.uqmsave.dat";
-			var gameState = GameState.Instance;
-			gameState.Open(fileToLoadPath);
-			const string fileToSavePath = "LoadedThenSaved.uqmsave.dat";
-			gameState.Save(fileToSavePath);
+			const string fileToLoadThenSavePath = "LoadedThenSaved.uqmsave.dat";
 
 			var fileContentsBeforeAsBytes =
-				File.ReadAllBytes(fileToLoadPath);
+				File.ReadAllBytes(fileToCopyPath);
+
+			File.WriteAllBytes(fileToLoadThenSavePath, fileContentsBeforeAsBytes);
+
+			// Load from and then save to that file.
+
+			var gameState = GameState.Instance;
+			gameState.Open(fileToLoadThenSavePath);
+			gameState.Save(fileToLoadThenSavePath);
+
+			// Compare the resaved file to the original.
+
 			var fileContentsAfterAsBytes =
-				File.ReadAllBytes(fileToSavePath);
+				File.ReadAllBytes(fileToLoadThenSavePath);
 
 			var fileContentsBeforeAsHexadecimal =
 				BitConverter.ToString(fileContentsBeforeAsBytes);
@@ -46,7 +55,7 @@ namespace UrQuanMastersSaveEditor.Tests.TestFixtures
 				fileContentsBeforeAsHexadecimal,
 				fileContentsAfterAsHexadecimal
 			);
-        }
+		}
 
 	}
 }

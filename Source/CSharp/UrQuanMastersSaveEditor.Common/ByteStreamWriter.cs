@@ -3,12 +3,14 @@ namespace UrQuanMastersSaveEditor.Common
 {
 	class ByteStreamWriter : IDisposable
 	{
-		private Stream _fileStream;
+		private ByteStream _fileStream;
 		private byte[] _fileBuffer;
 
 		public ByteStreamWriter(string fileToWriteName)
 		{
-			_fileStream = new FileStream(fileToWriteName, FileMode.OpenOrCreate);
+			_fileStream =
+				// new FileStream(fileToWriteName, FileMode.OpenOrCreate);
+				new ByteStream(File.ReadAllBytes(fileToWriteName));
 
 			var fileSize = (int)_fileStream.Length;
 			_fileBuffer = new byte[fileSize];
@@ -33,7 +35,7 @@ namespace UrQuanMastersSaveEditor.Common
 			int offsetToWriteToInBytes
 		)
 		{
-			_fileStream.Seek(offsetToWriteToInBytes, SeekOrigin.Begin);
+			_fileStream.Seek(offsetToWriteToInBytes);
 			foreach (var byteToWrite in bytesToWrite)
 			{
 				_fileStream.WriteByte(byteToWrite);
@@ -48,7 +50,7 @@ namespace UrQuanMastersSaveEditor.Common
 			bool isUnsignedNotSigned = false
 		)
 		{
-			_fileStream.Seek(offsetToWriteToInBytes, SeekOrigin.Begin);
+			_fileStream.Seek(offsetToWriteToInBytes);
 			if (isUnsignedNotSigned)
 			{
 				var valueToWriteAsUnsignedInt = decimal.ToUInt32(valueToWrite);
@@ -142,7 +144,7 @@ namespace UrQuanMastersSaveEditor.Common
 			string stringToWrite, int offset, int lengthInBytes
 		)
 		{
-			_fileStream.Seek(offset, SeekOrigin.Begin);
+			_fileStream.Seek(offset);
 			_fileBuffer = StringToByteArray(stringToWrite, lengthInBytes);
 			_fileStream.Write(_fileBuffer, 0, lengthInBytes);
 		}

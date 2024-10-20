@@ -3,11 +3,13 @@ namespace UrQuanMastersSaveEditor.Common
 {
 	class ByteStreamReader : IDisposable
 	{
-		private Stream _fileStream;
+		private ByteStream _fileStream;
 
 		public ByteStreamReader(string fileToReadName)
 		{
-			_fileStream = new FileStream(fileToReadName, FileMode.Open);
+			_fileStream =
+				// new FileStream(fileToReadName, FileMode.Open);
+				new ByteStream(File.ReadAllBytes(fileToReadName));
 		}
 
 		public byte ReadByteFromOffset(int offsetInBytes)
@@ -20,7 +22,7 @@ namespace UrQuanMastersSaveEditor.Common
 		)
 		{
 			var bytesRead = new byte[lengthInBytes];
-			_fileStream.Seek(offsetInBytes, SeekOrigin.Begin);
+			_fileStream.Seek(offsetInBytes);
 			for (var i = 0; i < lengthInBytes; i++)
 			{
 				bytesRead[i] = (byte)(_fileStream.ReadByte());

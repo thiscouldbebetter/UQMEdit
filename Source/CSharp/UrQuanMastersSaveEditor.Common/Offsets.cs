@@ -57,8 +57,8 @@ namespace UrQuanMastersSaveEditor.Common
 			_offsetsInner = offsetsInner;
 		}
 
-        public byte SaveChecker { get; } = 0; // todo
-        public byte SaveNameMagic { get; } = 8;
+		public byte SaveChecker { get; } = 0; // todo
+		public byte SaveNameMagic { get; } = 8;
 		public byte SaveName { get; } = 16;
 		public byte LogX { get => (byte)(_offsetsInner.LogX - _48); }
 		public byte LogY { get => (byte)(_offsetsInner.LogY - _48); }
@@ -113,7 +113,7 @@ namespace UrQuanMastersSaveEditor.Common
 		public byte SaveNameMagic { get; } = 8;
 		public byte SaveName { get; } = 16;
 		public byte LogX { get; } = 48;
-		public byte LogY { get; } =52;
+		public byte LogY { get; } = 52;
 		public byte ResourceUnits { get; } = 56;
 		public byte Fuel { get; } = 60;
 		public byte FlagshipCrew { get; } = 64;
