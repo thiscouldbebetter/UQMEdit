@@ -15,6 +15,10 @@ namespace UrQuanMastersSaveEditor.Tests.TestFixtures
 			return new List<Test>()
 			{
 				new Test(
+					"CoordinatesConvertFromLogToUniverseAndBack",
+					() => CoordinatesConvertFromLogToUniverseAndBack()
+				),
+				new Test(
 					"LoadAndSaveGameThenCompareFiles_Initial",
 					() => LoadAndSaveGameThenCompareFiles_Initial()
 				)
@@ -22,6 +26,17 @@ namespace UrQuanMastersSaveEditor.Tests.TestFixtures
 		}
 
 		// Tests.
+
+		private void CoordinatesConvertFromLogToUniverseAndBack()
+		{
+			var coordinateConverter = new CoordinateConverter(0);
+			const int logXBefore = 27987;
+			var universeX = coordinateConverter.LogXToUniverse(logXBefore);
+			const decimal universeXExpected = 175.2M;
+			Assert.AreDecimalsEqual(universeXExpected, universeX);
+			var logXAfter = coordinateConverter.UniverseToLogX(universeX);
+			Assert.AreDecimalsEqual(logXBefore, logXAfter);
+		}
 
 		private void LoadAndSaveGameThenCompareFiles_Initial()
 		{
@@ -46,14 +61,9 @@ namespace UrQuanMastersSaveEditor.Tests.TestFixtures
 			var fileContentsAfterAsBytes =
 				File.ReadAllBytes(fileToLoadThenSavePath);
 
-			var fileContentsBeforeAsHexadecimal =
-				BitConverter.ToString(fileContentsBeforeAsBytes);
-			var fileContentsAfterAsHexadecimal =
-				BitConverter.ToString(fileContentsAfterAsBytes);
-
-			Assert.AreStringsEqual(
-				fileContentsBeforeAsHexadecimal,
-				fileContentsAfterAsHexadecimal
+			Assert.AreByteArraysEqual(
+				fileContentsBeforeAsBytes,
+				fileContentsAfterAsBytes
 			);
 		}
 

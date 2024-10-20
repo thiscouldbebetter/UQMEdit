@@ -130,7 +130,7 @@ namespace UrQuanMastersSaveEditor.Common
 		public byte Minerals_RareEarths { get; } = 114;
 		public byte Minerals_PreciousMetals { get; } = 116;
 		public byte Minerals_Radioactives { get; } = 118;
-		public byte Minerals_Exotics { get; } =120;
+		public byte Minerals_Exotics { get; } = 120;
 		public byte[] Minerals { get; } = { 106, 108, 110, 112, 114, 116, 118, 120 };
 		public byte ShipName { get; } = 122;
 		public byte CaptainName { get; } = 138;

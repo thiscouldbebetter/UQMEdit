@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Tracing;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text;
 
 namespace UrQuanMastersSaveEditor.Common
@@ -52,8 +51,8 @@ namespace UrQuanMastersSaveEditor.Common
 		{
 			using (var writer = new ByteStreamWriter(fileToWriteToName) )
 			{
-				SaveSummary(writer);
 				SaveCoordinates(writer);
+				SaveSummary(writer);				
 				var saveFileAsBytes = writer.BytesAll();
 				File.WriteAllBytes(fileToWriteToName, saveFileAsBytes);
 			}
@@ -81,16 +80,13 @@ namespace UrQuanMastersSaveEditor.Common
 		private void ReadCoordinates(ByteStreamReader reader)
 		{
 			var offsets = ByteOffsetsPick(SaveVersion);
+			var coordinateConverter = new CoordinateConverter(SaveVersion);
 
-			decimal LogX = LogXToUniverse(
-				reader.ReadIntegerFromOffset32BitSigned(offsets.LogX)
-			);
-			UniverseX = LogX / 10;
+			var logX = reader.ReadIntegerFromOffset32BitSigned(offsets.LogX);
+			UniverseX = coordinateConverter.LogXToUniverse(logX);
 
-			decimal LogY = LogYToUniverse(
-				reader.ReadIntegerFromOffset32BitSigned(offsets.LogY)
-			);
-			UniverseY = LogY / 10;
+			var logY = reader.ReadIntegerFromOffset32BitSigned(offsets.LogY);
+			UniverseY = coordinateConverter.LogYToUniverse(logY);
 
 			var statusAsByte = reader.ReadByteFromOffset(offsets.Status);
 
@@ -122,19 +118,19 @@ namespace UrQuanMastersSaveEditor.Common
 
 		private void SaveCoordinates(ByteStreamWriter writer)
 		{
-			var universeX = UniverseX * 10;
 			var offsets = ByteOffsetsPick(SaveVersion);
-			var xOrY = UniverseToLogX(decimal.ToInt32(universeX));
+			var coordinateConverter = new CoordinateConverter(SaveVersion);
+
+			var logX = coordinateConverter.UniverseToLogX(UniverseX);
 			writer.WriteDecimalToOffsetWithLengthAndMaxSigned32Bit(
-				valueToWrite: xOrY,
+				valueToWrite: logX,
 				offsets.LogX,
 				valueMax: 159735
 			);
 
-			var universeY = UniverseY * 10;
-			xOrY = UniverseToLogY(decimal.ToInt32(universeY));
+			var logY = coordinateConverter.UniverseToLogY(UniverseY);
 			writer.WriteDecimalToOffsetWithLengthAndMaxSigned32Bit(
-				valueToWrite: xOrY,
+				valueToWrite: logY,
 				offsets.LogY,
 				valueMax: 191990
 			);
@@ -163,48 +159,6 @@ namespace UrQuanMastersSaveEditor.Common
 					break;
 			}
 			return returnValue;
-		}
-
-		private int ChooseBewtweenValuesBasedOnSaveVersion(int valueOld, int valueNew)
-		{
-			return
-				(SaveVersion == 0 || SaveVersion == 3)
-				? valueOld
-				: valueNew;
-		}
-
-		private int LogXToUniverse(int logX)
-		{
-			var universeUnits = ChooseBewtweenValuesBasedOnSaveVersion(
-				Constants.UniverseUnitsOld, Constants.UniverseUnits
-			);
-			var logUnits = ChooseBewtweenValuesBasedOnSaveVersion(
-				Constants.LogUnitsXOld, Constants.LogUnits
-			);
-			return (logX * universeUnits + RoundIntegerDown(logUnits)) / logUnits;
-		}
-
-		private int LogYToUniverse(int logY)
-		{
-			int logUnits =
-				ChooseBewtweenValuesBasedOnSaveVersion(
-					Constants.LogUnitsYOld, Constants.LogUnits
-				);
-
-			var returnValue =
-				Constants.MaxUniverse
-				-
-				(
-					(logY * Constants.UniverseUnits + RoundIntegerDown(logUnits))
-					/ logUnits
-				);
-
-			return returnValue;
-		}
-
-		private int RoundIntegerDown(int integerToRound)
-		{
-			return (integerToRound >> 1);
 		}
 
 		public decimal UniverseX, UniverseY;
@@ -566,32 +520,6 @@ namespace UrQuanMastersSaveEditor.Common
 			);
 		}
 
-		private int UniverseToLogX(int universeX)
-		{
-			universeX -= ChooseBewtweenValuesBasedOnSaveVersion(3, 0);
-			var returnValue =
-				(
-					universeX * Constants.LogUnits
-					+ RoundIntegerDown(Constants.UniverseUnits)
-				)
-				/ Constants.UniverseUnits;
-			return returnValue;
-		}
-		private int UniverseToLogY(int universeY)
-		{
-			int logUnits = ChooseBewtweenValuesBasedOnSaveVersion(
-				Constants.LogUnitsYOld, Constants.LogUnits
-			);
-			var returnValue =
-				(
-					(Constants.MaxUniverse - universeY)
-					* logUnits
-					+ RoundIntegerDown(Constants.UniverseUnits)
-				)
-				/ Constants.UniverseUnits;
-			return returnValue;
-		}
-
 		// Controls.
 
 
@@ -710,6 +638,113 @@ namespace UrQuanMastersSaveEditor.Common
 					? ((landerModificationsAsByte | 128) & bitAsMask) != 0
 					: (landerModificationsAsByte & bitAsMask) != 0;
 			}
+		}
+	}
+
+	public class CoordinateConverter
+	{
+		private int GameStateSaveVersion;
+		public CoordinateConverter(int gameStateSaveVersion)
+		{
+			GameStateSaveVersion = gameStateSaveVersion;
+		}
+
+		private int ChooseBewtweenValuesBasedOnSaveVersion(int valueOld, int valueNew)
+		{
+			return
+				(GameStateSaveVersion == 0 || GameStateSaveVersion == 3)
+				? valueOld
+				: valueNew;
+		}
+
+		private int HalveIntegerWithRightShift(int integerToRound)
+		{
+			return (integerToRound >> 1);
+		}
+
+		public decimal LogXToUniverse(int logX)
+		{
+			var universeUnits = ChooseBewtweenValuesBasedOnSaveVersion(
+				Constants.UniverseUnitsOld, Constants.UniverseUnits
+			);
+
+			var logUnits = ChooseBewtweenValuesBasedOnSaveVersion(
+				Constants.LogUnitsXOld, Constants.LogUnits
+			);
+
+			var logUnitsHalved = HalveIntegerWithRightShift(logUnits);
+
+			var workingValue = logX;
+			workingValue *= universeUnits;
+			workingValue += logUnitsHalved;
+			workingValue /= logUnits;
+			decimal workingValue2 = workingValue / 10.0M;
+
+			var returnValue = workingValue2;
+
+			return returnValue;
+		}
+
+		public decimal LogYToUniverse(int logY)
+		{
+			var universeUnits =
+				Constants.UniverseUnits;
+				//ChooseBewtweenValuesBasedOnSaveVersion(Constants.UniverseUnitsOld, Constants.UniverseUnits);
+
+			int logUnits =
+				ChooseBewtweenValuesBasedOnSaveVersion(
+					Constants.LogUnitsYOld, Constants.LogUnits
+				);
+
+			var returnValueTimesTen =
+				Constants.MaxUniverse
+				-
+				(
+					(logY * universeUnits + HalveIntegerWithRightShift(logUnits))
+					/ logUnits
+				);
+
+			var returnValue = returnValueTimesTen / 10;
+
+			return returnValue;
+		}
+
+		public int UniverseToLogX(decimal universeX)
+		{
+			var universeUnits = ChooseBewtweenValuesBasedOnSaveVersion(
+				Constants.UniverseUnitsOld, Constants.UniverseUnits
+			);
+
+			var logUnits = ChooseBewtweenValuesBasedOnSaveVersion(
+				Constants.LogUnitsXOld, Constants.LogUnits
+			);
+
+			var logUnitsHalved = HalveIntegerWithRightShift(logUnits);
+
+			decimal workingValue = universeX;
+			workingValue *= 10;
+			workingValue *= logUnits;
+			workingValue -= logUnitsHalved;
+			workingValue /= universeUnits;
+
+			var returnValue = (int)workingValue;
+
+			return returnValue;
+		}
+
+		public int UniverseToLogY(decimal universeY)
+		{
+			int logUnits = ChooseBewtweenValuesBasedOnSaveVersion(
+				Constants.LogUnitsYOld, Constants.LogUnits
+			);
+			var returnValue =
+				(
+					(Constants.MaxUniverse - universeY)
+					* logUnits
+					+ HalveIntegerWithRightShift(Constants.UniverseUnits)
+				)
+				/ Constants.UniverseUnits;
+			return (int)returnValue;
 		}
 
 	}

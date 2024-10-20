@@ -25,7 +25,7 @@ namespace UrQuanMastersSaveEditor.Common
 			_fileStream.Seek(offsetInBytes);
 			for (var i = 0; i < lengthInBytes; i++)
 			{
-				bytesRead[i] = (byte)(_fileStream.ReadByte());
+				bytesRead[i] = _fileStream.ReadByte();
 			}
 			return bytesRead;
 		}
